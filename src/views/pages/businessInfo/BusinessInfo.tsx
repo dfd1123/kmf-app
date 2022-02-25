@@ -28,14 +28,20 @@ interface businessInfoType {
 }
 
 function BusinessInfo() {
-  const [date, setDate] = useState<Date>(new Date());
   const locale = 'ko-KR';
   const service = useService();
   const [businesses, setBusinesses] = useState<businessInfoType[]>();
   const [dates, setDates] = useState<string[]>([]);
+  const [currentDate, setCurrentDate] = useState(dateFormat(new Date(), 'yyyy-MM-dd'));
   const formatDate = (calendarLocale: string, date: Date) => {
     return dateFormat(date, 'd');
   };
+
+  const stringToDate = (date: string) => {
+    const dateArr = date.split('-');
+    return new Date(parseInt(dateArr[0]), parseInt(dateArr[1]), parseInt(dateArr[2]));
+  }
+
   const getBusinessData = async () => {
     const { notices, notices_count } =
       await service.business.getBusinessInfoList({
@@ -46,8 +52,6 @@ function BusinessInfo() {
     setBusinesses(notices);
     const dateArr = notices.map((item: any) => item.no_date_start);
     setDates(dateArr);
-    console.log(dateArr);
-    console.log(notices);
   };
 
   const setTileContent = (date: Date, view: string) => {
@@ -57,15 +61,25 @@ function BusinessInfo() {
     return result.length > 0 ? (
       <div className="tileWrapper">
         {result.map((item, index) => {
-          return index > 4 ? null : <TileContent dotColor={color[index]} />;
+          return index > 4 ? null : <TileContent dotColor={color[index]} key={index} />;
         })}
       </div>
     ) : null;
   };
 
+  const onDateChange = (value: Date, event: React.ChangeEvent) => {
+    console.log('date changed',value, event)
+    setCurrentDate(dateFormat(value, 'yyyy-MM-dd'))
+  }
+
+  const onMonthChange = (active: any) => {
+    console.log('month changed', dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
+    setCurrentDate(dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
+  }
+
   useEffect(() => {
     getBusinessData();
-  }, []);
+  }, [currentDate]);
 
   return (
     <ContainerStyle>
@@ -76,13 +90,14 @@ function BusinessInfo() {
         defaultView="month"
         maxDetail="month"
         view="month"
-        value={date}
+        defaultActiveStartDate={stringToDate(dateFormat(new Date(), 'yyyy-MM-dd'))}
         formatDay={formatDate}
-        onChange={() => console.log('date')}
+        onChange={onDateChange}
         tileContent={({ date, view }) => setTileContent(date, view)}
+        onActiveStartDateChange={onMonthChange}
       />
       <div className="list-holder">
-        <CurrentMonthStyle>{dateFormat(date, 'yyyy.MM')}</CurrentMonthStyle>
+      <CurrentMonthStyle>{currentDate.slice(0, 7).replaceAll('-', '.')}</CurrentMonthStyle>
         <SupportListWrapperStyle>
           {businesses &&
             businesses.map((item: businessInfoType) => {
@@ -104,47 +119,58 @@ function BusinessInfo() {
 
 const CalendarWrapperStyle = styled(Calendar)`
   width: 100%;
-    border: none;
-    position: sticky;
-    top: 30px;
-    left: 0;
-    z-index: 1;
+  border: none;
   .react-calendar__navigation {
     background-color: #1574bd;
+
     & > * {
       color: white;
     }
+
     .react-calendar__navigation__prev2-button,
     .react-calendar__navigation__next2-button {
       display: none;
     }
+
     .react-calendar__navigation__prev-button {
       order: 1;
+
       &:enabled {
         background-color: #1574bd;
       }
+
       &:active {
         background-color: #59bdff;
       }
     }
+
     .react-calendar__navigation__next-button {
       &:enabled {
         background-color: #1574bd;
       }
+
       &:active {
         background-color: #59bdff;
       }
+
       order: 2;
       margin-right: 6px;
     }
+
     .react-calendar__navigation__label {
       text-align: start;
       padding-left: 24px;
     }
   }
+
   .react-calendar__viewContainer {
     /* padding: 0 2px; */
   }
+
+  .react-calendar__tile--now {
+    background-color: #a7d6ff;
+  }
+
   & .react-calendar__tile {
     height: 50px;
     display: flex;
