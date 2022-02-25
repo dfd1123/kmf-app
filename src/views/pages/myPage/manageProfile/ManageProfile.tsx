@@ -13,6 +13,7 @@ import { useTypedSelector } from '@/store/index';
 import { imageFileUpload } from '@/utils/fileUtils';
 import { UserInfo } from '@/store/auth/types/auth';
 import useToast from '@/hooks/useToast';
+import FooterButton from '@/views/components/common/FooterButton';
 
 const ManageProfile = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -137,9 +138,9 @@ const ManageProfile = () => {
           <div className="kmf-fighting">KMF 화이팅! </div>
         </div>
       </ContentWrapperStyle>
-      <BasicButton className="footer-btn" onClick={onSave}>
+      <FooterButton onClick={onSave}>
         저장하기
-      </BasicButton>
+      </FooterButton>
     </ContainerStyle>
   );
 };
@@ -147,15 +148,6 @@ const ManageProfile = () => {
 const ContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
-
-  .footer-btn {
-    height: 78px;
-    display: flex;
-    justify-content: center;
-    background-color: #1574bd;
-    color: white;
-    font-size: 20px;
-  }
 `;
 
 const ContentWrapperStyle = styled.section`

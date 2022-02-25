@@ -81,20 +81,22 @@ function BusinessInfo() {
         onChange={() => console.log('date')}
         tileContent={({ date, view }) => setTileContent(date, view)}
       />
-      <CurrentMonthStyle>{dateFormat(date, 'yyyy.MM')}</CurrentMonthStyle>
-      <SupportListWrapperStyle>
-        {businesses &&
-          businesses.map((item: businessInfoType) => {
-            return (
-              <KmfListWrapper key={item.no_id}>
-                <KmfLinkedList
-                  title={item.no_title}
-                  to={`/notice/${item.no_id}`}
-                />
-              </KmfListWrapper>
-            );
-          })}
-      </SupportListWrapperStyle>
+      <div className="list-holder">
+        <CurrentMonthStyle>{dateFormat(date, 'yyyy.MM')}</CurrentMonthStyle>
+        <SupportListWrapperStyle>
+          {businesses &&
+            businesses.map((item: businessInfoType) => {
+              return (
+                <KmfListWrapper key={item.no_id}>
+                  <KmfLinkedList
+                    title={item.no_title}
+                    to={`/notice/${item.no_id}`}
+                  />
+                </KmfListWrapper>
+              );
+            })}
+        </SupportListWrapperStyle>
+      </div>
       <KmfFooter />
     </ContainerStyle>
   );
@@ -102,7 +104,11 @@ function BusinessInfo() {
 
 const CalendarWrapperStyle = styled(Calendar)`
   width: 100%;
-  border: none;
+    border: none;
+    position: sticky;
+    top: 30px;
+    left: 0;
+    z-index: 1;
   .react-calendar__navigation {
     background-color: #1574bd;
     & > * {
@@ -157,20 +163,32 @@ const CalendarWrapperStyle = styled(Calendar)`
 `;
 
 const ContainerStyle = styled.div`
-  height: 100vh;
   display: flex;
   flex-direction: column;
+
+  .list-holder{
+    position: sticky;
+    top: 30px;
+    left: 0;
+    z-index: 2;
+    background: #fff;
+  }
 `;
 
 const CurrentMonthStyle = styled.div`
-  width: 100%;
-  height: 2rem;
-  padding: 20px 20px;
-  border-top: 2px solid #eeeeee;
+      width: 100%;
+    padding: 12px 20px;
+    border-top: 2px solid #eeeeee;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 45px;
+    left: 0;
+    z-index: 1;
+    background-color: #fff;
 `;
 
 const SupportListWrapperStyle = styled.ul`
-  overflow-y: auto;
+  /* overflow-y: auto; */
   max-height: 100%;
   display: flex;
   flex-direction: row;
