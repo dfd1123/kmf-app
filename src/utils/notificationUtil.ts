@@ -11,7 +11,7 @@ export const setPushAlarm = (params: boolean) => {
       }
     } else if (loginOs === 'iOS') {
       // 아이폰일때
-      if (typeof webkit !== 'undefined') {
+      if (typeof window.webkit !== 'undefined') {
         if (window.webkit.messageHandlers.pushSetting) {
           window.webkit.messageHandlers.pushSetting.postMessage(params);
         }
