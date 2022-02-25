@@ -9,6 +9,7 @@ import { BasicButton } from '@/views/components/common/Button';
 const Login = () => {
   const navigate = useNavigate();
 
+
   const socialLogin = (social : string) => {
     location.href = `${process.env.VITE_API_URL}/${social}`;
   }

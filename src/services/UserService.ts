@@ -26,7 +26,9 @@ class UserService {
     const result = await this.#api.post('/login', body);
 
     if (result.access_token) {
+      this.#dispatch(setAuth(result));
       this.#cookie.setAccessToken(result.access_token);
+
       setPushAlarm(result.user.flag_alarm !== 0);
     }
 
