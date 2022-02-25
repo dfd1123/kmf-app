@@ -25,10 +25,6 @@ const EmailLoginForm = () => {
     const { access_token } = await services.user.emailLogin(inputs);
 
     if (access_token) {
-      const user = await services.user.getMyUserInfo();
-
-      dispatch(setAuth({ user, access_token }));
-
       navigate('/notice');
     }
   };
