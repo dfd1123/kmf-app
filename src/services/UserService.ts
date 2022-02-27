@@ -6,11 +6,10 @@ import {
   ResetPwInput,
   SendResetPasswordEmailInput,
 } from './types/User';
-import cookieService from './CookieService';
 import { ConstructorParamsType } from './types/Service';
-import { UserInfo } from '@/store/auth/types/auth';
 import { setAuth } from '@/store/auth/auth';
 import { setPushAlarm } from '@/utils/notificationUtil';
+
 class UserService {
   #api;
   #cookie;
@@ -63,14 +62,6 @@ class UserService {
     return this.#api.post('reset_pw', body);
   }
 
-  getProfile(body: { id: number }) {
-    return this.#api.get('user/view', body);
-  }
-
-  getMyUserInfo() {
-    return this.#api.get('/profile');
-  }
-
   getUserList(params: GetUserListRequest) {
     return this.#api.get('/user/list', params);
   }
@@ -80,14 +71,14 @@ class UserService {
     frm.append('_method', 'put');
     for (const [key, value] of Object.entries(body)) {
       frm.append(key, value);
-      if(key === 'profile_img') {
+      if (key === 'profile_img') {
         frm.append('profile_img[]', value);
       }
     }
     const user = await this.#api.post('/user/update', frm, {
       headers: {
-        'Content-type': 'application/json; multipart/form-data;'
-      }
+        'Content-type': 'application/json; multipart/form-data;',
+      },
     });
     const auth = {
       user: user,

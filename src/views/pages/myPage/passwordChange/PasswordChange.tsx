@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import KmfFooter from '@/views/components/layouts/KmfFooter';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import { BasicInput } from '@/views/components/common/input/TextInput';
-import DateSelectInput from '@/views/components/common/input/DateSelectInput';
-import FooterButton from '@/views/components/common/FooterButton';
 import BasicButton from '@/views/components/common/Button';
+import useService from '@/hooks/useService';
+import { useTypedSelector } from '@/store';
 
 const PasswordChange = () => {
   const [password, setPassword] = useState('');
-  const [match, setMatch] = useState(false);
+  const [secondPassword, setSecondPassword] = useState('');
+  const [match, setMatch] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  const service = useService();
+  const userData = useTypedSelector((state) => state.authSlice.user);
 
   const passwordOnChange = (value: string, name: string) => {
     setCorrectPwd(passwordRegex.test(value));
@@ -21,10 +23,35 @@ const PasswordChange = () => {
 
   const confirmCorrectPassword = (value: string, name: string) => {
     setMatch(value === password);
+    setSecondPassword(value);
+  };
+
+  const passwordChangeOnSubmit = () => {
+    const email = userData?.email ? userData.email : '';
+    const token = service?.cookie?.getAccessToken()
+      ? service.cookie.getAccessToken()
+      : '';
+    if (
+      password !== secondPassword ||
+      !correctPwd ||
+      email === '' ||
+      token === ''
+    )
+      return;
+
+    // 토큰 에러 계속 발생함.
+    // errorCode: "INVALID_TOKEN"
+    // msg: "유효하지 않은 토큰입니다."
+    service.user.resetPw({
+      email: email,
+      token: token,
+      password: password,
+      password_confirmation: password,
+    });
   };
 
   useEffect(() => {
-    password.length === 0 && setMatch(true);
+    password !== secondPassword && setMatch(false);
   }, [password, match]);
 
   return (
@@ -35,7 +62,8 @@ const PasswordChange = () => {
           <BasicInput
             className="password-input"
             name="prev"
-            placeholder="기존 비밀번호를 입력해주세요."
+            // placeholder="기존 비밀번호를 입력해주세요."
+            placeholder="api에 기존 비밀번호도 추가해야하지 않을까요?"
             label="기존 비밀번호"
             type={'password'}
           />
@@ -65,7 +93,7 @@ const PasswordChange = () => {
           <div className="kmf-fighting">KMF 화이팅!</div>
         </div>
       </ContentWrapperStyle>
-      <FooterStyle>저장하기</FooterStyle>
+      <FooterStyle onClick={passwordChangeOnSubmit}>저장하기</FooterStyle>
     </ContainerStyle>
   );
 };
@@ -93,17 +121,21 @@ const ContentWrapperStyle = styled.section`
   .password-input {
     width: 100%;
     margin-bottom: 14px;
+
     input {
       width: 100%;
     }
+
     label {
       font-size: 14px;
       color: #1e1e1e;
     }
+
     input[name~='address'] {
       margin-bottom: -6px;
     }
   }
+
   .kmf-fighting {
     /* height: 128px; */
     padding: 20px;
@@ -138,6 +170,7 @@ const FooterStyle = styled(BasicButton)`
   justify-content: center;
   align-items: center;
   border-radius: 0 !important;
+
   > button {
     color: white;
     font-size: 17px;
