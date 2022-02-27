@@ -3,13 +3,14 @@ import styled from 'styled-components';
 // https://github.com/wojtekmaj/react-calendar
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { dateFormat } from '@/utils/dateUtils';
+import { dateFormat, stringToDate } from '@/utils/dateUtils';
 import KmfFooter from '@/views/components/layouts/KmfFooter';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import KmfListWrapper from '@/views/components/common/listView/KmfListWrapper';
 import KmfLinkedList from '@/views/components/common/listView/KmfLinkedList';
 import TileContent from '@/views/components/businessInfo/TileContet';
 import useService from '@/hooks/useService';
+import { add, isWithinInterval } from 'date-fns';
 
 const color = ['#1574BD', '#A7CD10', '#828282', '#1574BD', '#A7CD10'];
 
@@ -27,20 +28,19 @@ interface businessInfoType {
   updated_at: '';
 }
 
+const closestNumber = 3;
+
 function BusinessInfo() {
   const locale = 'ko-KR';
   const service = useService();
   const [businesses, setBusinesses] = useState<businessInfoType[]>();
   const [dates, setDates] = useState<string[]>([]);
-  const [currentDate, setCurrentDate] = useState(dateFormat(new Date(), 'yyyy-MM-dd'));
+  const [currentDate, setCurrentDate] = useState(
+    dateFormat(new Date(), 'yyyy-MM-dd')
+  );
   const formatDate = (calendarLocale: string, date: Date) => {
     return dateFormat(date, 'd');
   };
-
-  const stringToDate = (date: string) => {
-    const dateArr = date.split('-');
-    return new Date(parseInt(dateArr[0]), parseInt(dateArr[1]), parseInt(dateArr[2]));
-  }
 
   const getBusinessData = async () => {
     const { notices, notices_count } =
@@ -49,7 +49,22 @@ function BusinessInfo() {
         offset: 0,
         no_type: '2',
       });
-    setBusinesses(notices);
+    setBusinesses(
+      notices
+        .filter(
+          (item: businessInfoType) =>
+            item.no_date_start.slice(0, 7) === currentDate.slice(0, 7)
+        )
+        .sort((a: businessInfoType, b: businessInfoType) => {
+          if (
+            a.no_date_start <= b.no_date_start &&
+            a.no_date_end <= b.no_date_end
+          )
+            return -1;
+          if (a.no_date_start > b.no_date_start) return 1;
+        })
+    );
+
     const dateArr = notices.map((item: any) => item.no_date_start);
     setDates(dateArr);
   };
@@ -61,25 +76,53 @@ function BusinessInfo() {
     return result.length > 0 ? (
       <div className="tileWrapper">
         {result.map((item, index) => {
-          return index > 4 ? null : <TileContent dotColor={color[index]} key={index} />;
+          return index > 4 ? null : (
+            <TileContent dotColor={color[index]} key={index} />
+          );
         })}
       </div>
     ) : null;
   };
 
   const onDateChange = (value: Date, event: React.ChangeEvent) => {
-    console.log('date changed',value, event)
-    setCurrentDate(dateFormat(value, 'yyyy-MM-dd'))
-  }
+    setCurrentDate(dateFormat(value, 'yyyy-MM-dd'));
+  };
 
   const onMonthChange = (active: any) => {
-    console.log('month changed', dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
     setCurrentDate(dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
-  }
+  };
 
   useEffect(() => {
     getBusinessData();
   }, [currentDate]);
+
+  const businessScheduleLists =
+    businesses &&
+    businesses.map((item: businessInfoType) => {
+      const current = stringToDate(currentDate);
+      const start = stringToDate(item.no_date_start);
+      const end = stringToDate(item.no_date_end);
+      const isIn = isWithinInterval(current, {
+        start: start,
+        end: end,
+      });
+      const closest = add(start, { days: closestNumber });
+      const isCloseTo = isWithinInterval(current, {
+        start: start,
+        end: closest,
+      });
+      const progress = isIn ? '진행중' : '임박';
+      return (
+        <KmfListWrapper key={item.no_id} className="business-list">
+          <KmfLinkedList
+            title={item.no_title}
+            to={`/notice/${item.no_id}`}
+            progress={isIn ? '진행중' : isCloseTo ? '임박' : ''}
+            progressColor={isIn ? 'green' : isCloseTo ? 'red' : ''}
+          />
+        </KmfListWrapper>
+      );
+    });
 
   return (
     <ContainerStyle>
@@ -90,26 +133,20 @@ function BusinessInfo() {
         defaultView="month"
         maxDetail="month"
         view="month"
-        defaultActiveStartDate={stringToDate(dateFormat(new Date(), 'yyyy-MM-dd'))}
+        defaultActiveStartDate={stringToDate(
+          dateFormat(new Date(), 'yyyy-MM-dd')
+        )}
         formatDay={formatDate}
         onChange={onDateChange}
         tileContent={({ date, view }) => setTileContent(date, view)}
         onActiveStartDateChange={onMonthChange}
       />
       <div className="list-holder">
-      <CurrentMonthStyle>{currentDate.slice(0, 7).replaceAll('-', '.')}</CurrentMonthStyle>
+        <CurrentMonthStyle>
+          {currentDate.slice(0, 7).replaceAll('-', '.')}
+        </CurrentMonthStyle>
         <SupportListWrapperStyle>
-          {businesses &&
-            businesses.map((item: businessInfoType) => {
-              return (
-                <KmfListWrapper key={item.no_id}>
-                  <KmfLinkedList
-                    title={item.no_title}
-                    to={`/notice/${item.no_id}`}
-                  />
-                </KmfListWrapper>
-              );
-            })}
+          {businessScheduleLists}
         </SupportListWrapperStyle>
       </div>
       <KmfFooter />
@@ -120,6 +157,7 @@ function BusinessInfo() {
 const CalendarWrapperStyle = styled(Calendar)`
   width: 100%;
   border: none;
+
   .react-calendar__navigation {
     background-color: #1574bd;
 
@@ -192,7 +230,7 @@ const ContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
 
-  .list-holder{
+  .list-holder {
     position: sticky;
     top: 30px;
     left: 0;
@@ -202,24 +240,29 @@ const ContainerStyle = styled.div`
 `;
 
 const CurrentMonthStyle = styled.div`
-      width: 100%;
-    padding: 12px 20px;
-    border-top: 2px solid #eeeeee;
-    border-bottom: 1px solid #eee;
-    position: sticky;
-    top: 45px;
-    left: 0;
-    z-index: 1;
-    background-color: #fff;
+  width: 100%;
+  padding: 12px 20px;
+  border-top: 2px solid #eeeeee;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 45px;
+  left: 0;
+  z-index: 1;
+  background-color: #fff;
 `;
 
 const SupportListWrapperStyle = styled.ul`
-  /* overflow-y: auto; */
   max-height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 8px 16px;
+
+  .business-list {
+    :not(last-child) {
+      margin-bottom: 4px;
+    }
+  }
 `;
 
 export default BusinessInfo;
