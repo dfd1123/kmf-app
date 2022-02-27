@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import UserSearchBox from '@/views/components/searchUser/UserSearchBox';
 import { ButtonCheckBox } from '@/views/components/common/input/CheckBox';
@@ -9,36 +9,38 @@ import useService from '@/hooks/useService';
 import useScrollMove from '@/hooks/useScrollMove';
 import { GetUserListResponse, UserListInfo } from '@/services/types/User';
 import InfiniteScroll from '@/views/components/common/InfiniteScroll';
+import { useNavigate } from 'react-router';
 
 const SearchUser = () => {
-    const services = useService();
-    const [list, setList] = useState<UserListInfo[]>([]);
-    const [totalCount, setTotalCount] = useState(0);
+  const services = useService();
+  const navigate = useNavigate();
+  const [list, setList] = useState<UserListInfo[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [orderBy, setOrderBy] = useState('name');
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'search-user',
     path: '/search/user',
   });
 
-  const getUserList = (refresh : boolean = false) => {
+  const getUserList = (refresh: boolean = false) => {
     searchUser('', refresh ? 0 : list.length);
-  } 
+  };
 
-  const searchUser = async (searchKeyword : string = '', offset : number = 0) => {
+  const searchUser = async (searchKeyword: string = '', offset: number = 0) => {
     if (list.length && list.length === totalCount && offset) return;
 
-    const { users, users_count } : GetUserListResponse =
+    const { users, users_count }: GetUserListResponse =
       await services.user.getUserList({
         searchKeyword,
         orderBy,
         limit: 30,
-        offset
+        offset,
       });
 
-    if(totalCount !== users_count) setTotalCount(users_count);
-    if(!offset) {
-        window.scrollY = 0;
-        setList(users);
+    if (totalCount !== users_count) setTotalCount(users_count);
+    if (!offset) {
+      window.scrollY = 0;
+      setList(users);
     } else setList([...list, ...users]);
   };
 
@@ -48,7 +50,7 @@ const SearchUser = () => {
 
   useEffect(() => {
     getUserList(true);
-  }, [orderBy])
+  }, [orderBy]);
 
   useEffect(() => {
     if (scrollInfos) {
@@ -94,10 +96,17 @@ const SearchUser = () => {
           </div>
         </div>
         <div className="list-holder">
-        <InfiniteScroll loadMore={getUserList}>
-          {list.map((user) => (
-          <UserList key={user.id} user={user} />
-          ))}
+          <InfiniteScroll loadMore={getUserList}>
+            {list.map((user) => (
+              <UserList
+                onClick={() => {
+                  console.log('click');
+                  navigate(`/user/${user.id}`);
+                }}
+                key={user.id}
+                user={user}
+              />
+            ))}
           </InfiniteScroll>
         </div>
       </div>
@@ -108,9 +117,11 @@ const SearchUser = () => {
 
 const SearchUserStyle = styled.div`
   padding-bottom: 100px;
+
   .cont {
     padding: 16px;
   }
+
   .control-box {
     display: flex;
     justify-content: space-between;
@@ -125,6 +136,7 @@ const SearchUserStyle = styled.div`
         color: #1574bd;
       }
     }
+
     .order-by {
       ${ButtonCheckBox} {
         input {

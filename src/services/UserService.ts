@@ -62,6 +62,10 @@ class UserService {
     return this.#api.post('reset_pw', body);
   }
 
+  getUser(params: { id: string }) {
+    return this.#api.get('/user/view', params);
+  }
+
   getUserList(params: GetUserListRequest) {
     return this.#api.get('/user/list', params);
   }
