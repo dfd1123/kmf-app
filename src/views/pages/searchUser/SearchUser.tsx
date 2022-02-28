@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import UserSearchBox from '@/views/components/searchUser/UserSearchBox';
 import { ButtonCheckBox } from '@/views/components/common/input/CheckBox';
@@ -9,37 +9,60 @@ import useService from '@/hooks/useService';
 import useScrollMove from '@/hooks/useScrollMove';
 import { GetUserListResponse, UserListInfo } from '@/services/types/User';
 import InfiniteScroll from '@/views/components/common/InfiniteScroll';
+import { useNavigate } from 'react-router';
 
 const SearchUser = () => {
-    const services = useService();
-    const [list, setList] = useState<UserListInfo[]>([]);
-    const [totalCount, setTotalCount] = useState(0);
+  const services = useService();
+  const navigate = useNavigate();
+  const [list, setList] = useState<UserListInfo[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [orderBy, setOrderBy] = useState('name');
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'search-user',
     path: '/search/user',
   });
 
-  const getUserList = (refresh : boolean = false) => {
+  const getUserList = (refresh: boolean = false) => {
     searchUser('', refresh ? 0 : list.length);
-  } 
+  };
 
-  const searchUser = async (searchKeyword : string = '', offset : number = 0) => {
+  const searchUser = async (searchKeyword: string = '', offset: number = 0) => {
+    console.log(
+      'search keyword',
+      searchKeyword,
+      list.length,
+      totalCount,
+      offset
+    );
     if (list.length && list.length === totalCount && offset) return;
 
-    const { users, users_count } : GetUserListResponse =
+    const { users, users_count }: GetUserListResponse =
       await services.user.getUserList({
         searchKeyword,
         orderBy,
         limit: 30,
-        offset
+        offset,
       });
+    console.log('search', users);
 
-    if(totalCount !== users_count) setTotalCount(users_count);
-    if(!offset) {
-        window.scrollY = 0;
-        setList(users);
+    if (totalCount !== users_count) setTotalCount(users_count);
+    if (!offset) {
+      window.scrollY = 0;
+      setList(users);
     } else setList([...list, ...users]);
+  };
+
+  // 일단 SearchBox에서 onChange 이벤트가 발생할때마다 검색되도록 했습니다.
+  const onChange = async (keyword: string) => {
+    const { users, users_count } = await services.user.getUserList({
+      searchKeyword: keyword,
+      orderBy,
+      limit: 30,
+      offset: 0,
+    });
+
+    if (totalCount !== users_count) setTotalCount(users_count);
+    setList(users);
   };
 
   useEffect(() => {
@@ -48,7 +71,7 @@ const SearchUser = () => {
 
   useEffect(() => {
     getUserList(true);
-  }, [orderBy])
+  }, [orderBy]);
 
   useEffect(() => {
     if (scrollInfos) {
@@ -68,7 +91,7 @@ const SearchUser = () => {
   return (
     <SearchUserStyle>
       <KmfHeader headerText="회원검색" />
-      <UserSearchBox search={searchUser} />
+      <UserSearchBox search={onChange} />
       <div className="cont">
         <div className="control-box">
           <span className="total-cnt">
@@ -94,10 +117,21 @@ const SearchUser = () => {
           </div>
         </div>
         <div className="list-holder">
-        <InfiniteScroll loadMore={getUserList}>
-          {list.map((user) => (
-          <UserList key={user.id} user={user} />
-          ))}
+          <InfiniteScroll loadMore={getUserList}>
+            {list.length > 0 ? (
+              list.map((user) => (
+                <UserList
+                  onClick={() => {
+                    console.log('click');
+                    navigate(`/user/${user.id}`);
+                  }}
+                  key={user.id}
+                  user={user}
+                />
+              ))
+            ) : (
+              <div className="no-user">검색 결과가 없습니다.</div>
+            )}
           </InfiniteScroll>
         </div>
       </div>
@@ -108,9 +142,11 @@ const SearchUser = () => {
 
 const SearchUserStyle = styled.div`
   padding-bottom: 100px;
+
   .cont {
     padding: 16px;
   }
+
   .control-box {
     display: flex;
     justify-content: space-between;
@@ -125,6 +161,7 @@ const SearchUserStyle = styled.div`
         color: #1574bd;
       }
     }
+
     .order-by {
       ${ButtonCheckBox} {
         input {
@@ -149,6 +186,19 @@ const SearchUserStyle = styled.div`
         }
       }
     }
+  }
+
+  .no-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px;
+    background-color: #e8e8e8;
+    color: #818181;
+    box-shadow: 0px 2px 4px rgba(167, 205, 16, 0.15);
+    border-radius: 5px;
+    height: 79px;
   }
 `;
 

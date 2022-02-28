@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { BasicInput } from '@/views/components/common/input/TextInput';
+import { useNavigate } from 'react-router';
 
 interface PropsType {
   search: (text: string) => void;
@@ -18,19 +19,19 @@ const UserSearchBox = ({ search }: PropsType) => {
         reset={true}
         className="search-inp"
         placeholder="휘원명, 소속사명, 가수로 검색"
-        onChange={setSearchValue}
-        onEnter={search}
+        onChange={search}
+        // onEnter={search}
       />
     </UserSearchBoxStyle>
   );
 };
 
 const UserSearchBoxStyle = styled.div`
-  position:sticky;
-  top:0;
-  left:0;
-  z-index:3;
-  width:100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  width: 100%;
   background-color: #1574bd;
   padding: 16px;
 

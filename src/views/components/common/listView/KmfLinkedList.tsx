@@ -10,6 +10,7 @@ interface KmfLinkedListProps {
   fontColor?: string;
   fontSize?: string;
   progress?: string;
+  progressColor?: string;
 }
 
 const KmfLinkedList = ({
@@ -20,17 +21,18 @@ const KmfLinkedList = ({
   fontColor = '#000',
   fontSize = '14px',
   progress,
+  progressColor,
 }: KmfLinkedListProps) => {
   to = to ?? window.location.href;
   return (
-    <Container>
+    <Container progressColor={progressColor ? progressColor : ''}>
       {to ? (
         <Link className={'link'} to={to}>
           {date && <DateViewer>{date}</DateViewer>}
           <Title fontColor={fontColor} fontSize={fontSize}>
             {title}
           </Title>
-          <div className="progress"></div>
+          <div className="progress">{progress}</div>
         </Link>
       ) : (
         <div className={'link'}>
@@ -46,16 +48,23 @@ const KmfLinkedList = ({
 
 export default KmfLinkedList;
 
-const Container = styled.div`
-  width: 100%;
+const Container = styled.div<{ progressColor?: string }>`
   padding: 10px 0;
   height: 100%;
 
   .link {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
+    align-content: space-between;
     height: 100%;
+    position: relative;
+  }
+
+  .progress {
+    position: absolute;
+    right: 12%;
+    align-self: center;
+    color: ${(props) => props.progressColor};
   }
 `;
 

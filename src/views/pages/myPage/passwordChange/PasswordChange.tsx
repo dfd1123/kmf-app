@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import KmfFooter from '@/views/components/layouts/KmfFooter';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import { BasicInput } from '@/views/components/common/input/TextInput';
-import DateSelectInput from '@/views/components/common/input/DateSelectInput';
-import FooterButton from '@/views/components/common/FooterButton';
 import BasicButton from '@/views/components/common/Button';
+import useService from '@/hooks/useService';
+import { useTypedSelector } from '@/store';
+import useToast from '@/hooks/useToast';
+import { useNavigate } from 'react-router';
+import useDialog from '@/hooks/useDialog';
 
 const PasswordChange = () => {
+  const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
-  const [match, setMatch] = useState(false);
+  const [secondPassword, setSecondPassword] = useState('');
+  const [match, setMatch] = useState(true);
   const [correctPwd, setCorrectPwd] = useState(true);
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+  const service = useService();
+  const userData = useTypedSelector((state) => state.authSlice.user);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { alert } = useDialog();
 
   const passwordOnChange = (value: string, name: string) => {
     setCorrectPwd(passwordRegex.test(value));
@@ -21,10 +30,47 @@ const PasswordChange = () => {
 
   const confirmCorrectPassword = (value: string, name: string) => {
     setMatch(value === password);
+    setSecondPassword(value);
+  };
+
+  const passwordChangeOnSubmit = async () => {
+    const email = userData?.email ? userData.email : '';
+    const token = service?.cookie?.getAccessToken()
+      ? service.cookie.getAccessToken()
+      : '';
+    if (
+      password !== secondPassword ||
+      !correctPwd ||
+      email === '' ||
+      token === '' ||
+      beforePassword === ''
+    )
+      return;
+
+    let isConfirm = false;
+    await service.user
+      .pwChange({
+        id: userData.id,
+        before_password: beforePassword,
+        password: password,
+        password_confirmation: password,
+      })
+      .then((data) => (isConfirm = true))
+      .catch((e) => {
+        isConfirm = false;
+        toast(e.error.msg, 'warning');
+      });
+
+    if (isConfirm) {
+      const result = await alert('비밀번호가 성공적으로 변경되었습니다.', {
+        title: '비밀번호 변경',
+      });
+      navigate('/login');
+    }
   };
 
   useEffect(() => {
-    password.length === 0 && setMatch(true);
+    password !== secondPassword && setMatch(false);
   }, [password, match]);
 
   return (
@@ -38,6 +84,7 @@ const PasswordChange = () => {
             placeholder="기존 비밀번호를 입력해주세요."
             label="기존 비밀번호"
             type={'password'}
+            onChange={(value, name) => setBeforePassword(value)}
           />
           <div className={'pwd-validation'}>
             {!correctPwd &&
@@ -65,7 +112,7 @@ const PasswordChange = () => {
           <div className="kmf-fighting">KMF 화이팅!</div>
         </div>
       </ContentWrapperStyle>
-      <FooterStyle>저장하기</FooterStyle>
+      <FooterStyle onClick={passwordChangeOnSubmit}>저장하기</FooterStyle>
     </ContainerStyle>
   );
 };
@@ -93,17 +140,21 @@ const ContentWrapperStyle = styled.section`
   .password-input {
     width: 100%;
     margin-bottom: 14px;
+
     input {
       width: 100%;
     }
+
     label {
       font-size: 14px;
       color: #1e1e1e;
     }
+
     input[name~='address'] {
       margin-bottom: -6px;
     }
   }
+
   .kmf-fighting {
     /* height: 128px; */
     padding: 20px;
@@ -138,6 +189,7 @@ const FooterStyle = styled(BasicButton)`
   justify-content: center;
   align-items: center;
   border-radius: 0 !important;
+
   > button {
     color: white;
     font-size: 17px;

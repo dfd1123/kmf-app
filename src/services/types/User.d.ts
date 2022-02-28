@@ -33,6 +33,14 @@ export interface ResetPwInput {
   password: string;
   password_confirmation: string;
 }
+
+export interface PwChangeInput {
+  id: number;
+  before_password: string;
+  password: string;
+  password_confirmation: string;
+}
+
 export interface ProfileInput extends UserInfo {
   id: number;
   name: string;
