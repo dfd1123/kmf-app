@@ -5,7 +5,7 @@ interface PropsType {
 export const setPushAlarm = (params: PropsType) => {
   const loginOs = window.navigator.userAgent;
   try {
-    if (loginOs === 'Android') {
+    if (loginOs.includes('Android')) {
       // 안드로이드일때
       if (typeof window.myJs !== 'undefined') {
         if (typeof window.myJs.pushSetting !== 'undefined') {
@@ -13,7 +13,7 @@ export const setPushAlarm = (params: PropsType) => {
           window.myJs.pushSetting(andParams);
         }
       }
-    } else if (loginOs === 'iOS') {
+    } else if (loginOs.includes('iOS')) {
       // 아이폰일때
       if (typeof window.webkit !== 'undefined') {
         if (window.webkit.messageHandlers.pushSetting) {
