@@ -42,7 +42,11 @@ const ProfilePage = () => {
           width="100%"
           height="262px"></KmfImageViewer>
         <div className="content-wrapper">
-          <ProfileContent title="이름(기수)" content={userInfo?.name} />
+          <ProfileContent
+            title="이름(기수)"
+            content={userInfo?.name}
+            status={userInfo?.status}
+          />
           <ProfileContent title="생년월일" content={userInfo?.birth} />
           <ProfileContent title="연락처" content={userInfo?.phone} />
           <ProfileContent title="주소" content={userInfo?.address1} />
