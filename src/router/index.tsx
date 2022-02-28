@@ -50,7 +50,7 @@ export default function RouterView() {
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
           if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
-          else if (user.status === 0 && route.path !== '/mypage')
+          else if (user?.status === 0 && route.path !== '/mypage')
             newElement = <Navigate to="/mypage" />;
         }
       }

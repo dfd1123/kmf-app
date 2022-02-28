@@ -67,6 +67,13 @@ class UserService {
     return this.#api.put('/user/password', body);
   }
 
+  async getMyInfo(){
+    const user = await this.#api.get('/profile');
+    const access_token = this.#cookie.getAccessToken();
+    setPushAlarm(user.flag_alarm !== 0);
+    this.#dispatch(setAuth({user: user, access_token: access_token}));
+  }
+
   getUser(params: { id?: string }) {
     if(!params.id) return;
     return this.#api.get('/user/view', params);
