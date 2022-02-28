@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import KmfFooter from '@/views/components/layouts/KmfFooter';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
+import { useLocation } from 'react-router-dom';
+import useService from '@/hooks/useService';
 
 const loremContent = `Nisi reprehenderit nulla est elit velit adipisicing eu voluptate ut et aute. Culpa sunt velit ipsum nostrud. Cillum ea proident occaecat excepteur eiusmod ad commodo adipisicing adipisicing cillum proident. Ipsum cupidatat fugiat ullamco duis dolore laborum proident reprehenderit sunt amet ex nostrud. Velit excepteur aute aute tempor.\n\n
 
@@ -25,13 +27,31 @@ interface PropTypes {
 }
 
 const CommonInfo = () => {
+  const location = useLocation();
+  const services = useService();
+  const [header, setHeader] = useState('');
+  const [bodyText, setBodyText] = useState('');
+
+  const getSetting = async () => {
+    const result = await services.setting.getSetting();
+    console.log('result ', result);
+    location.pathname.includes('term')
+      ? setHeader('개인정보 수집 및 활용지침')
+      : setHeader('서비스 이용약관');
+    location.pathname.includes('term')
+      ? setBodyText(result.setting.use_terms)
+      : setBodyText(result.setting.service_policy);
+  };
+
+  useEffect(() => {
+    const result = getSetting();
+  }, []);
+
   return (
     <ContainerStyle>
-      <KmfHeader
-        headerText={'headerText'}
-        prev
-      />
-      <ContentWrapperStyle>{loremContent}</ContentWrapperStyle>
+      <KmfHeader headerText={header} prev />
+      <ContentWrapperStyle
+        dangerouslySetInnerHTML={{ __html: bodyText }}></ContentWrapperStyle>
     </ContainerStyle>
   );
 };
