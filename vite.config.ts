@@ -7,9 +7,7 @@ const path = require('path');
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react({
-    jsxRuntime: 'classic'
-  }), VitePluginHtmlEnv()],
+  plugins: [react(), VitePluginHtmlEnv()],
   define: {
     'process.env': dotenv.config().parsed,
   },
