@@ -10,10 +10,7 @@ interface PropsType {
 const KmfRefrenceList = ({ title, date }: PropsType) => {
   return (
     <Container>
-      <BasicButton
-        className="button"
-        ripple={false}
-        onClick={() => console.log('click')}>
+      <BasicButton className="button" ripple={false}>
         {date && <div className="date">{date}</div>}
         <p className="title">{title}</p>
       </BasicButton>

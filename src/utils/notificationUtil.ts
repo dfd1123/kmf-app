@@ -1,4 +1,8 @@
-export const setPushAlarm = (params: boolean) => {
+interface PropsType {
+  isOn: boolean;
+}
+
+export const setPushAlarm = (params: PropsType) => {
   const loginOs = window.navigator.userAgent;
   try {
     if (loginOs === 'Android') {
@@ -18,6 +22,6 @@ export const setPushAlarm = (params: boolean) => {
       }
     }
   } catch (e) {
-    console.log('push notification error on mypage', e);
+    // console.log('push notification error on mypage', e);
   }
 };

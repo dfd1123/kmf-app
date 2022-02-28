@@ -34,7 +34,6 @@ const CommonInfo = () => {
 
   const getSetting = async () => {
     const result = await services.setting.getSetting();
-    console.log('result ', result);
     location.pathname.includes('term')
       ? setHeader('개인정보 수집 및 활용지침')
       : setHeader('서비스 이용약관');

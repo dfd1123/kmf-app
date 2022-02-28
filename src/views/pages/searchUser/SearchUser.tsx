@@ -27,13 +27,6 @@ const SearchUser = () => {
   };
 
   const searchUser = async (searchKeyword: string = '', offset: number = 0) => {
-    console.log(
-      'search keyword',
-      searchKeyword,
-      list.length,
-      totalCount,
-      offset
-    );
     if (list.length && list.length === totalCount && offset) return;
 
     const { users, users_count }: GetUserListResponse =
@@ -43,7 +36,6 @@ const SearchUser = () => {
         limit: 30,
         offset,
       });
-    console.log('search', users);
 
     if (totalCount !== users_count) setTotalCount(users_count);
     if (!offset) {
@@ -122,7 +114,6 @@ const SearchUser = () => {
               list.map((user) => (
                 <UserList
                   onClick={() => {
-                    console.log('click');
                     navigate(`/user/${user.id}`);
                   }}
                   key={user.id}

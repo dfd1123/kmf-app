@@ -34,7 +34,6 @@ const ManageProfile = () => {
 
     if (file) {
       setImgUrl(dataUrl);
-      console.log(file);
       onChangeHandler('profile_img', file);
     }
   };
@@ -66,7 +65,6 @@ const ManageProfile = () => {
             className="find-img"
             imgUrl={icoFindImg}
             onClick={() => {
-              console.log('ref', inputRef);
               inputRef?.current?.click();
             }}
           />
