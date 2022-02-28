@@ -12,7 +12,7 @@ export const Switch = ({ onChange, defaultInput }: PropsType) => {
       <input
         type="checkbox"
         checked={defaultInput}
-        onChange={(e) => onChange(e)}
+        onChange={(e) => onChange && onChange(e)}
       />
       <span className="on-off"></span>
     </SwitchStyle>

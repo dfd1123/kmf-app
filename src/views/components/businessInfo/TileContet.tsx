@@ -20,7 +20,7 @@ const TileContentContainer = styled.div`
   //margin: 6px 2px 0 2px;
 `;
 
-const Dot = styled.div<{ color: string }>`
+const Dot = styled.div<{ color?: string }>`
   height: 6px;
   width: 6px;
   border-radius: 3px;
