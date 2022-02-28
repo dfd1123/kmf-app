@@ -7,12 +7,19 @@ interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export const Switch = ({ onChange, defaultInput }: PropsType) => {
+  const [checked, setChecked] = useState(defaultInput);
+
   return (
     <SwitchStyle className="switch-button">
       <input
         type="checkbox"
-        checked={defaultInput}
-        onChange={(e) => onChange && onChange(e)}
+        checked={checked}
+        onChange={(e) => {
+          if (onChange) {
+            onChange(e);
+            setChecked(!checked);
+          }
+        }}
       />
       <span className="on-off"></span>
     </SwitchStyle>
