@@ -47,9 +47,16 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    console.log(userData?.flag_alarm);
     setAllowPush(userData?.flag_alarm !== 0);
   }, [allowPush]);
+
+  useEffect(() => {
+    if(userData?.status === 0) alert('가입 심사가 진행중입니다. 조금만 더 기다려주세요', {title: '서비스 이용 안내'});
+    if(!userData?.company){
+      alert('프로필 정보를 모두 입력해주세요.', {title: '서비스 이용 안내'});
+      navigate('/manageProfile');
+    }
+  }, [])
 
   return (
     <ContainerStyle>

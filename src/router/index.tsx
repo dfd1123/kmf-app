@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux';
 import { Navigate, useRoutes } from 'react-router-dom';
 import NotFound from '@/views/pages/NotFound';
 import useService from '@/hooks/useService';
-import useToast from '@/hooks/useToast';
 
 const routeList: Route[] = [
   ...auth,
@@ -29,7 +28,6 @@ const routeList: Route[] = [
 export default function RouterView() {
   const dispatch = useDispatch();
   const services = useService();
-  const {toast} = useToast();
 
   if (services.cookie.getAccessToken()) {
     services.notice.getUnreadList();
@@ -52,9 +50,8 @@ export default function RouterView() {
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
           if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
-          else if (user?.status === 0 && route.path !== '/mypage'){
+          else if (user?.status === 0 && route.path !== '/mypage' && route.path !== '/manageProfile'){
             newElement = <Navigate to="/mypage" />;
-            toast('계정이 심사 대기중 입니다.');
           }
         }
       }
