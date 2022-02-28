@@ -1,15 +1,13 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+// import react from '@vitejs/plugin-react';
+import react from 'vite-preset-react';
 import VitePluginHtmlEnv from 'vite-plugin-html-env';
 const dotenv = require('dotenv');
 const path = require('path');
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePluginHtmlEnv()],
-  esbuild: {
-    jsxInject: `import * as React from 'react'`,
-  },
+  plugins: [react({ removeDevtoolsInProd: true, injectReact: true }), VitePluginHtmlEnv()],
   define: {
     'process.env': dotenv.config().parsed,
   },
