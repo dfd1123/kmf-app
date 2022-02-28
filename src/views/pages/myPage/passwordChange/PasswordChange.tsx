@@ -5,8 +5,12 @@ import { BasicInput } from '@/views/components/common/input/TextInput';
 import BasicButton from '@/views/components/common/Button';
 import useService from '@/hooks/useService';
 import { useTypedSelector } from '@/store';
+import useToast from '@/hooks/useToast';
+import { useNavigate } from 'react-router';
+import useDialog from '@/hooks/useDialog';
 
 const PasswordChange = () => {
+  const [beforePassword, setBeforePassword] = useState('');
   const [password, setPassword] = useState('');
   const [secondPassword, setSecondPassword] = useState('');
   const [match, setMatch] = useState(true);
@@ -15,6 +19,9 @@ const PasswordChange = () => {
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
   const service = useService();
   const userData = useTypedSelector((state) => state.authSlice.user);
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { alert } = useDialog();
 
   const passwordOnChange = (value: string, name: string) => {
     setCorrectPwd(passwordRegex.test(value));
@@ -26,7 +33,7 @@ const PasswordChange = () => {
     setSecondPassword(value);
   };
 
-  const passwordChangeOnSubmit = () => {
+  const passwordChangeOnSubmit = async () => {
     const email = userData?.email ? userData.email : '';
     const token = service?.cookie?.getAccessToken()
       ? service.cookie.getAccessToken()
@@ -35,19 +42,31 @@ const PasswordChange = () => {
       password !== secondPassword ||
       !correctPwd ||
       email === '' ||
-      token === ''
+      token === '' ||
+      beforePassword === ''
     )
       return;
 
-    // 토큰 에러 계속 발생함.
-    // errorCode: "INVALID_TOKEN"
-    // msg: "유효하지 않은 토큰입니다."
-    service.user.resetPw({
-      email: email,
-      token: token,
-      password: password,
-      password_confirmation: password,
-    });
+    let isConfirm = false;
+    await service.user
+      .pwChange({
+        id: userData.id,
+        before_password: beforePassword,
+        password: password,
+        password_confirmation: password,
+      })
+      .then((data) => (isConfirm = true))
+      .catch((e) => {
+        isConfirm = false;
+        toast(e.error.msg, 'warning');
+      });
+
+    if (isConfirm) {
+      const result = await alert('비밀번호가 성공적으로 변경되었습니다.', {
+        title: '비밀번호 변경',
+      });
+      navigate('/login');
+    }
   };
 
   useEffect(() => {
@@ -62,10 +81,10 @@ const PasswordChange = () => {
           <BasicInput
             className="password-input"
             name="prev"
-            // placeholder="기존 비밀번호를 입력해주세요."
-            placeholder="api에 기존 비밀번호도 추가해야하지 않을까요?"
+            placeholder="기존 비밀번호를 입력해주세요."
             label="기존 비밀번호"
             type={'password'}
+            onChange={(value, name) => setBeforePassword(value)}
           />
           <div className={'pwd-validation'}>
             {!correctPwd &&

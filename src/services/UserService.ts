@@ -2,6 +2,7 @@ import {
   FindIdInput,
   GetUserListRequest,
   ProfileInput,
+  PwChangeInput,
   RegisterInput,
   ResetPwInput,
   SendResetPasswordEmailInput,
@@ -60,6 +61,10 @@ class UserService {
 
   resetPw(body: ResetPwInput) {
     return this.#api.post('reset_pw', body);
+  }
+
+  pwChange(body: PwChangeInput) {
+    return this.#api.put('/user/password', body);
   }
 
   getUser(params: { id: string }) {
