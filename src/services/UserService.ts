@@ -1,5 +1,6 @@
 import {
   FindIdInput,
+  FlagAlarmInput,
   GetUserListRequest,
   ProfileInput,
   PwChangeInput,
@@ -29,7 +30,9 @@ class UserService {
       this.#dispatch(setAuth(result));
       this.#cookie.setAccessToken(result.access_token);
       const isOn = result.user.flag_alarm;
-      setPushAlarm({ isOn: isOn !== 0 });
+      setPushAlarm({
+        isOn: isOn !== 0,
+      });
     }
 
     return result;
@@ -67,11 +70,17 @@ class UserService {
     return this.#api.put('/user/password', body);
   }
 
+  flagAlarm(body: FlagAlarmInput) {
+    return this.#api.put('/user/flag_alarm', body);
+  }
+
   async getMyInfo() {
     const user = await this.#api.get('/profile');
     const access_token = this.#cookie.getAccessToken();
     if (access_token) {
-      setPushAlarm({ isOn: user.flag_alarm !== 0 });
+      setPushAlarm({
+        isOn: user.flag_alarm !== 0,
+      });
       this.#dispatch(setAuth({ user: user, access_token: access_token }));
     }
   }

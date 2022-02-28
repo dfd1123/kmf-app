@@ -42,14 +42,18 @@ const MyPage = () => {
     } else {
       setAllowPush(false);
     }
-    setPushAlarm({ isOn: allowPush });
-  };
 
-  useEffect(() => {
-    const isOn = userData?.flag_alarm ? userData.flag_alarm : 0;
-    if (isOn === 1) setAllowPush(true);
-    else if (isOn === 0) setAllowPush(false);
-  }, [allowPush]);
+    const id = userData?.id ? userData.id : 0;
+    const flagAlarm = userData?.flag_alarm ? userData.flag_alarm : 0;
+
+    setPushAlarm({
+      isOn: allowPush,
+    });
+    services.user.flagAlarm({
+      id: id,
+      flag_alarm: allowPush ? 1 : 0,
+    });
+  };
 
   useEffect(() => {
     if (userData?.status === 0)

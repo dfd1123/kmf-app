@@ -41,6 +41,11 @@ export interface PwChangeInput {
   password_confirmation: string;
 }
 
+export interface FlagAlarmInput {
+  id: number;
+  flag_alarm: number;
+}
+
 export interface ProfileInput extends UserInfo {
   id: number;
   name: string;

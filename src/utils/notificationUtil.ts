@@ -1,3 +1,5 @@
+import useService from '@/hooks/useService';
+
 interface PropsType {
   isOn: boolean;
 }
