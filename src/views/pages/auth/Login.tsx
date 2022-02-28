@@ -11,7 +11,7 @@ const Login = () => {
 
 
   const socialLogin = (social : string) => {
-    location.href = `${process.env.VITE_API_URL}/${social}`;
+    location.href = `${import.meta.env.VITE_API_URL}/${social}`;
   }
 
   return (

@@ -23,7 +23,7 @@ const ManageProfile = () => {
   const [userInfo, setUserInfo] = useState<ProfileInput>({ ...userData });
   const [imgUrl, setImgUrl] = useState(
     userInfo.profile_img
-      ? `${process.env.VITE_STORAGE_URL}${userInfo.profile_img}`
+      ? `${import.meta.env.VITE_STORAGE_URL}${userInfo.profile_img}`
       : basicProfile
   );
   const service = useService();

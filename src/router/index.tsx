@@ -45,9 +45,11 @@ export default function RouterView() {
         const { authSlice } = JSON.parse(
           localStorage.getItem('persist:root') || '{}'
         );
-        const { accessToken, user } = JSON.parse(authSlice);
+        
+        const { accessToken, user } = JSON.parse(authSlice || '{}');
+        const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
-          if (!accessToken) newElement = <Navigate to="/login" />;
+          if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
           else if (user.status === 0 && route.path !== '/mypage')
             newElement = <Navigate to="/mypage" />;
         }

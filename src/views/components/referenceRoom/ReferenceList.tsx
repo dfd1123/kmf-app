@@ -23,7 +23,7 @@ const ReferenceList = ({ info }: PropsType) => {
       const filename = fileArr[fileArr.length - 1];
 
       const a = document.createElement("a");
-      a.href = `${process.env.VITE_STORAGE_URL}${file[0]}`;
+      a.href = `${import.meta.env.VITE_STORAGE_URL}${file[0]}`;
       a.download = filename;
       a.click();
       a.remove();

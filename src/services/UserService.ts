@@ -67,7 +67,8 @@ class UserService {
     return this.#api.put('/user/password', body);
   }
 
-  getUser(params: { id: string }) {
+  getUser(params: { id?: string }) {
+    if(!params.id) return;
     return this.#api.get('/user/view', params);
   }
 

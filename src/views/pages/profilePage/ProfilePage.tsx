@@ -20,7 +20,7 @@ const ProfilePage = () => {
     const result = await services.user.getUser({ id: no_id });
     setImgUrl(
       result.user.profile_img
-        ? `${process.env.VITE_STORAGE_URL}${result.user.profile_img.slice(
+        ? `${import.meta.env.VITE_STORAGE_URL}${result.user.profile_img.slice(
             2,
             result.user.profile_img.length - 2
           )}`

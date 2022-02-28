@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface PropsType {
   title: string;
-  content: string;
+  content?: string | null;
   status?: number;
 }
 

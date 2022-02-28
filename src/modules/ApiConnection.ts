@@ -49,7 +49,7 @@ interface ApiContructorParams {
 
 export default class ApiConnection {
   #axios: CustomInstance;
-  #baseURL: string = process.env.VITE_API_URL || '';
+  #baseURL: string = import.meta.env.VITE_API_URL || '';
   #toast;
   #cookie;
   #setLoadStatus;
