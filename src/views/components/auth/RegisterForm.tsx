@@ -156,6 +156,9 @@ const RegisterForm = () => {
           ''
         )}
       </div>
+      <div className="agree-cont">
+
+      </div>
       <FooterButton disabled={!correct || !validate} onClick={submitHandler}>
         KMF 멤버스 가입신청
       </FooterButton>
