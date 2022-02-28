@@ -14,6 +14,7 @@ import { imageFileUpload } from '@/utils/fileUtils';
 import { UserInfo } from '@/store/auth/types/auth';
 import useToast from '@/hooks/useToast';
 import FooterButton from '@/views/components/common/FooterButton';
+import AddressInput from '@/views/components/common/input/AddressInput';
 
 const ManageProfile = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -50,7 +51,7 @@ const ManageProfile = () => {
 
   return (
     <ContainerStyle>
-      <KmfHeader headerText={'프로필관리'} prev />
+      <KmfHeader headerText={'프로필관리'} prev prevLink="/mypage" />
       <ContentWrapperStyle>
         <KmfImageViewer imgUrl={imgUrl} width="100%" height="262px">
           <input
@@ -105,7 +106,7 @@ const ManageProfile = () => {
             value={userInfo.company}
             onChange={(e: React.ChangeEvent) => onChangeHandler('company', e)}
           />
-          <BasicInput
+          <AddressInput
             className="text-input input-address"
             name="address"
             placeholder="주소를 검색해주세요."

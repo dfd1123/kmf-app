@@ -7,6 +7,7 @@ import icoBackArrow from '@/assets/img/kmf/ico/ico-back-arrow.svg';
 interface HeaderProps {
   headerText: string;
   prev?: boolean;
+  prevLink?: string;
   nextLink?: string;
   nextImgUrl?: string;
 }
@@ -14,13 +15,14 @@ interface HeaderProps {
 const KmfHeader = ({
   headerText,
   prev = false,
+  prevLink,
   nextLink,
   nextImgUrl,
 }: HeaderProps) => {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1);
+    prevLink ? navigate(prevLink) : navigate(-1);
   };
 
   return (
