@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useService from '@/hooks/useService';
-import { useDispatch } from 'react-redux';
-import { setAuth } from '@/store/auth/auth';
 import TextInput from '@/views/components/common/input/TextInput';
 import FooterButton from '@/views/components/common/FooterButton';
 
@@ -13,7 +11,6 @@ const intialInput = {
 
 const EmailLoginForm = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const services = useService();
   const [inputs, setInputs] = useState(intialInput);
 
