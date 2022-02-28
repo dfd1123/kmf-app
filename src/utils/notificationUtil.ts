@@ -18,6 +18,6 @@ export const setPushAlarm = (params: boolean) => {
       }
     }
   } catch (e) {
-    console.log('push notification error on mypage', e);
+    // console.log('push notification error on mypage', e);
   }
 };

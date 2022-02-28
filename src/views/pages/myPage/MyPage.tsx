@@ -37,7 +37,6 @@ const MyPage = () => {
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked);
     if (e.target.checked) {
       setAllowPush(true);
     } else {
@@ -47,7 +46,6 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    console.log(userData?.flag_alarm);
     setAllowPush(userData?.flag_alarm !== 0);
   }, [allowPush]);
 
