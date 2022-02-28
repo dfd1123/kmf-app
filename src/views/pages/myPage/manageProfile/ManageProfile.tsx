@@ -135,12 +135,10 @@ const ManageProfile = () => {
           <p className="title info">등록정보</p>
           <p className="id">아이디</p>
           <p className="email">asdf@naver.com</p>
-          <div className="kmf-fighting">KMF 화이팅! </div>
+          <div className="kmf-fighting">KMF 화이팅!</div>
         </div>
       </ContentWrapperStyle>
-      <FooterButton onClick={onSave}>
-        저장하기
-      </FooterButton>
+      <FooterButton onClick={onSave}>저장하기</FooterButton>
     </ContainerStyle>
   );
 };

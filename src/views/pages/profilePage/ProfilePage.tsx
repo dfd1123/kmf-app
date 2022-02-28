@@ -8,14 +8,24 @@ import { useNavigate, useParams } from 'react-router';
 import { ProfileInput } from '@/services/types/User';
 import ProfileContent from '@/views/components/searchUser/ProfileContent';
 import call from '@/assets/img/kmf/call.svg';
+import basicProfile from '@/assets/img/kmf/default_profile.png';
 
 const ProfilePage = () => {
   const services = useService();
   let { no_id } = useParams();
   const [userInfo, setUserInfo] = useState<ProfileInput | null>();
+  const [imgUrl, setImgUrl] = useState(basicProfile);
 
   const getUser = async () => {
     const result = await services.user.getUser({ id: no_id });
+    setImgUrl(
+      result.user.profile_img
+        ? `${process.env.VITE_STORAGE_URL}${result.user.profile_img.slice(
+            2,
+            result.user.profile_img.length - 2
+          )}`
+        : basicProfile
+    );
     setUserInfo(result.user);
   };
 
@@ -25,10 +35,10 @@ const ProfilePage = () => {
 
   return (
     <ContainerStyle>
-      <KmfHeader headerText={'프로필관리'} prev />
+      <KmfHeader headerText={'회원상세'} prev />
       <ContentWrapperStyle>
         <KmfImageViewer
-          imgUrl={''}
+          imgUrl={imgUrl}
           width="100%"
           height="262px"></KmfImageViewer>
         <div className="content-wrapper">

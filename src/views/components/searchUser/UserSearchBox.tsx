@@ -19,8 +19,8 @@ const UserSearchBox = ({ search }: PropsType) => {
         reset={true}
         className="search-inp"
         placeholder="휘원명, 소속사명, 가수로 검색"
-        onChange={setSearchValue}
-        onEnter={search}
+        onChange={search}
+        // onEnter={search}
       />
     </UserSearchBoxStyle>
   );
