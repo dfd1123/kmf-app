@@ -1,4 +1,4 @@
-export const setPushAlarm = (params: boolean) => {
+export const setPushAlarm = (params: { isOn: boolean }) => {
   const loginOs = window.navigator.userAgent;
   try {
     if (loginOs === 'Android') {

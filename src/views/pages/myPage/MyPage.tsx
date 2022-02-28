@@ -42,7 +42,7 @@ const MyPage = () => {
     } else {
       setAllowPush(false);
     }
-    setPushAlarm(allowPush);
+    setPushAlarm({ isOn: allowPush });
   };
 
   useEffect(() => {
