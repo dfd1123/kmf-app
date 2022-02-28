@@ -42,6 +42,12 @@ const ProfilePage = () => {
           width="100%"
           height="262px"></KmfImageViewer>
         <div className="content-wrapper">
+          {userInfo?.association && (
+            <div className="association">
+              <div className="association-title">협회관련정보</div>
+              <div className="association-content">{userInfo.association}</div>
+            </div>
+          )}
           <ProfileContent
             title="이름(기수)"
             content={userInfo?.name}
@@ -94,6 +100,26 @@ const ContentWrapperStyle = styled.section`
     text-align: center;
     color: #acacac;
     margin-top: auto;
+  }
+
+  .association {
+    margin: 1rem 0;
+    padding: 6px 14px;
+    height: 70px;
+    border-radius: 8px;
+    background-color: #ececec;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 16px;
+    font-weight: 600;
+
+    .association-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
   }
 `;
 

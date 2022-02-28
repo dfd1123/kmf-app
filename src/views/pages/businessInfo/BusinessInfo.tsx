@@ -10,7 +10,7 @@ import KmfListWrapper from '@/views/components/common/listView/KmfListWrapper';
 import KmfLinkedList from '@/views/components/common/listView/KmfLinkedList';
 import TileContent from '@/views/components/businessInfo/TileContet';
 import useService from '@/hooks/useService';
-import { add, isWithinInterval } from 'date-fns';
+import { add, isWithinInterval, sub } from 'date-fns';
 
 const color = ['#1574BD', '#A7CD10', '#828282', '#1574BD', '#A7CD10'];
 
@@ -106,10 +106,10 @@ function BusinessInfo() {
         start: start,
         end: end,
       });
-      const closest = add(start, { days: closestNumber });
+      const closest = sub(start, { days: closestNumber });
       const isCloseTo = isWithinInterval(current, {
-        start: start,
-        end: closest,
+        start: closest,
+        end: start,
       });
       const progress = isIn ? '진행중' : '임박';
       return (
