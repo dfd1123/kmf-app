@@ -28,8 +28,8 @@ class UserService {
     if (result.access_token) {
       this.#dispatch(setAuth(result));
       this.#cookie.setAccessToken(result.access_token);
-
-      setPushAlarm({ isOn: result.user.flag_alarm !== 0 });
+      const isOn = result.user.flag_alarm;
+      setPushAlarm({ isOn: isOn !== 0 });
     }
 
     return result;
@@ -70,8 +70,10 @@ class UserService {
   async getMyInfo() {
     const user = await this.#api.get('/profile');
     const access_token = this.#cookie.getAccessToken();
-    setPushAlarm({ isOn: user.flag_alarm !== 0 });
-    this.#dispatch(setAuth({ user: user, access_token: access_token }));
+    if (access_token) {
+      setPushAlarm({ isOn: user.flag_alarm !== 0 });
+      this.#dispatch(setAuth({ user: user, access_token: access_token }));
+    }
   }
 
   getUser(params: { id?: string }) {
