@@ -48,9 +48,10 @@ const PasswordChange = () => {
       return;
 
     let isConfirm = false;
+    const id = userData?.id ? userData?.id : 0;
     await service.user
       .pwChange({
-        id: userData.id,
+        id: id,
         before_password: beforePassword,
         password: password,
         password_confirmation: password,
@@ -58,7 +59,7 @@ const PasswordChange = () => {
       .then((data) => (isConfirm = true))
       .catch((e) => {
         isConfirm = false;
-        toast(e.error.msg, 'warning');
+        toast(e.error.msg, { type: 'warning' });
       });
 
     if (isConfirm) {

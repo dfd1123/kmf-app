@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const [imgUrl, setImgUrl] = useState(basicProfile);
 
   const getUser = async () => {
-    const result = await services.user.getUser({ id: no_id });
+    const result = await services.user.getUser({ id: no_id ? no_id : '' });
     setImgUrl(
       result.user.profile_img
         ? `${process.env.VITE_STORAGE_URL}${result.user.profile_img.slice(
@@ -50,16 +50,28 @@ const ProfilePage = () => {
           )}
           <ProfileContent
             title="이름(기수)"
-            content={userInfo?.name}
+            content={userInfo?.name ? userInfo.name : ''}
             status={userInfo?.status}
           />
-          <ProfileContent title="생년월일" content={userInfo?.birth} />
-          <ProfileContent title="연락처" content={userInfo?.phone} />
-          <ProfileContent title="주소" content={userInfo?.address1} />
-          <ProfileContent title="현재소속사" content={userInfo?.company} />
+          <ProfileContent
+            title="생년월일"
+            content={userInfo?.birth ? userInfo.birth : ''}
+          />
+          <ProfileContent
+            title="연락처"
+            content={userInfo?.phone ? userInfo.phone : ''}
+          />
+          <ProfileContent
+            title="주소"
+            content={userInfo?.address1 ? userInfo.address1 : ''}
+          />
+          <ProfileContent
+            title="현재소속사"
+            content={userInfo?.company ? userInfo.company : ''}
+          />
           <ProfileContent
             title="담당아티스트"
-            content={userInfo?.manage_artist}
+            content={userInfo?.manage_artist ? userInfo.manage_artist : ''}
           />
         </div>
         <div className="kmf-fighting">KMF 화이팅!</div>
