@@ -13,12 +13,12 @@ interface PropsType extends ModalComponentPropsType {
 }
 
 const ModalDatePicker = ({
-                           initialFocusedDate,
-                           className,
-                           nonModal,
-                           close,
-                           resolve,
-                         }: PropsType) => {
+  initialFocusedDate,
+  className,
+  nonModal,
+  close,
+  resolve,
+}: PropsType) => {
   const [date, setDate] = useState<string | null>(null);
 
   const formatDate = (calendarLocale: string, date: Date) => {
@@ -76,6 +76,10 @@ const ModalDatePickerStyle = styled(ModalStyle)`
       font-weight: 600;
       color: #1574bd;
     }
+  }
+
+  .react-calendar__tile—active:hover {
+    background-color: #ff0000;
   }
 `;
 
