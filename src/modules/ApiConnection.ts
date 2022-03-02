@@ -82,8 +82,9 @@ export default class ApiConnection {
         .catch((e: Error | AxiosError) => {
           const data = _get(e, 'response.data');
           const code: string = _get(e, 'response.data.errorCode');
+          const msg: string = _get(e, 'response.data.msg', '');
 
-          this.#toast(errorCode[code] || errorCode['DEFAULT']);
+          this.#toast(errorCode[code] || msg || errorCode['DEFAULT']);
 
           reject({ error: data, code });
         }).finally(() => {

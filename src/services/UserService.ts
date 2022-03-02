@@ -75,9 +75,9 @@ class UserService {
   }
 
   async getMyInfo() {
-    const user = await this.#api.get('/profile');
     const access_token = this.#cookie.getAccessToken();
     if (access_token) {
+      const user = await this.#api.get('/profile');
       setPushAlarm({
         isOn: user.flag_alarm !== 0,
       });
