@@ -84,9 +84,16 @@ function BusinessInfo() {
     ) : null;
   };
 
+<<<<<<< Updated upstream
   const onDateChange = (value: Date, event: React.ChangeEvent) => {
     setCurrentDate(dateFormat(value, 'yyyy-MM-dd'));
   };
+=======
+  const onDateChange = (value: Date, event: React.ChangeEvent) => {   
+    console.log('date changed',value, event)
+    setCurrentDate(dateFormat(value, 'yyyy-MM-dd'))
+  }
+>>>>>>> Stashed changes
 
   const onMonthChange = (active: any) => {
     setCurrentDate(dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
