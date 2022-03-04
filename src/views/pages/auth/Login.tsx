@@ -4,6 +4,7 @@ import loginBg from '@/assets/img/kmf/bg/login-bg.png';
 import icoEmail from '@/assets/img/kmf/ico/ico-email.svg';
 import icoKakao from '@/assets/img/kmf/ico/ico-kakao.svg';
 import icoGoogle from '@/assets/img/kmf/ico/ico-google.svg';
+import icoApple from '@/assets/img/kmf/ico/ico-apple.svg';
 import { BasicButton } from '@/views/components/common/Button';
 
 const Login = () => {
@@ -28,6 +29,9 @@ const Login = () => {
           </BasicButton>
           <BasicButton className="btn-google" during={1000} onClick={() => socialLogin('google')}>
             구글로 시작하기
+          </BasicButton>
+          <BasicButton className="btn-apple" during={1000} onClick={() => socialLogin('apple')}>
+            애플로 시작하기
           </BasicButton>
           <BasicButton className="btn-email" during={1000} onClick={() => navigate('/emailLogin')}>
             아이디로 시작하기
@@ -156,6 +160,16 @@ const LoginContainerStyle = styled.div`
         &email {
           button {
             background-image: url(${icoEmail});
+          }
+        }
+
+        &apple {
+          button {
+            background-image: url(${icoApple});
+            color: #fff;
+            background-color: #000;
+            background-size: 63px;
+            background-position-x: -2px;
           }
         }
       }
