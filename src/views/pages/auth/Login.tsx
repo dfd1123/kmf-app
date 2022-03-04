@@ -24,14 +24,14 @@ const Login = () => {
       <div className="login-btn-holder">
         <div>
           <span className="label">SNS로 시작</span>
+          <BasicButton className="btn-apple" during={1000} onClick={() => socialLogin('apple')}>
+            애플로 시작하기
+          </BasicButton>
           <BasicButton className="btn-kakao" during={1000} onClick={() => socialLogin('kakao')}>
             카카오로 시작하기
           </BasicButton>
           <BasicButton className="btn-google" during={1000} onClick={() => socialLogin('google')}>
             구글로 시작하기
-          </BasicButton>
-          <BasicButton className="btn-apple" during={1000} onClick={() => socialLogin('apple')}>
-            애플로 시작하기
           </BasicButton>
           <BasicButton className="btn-email" during={1000} onClick={() => navigate('/emailLogin')}>
             아이디로 시작하기
@@ -62,7 +62,7 @@ const LoginContainerStyle = styled.div`
   background-repeat: no-repeat;
 
   .main-tit {
-    margin-top: 22vh;
+    margin-top: 14vh;
     text-align: center;
     color: #fff;
 
