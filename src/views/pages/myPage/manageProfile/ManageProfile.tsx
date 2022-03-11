@@ -133,7 +133,7 @@ const ManageProfile = () => {
           />
           <p className="title info">등록정보</p>
           <p className="id">아이디</p>
-          <p className="email">asdf@naver.com</p>
+          <p className="email">{userData.email}</p>
           <div className="kmf-fighting">KMF 화이팅!</div>
         </div>
       </ContentWrapperStyle>

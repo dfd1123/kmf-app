@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import FindIdForm from '@/views/components/auth/FindIdForm';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
-import FooterButton from '@/views/components/common/FooterButton';
 import { useNavigate } from 'react-router';
 
 const FindId = () => {
@@ -15,7 +14,6 @@ const navigate = useNavigate();
       <div className="find-cont">
         <FindIdForm />
       </div>
-      <FooterButton onClick={() => navigate('/login')}>로그인</FooterButton>
     </FindIdStyle>
   );
 };

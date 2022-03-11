@@ -132,6 +132,8 @@ export const BasicInput = styled(TextInput)`
     border: 1px solid #F4F4F4;
     border-radius: 5px;
     background-color: #F4F4F4;
+    outline: #1574bd;
+    -webkit-tap-highlight-color: #1574bd !important;
 
     &::placeholder{
       color:#BFBFBF;

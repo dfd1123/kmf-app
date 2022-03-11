@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import useService from '@/hooks/useService';
 import TextInput from '@/views/components/common/input/TextInput';
 import BasicButton from '@/views/components/common/Button';
 import useDialog from '@/hooks/useDialog';
+import FooterButton from '@/views/components/common/FooterButton';
 
 const intialInput = {
   name: '',
@@ -11,6 +13,7 @@ const intialInput = {
 };
 
 const FindIdForm = () => {
+  const navigate = useNavigate();
   const services = useService();
   const [inputs, setInputs] = useState(intialInput);
   const [result, setResult] = useState('');
@@ -65,6 +68,7 @@ const FindIdForm = () => {
           <div className="btn-holder">
             <BasicButton onClick={passwordResetting}>비밀번호 재설정</BasicButton>
           </div>
+          <FooterButton onClick={() => navigate('/login')}>확인</FooterButton>
         </>
       ) : (
         ''

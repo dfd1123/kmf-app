@@ -1,4 +1,5 @@
 import { serUnreadRefList } from '@/store/notice/notice';
+import { downloadFile } from '@/utils/fileUtils';
 import { ConstructorParamsType } from './types/Service';
 
 class ReferenceService {
@@ -42,6 +43,18 @@ class ReferenceService {
   async getUnreadList(){
     const result = await this.#api.get('/archive_read/list');
     this.#dispatch(serUnreadRefList(result));
+  }
+
+  async download(fileName: string){
+    const file = JSON.parse(fileName || '[]');
+    if(file[0]){
+      const fileArr = file[0].split('/');
+      const name = fileArr[fileArr.length - 1];
+      const data = await this.#api.getFile(`${import.meta.env.VITE_STORAGE_URL}${file[0]}`, {image: true});
+
+      downloadFile(data, name);
+    }
+
   }
 }
 

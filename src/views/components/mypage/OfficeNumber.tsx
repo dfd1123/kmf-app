@@ -4,7 +4,7 @@ const OfficeNumber = () => {
   return (
     <OfficeNumberStyle>
       <span>KMF 사무국 연락처</span>
-      <strong>02-999-9999</strong>
+      <strong>02-784-5678</strong>
     </OfficeNumberStyle>
   );
 };

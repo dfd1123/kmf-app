@@ -24,7 +24,7 @@ const PasswordChange = () => {
   const { alert } = useDialog();
 
   const passwordOnChange = (value: string, name: string) => {
-    setCorrectPwd(passwordRegex.test(value));
+    setCorrectPwd(value.length >= 8 && value.length <= 20);
     setPassword(value);
   };
 
@@ -44,30 +44,23 @@ const PasswordChange = () => {
       email === '' ||
       token === '' ||
       beforePassword === ''
-    )
+    ) {
       return;
-
-    let isConfirm = false;
-    const id = userData?.id ? userData?.id : 0;
-    await service.user
-      .pwChange({
-        id: id,
-        before_password: beforePassword,
-        password: password,
-        password_confirmation: password,
-      })
-      .then((data) => (isConfirm = true))
-      .catch((e) => {
-        isConfirm = false;
-        toast(e.error.msg, { type: 'warning' });
-      });
-
-    if (isConfirm) {
-      const result = await alert('비밀번호가 성공적으로 변경되었습니다.', {
-        title: '비밀번호 변경',
-      });
-      navigate('/login');
     }
+
+    const id = userData?.id ? userData?.id : 0;
+
+    await service.user.pwChange({
+      id: id,
+      before_password: beforePassword,
+      password: password,
+      password_confirmation: password,
+    });
+
+    const result = await alert('비밀번호가 성공적으로 변경되었습니다.', {
+      title: '비밀번호 변경',
+    });
+    navigate('/login');
   };
 
   useEffect(() => {
@@ -87,13 +80,6 @@ const PasswordChange = () => {
             type={'password'}
             onChange={(value, name) => setBeforePassword(value)}
           />
-          <div className={'pwd-validation'}>
-            {!correctPwd &&
-              '특수문자, 숫자, 영문자로 조합된 최소 8자로 입력해주세요.'}
-          </div>
-          <div className={'pwd-validation'}>
-            {!match && '비밀번호가 일치하지 않습니다.'}
-          </div>
           <BasicInput
             className="password-input"
             name="current"
@@ -110,6 +96,15 @@ const PasswordChange = () => {
             type={'password'}
             onChange={confirmCorrectPassword}
           />
+          <div className={'pwd-validation'}>
+            {!correctPwd &&
+              '특수문자, 숫자, 영문자로 조합된 최소 8자로 입력해주세요.'}
+          </div>
+          {correctPwd && (
+            <div className={'pwd-validation'}>
+              {!match && '비밀번호가 일치하지 않습니다.'}
+            </div>
+          )}
           <div className="kmf-fighting">KMF 화이팅!</div>
         </div>
       </ContentWrapperStyle>

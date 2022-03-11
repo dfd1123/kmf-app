@@ -79,15 +79,15 @@ const ContainerStyle = styled.div`
   }
 
   .status-1 {
-    background-color: #f8b327;
+    background-color: #A7CD10;
   }
 
   .status-2 {
-    background-color: #73a462;
+    background-color: #28A8E1;
   }
 
   .status-3 {
-    background-color: gray;
+    background-color: #828282;
   }
 `;
 

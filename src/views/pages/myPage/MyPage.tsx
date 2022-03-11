@@ -15,8 +15,8 @@ const MyPage = () => {
   const navigate = useNavigate();
   const { alert, confirm } = useDialog();
   const services = useService();
-  const [allowPush, setAllowPush] = useState<boolean>(false);
   const userData = useTypedSelector((state) => state.authSlice.user);
+  const [allowPush, setAllowPush] = useState<boolean>(Boolean(userData?.flag_alarm));
 
   const logout = async () => {
     const result = await confirm('KMF Members에서 로그아웃 하시겠어요?', {
@@ -68,7 +68,7 @@ const MyPage = () => {
 
   return (
     <ContainerStyle>
-      <KmfHeader headerText="마이페이지" prev />
+      <KmfHeader headerText="마이페이지" />
       <PushSettingStyle>
         <PushTextStyle>알림설정</PushTextStyle>
         <Switch defaultInput={allowPush} onChange={onChange} />
@@ -107,7 +107,7 @@ const MyPage = () => {
 const ListWrapperStyle = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 16px;
+  padding: 0 16px 60px;
 
   & div:first-child {
     border-top: 1px solid #f1f1f1;

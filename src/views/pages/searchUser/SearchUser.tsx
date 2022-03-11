@@ -155,6 +155,7 @@ const SearchUserStyle = styled.div`
 
     .order-by {
       ${ButtonCheckBox} {
+        margin-left: 8px;
         input {
           &:checked {
             ~ label {
@@ -167,8 +168,8 @@ const SearchUserStyle = styled.div`
         label {
           width: auto;
           height: auto;
-          margin-left: 8px;
           padding: 4px 8px;
+          margin-left: 0;
           font-size: 10px;
           color: #828282;
           line-height: 15px;

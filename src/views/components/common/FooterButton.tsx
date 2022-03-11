@@ -9,7 +9,7 @@ interface PropTypes extends React.HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
 }
 
-const FooterButton = ({ children, shared, disabled = false, onClick }: PropTypes) => {
+const FooterButton = ({ children, className, shared, disabled = false, onClick }: PropTypes) => {
   const {toast} = useToast();
 
   const urlCopy = () => {
@@ -26,7 +26,7 @@ const FooterButton = ({ children, shared, disabled = false, onClick }: PropTypes
   }
 
   return (
-    <FooterButtonStyle className={`${shared ? 'shared' : ''}`}>
+    <FooterButtonStyle className={`${shared ? 'shared' : ''} ${className}`}>
       {shared ? <BasicButton className="btn-shared" onClick={urlCopy}>공유</BasicButton> : ''}
       <BasicButton during={1000} disabled={disabled} onClick={onClick}>{children}</BasicButton>
     </FooterButtonStyle>

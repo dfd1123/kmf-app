@@ -34,7 +34,7 @@ const ReferenceView = () => {
         />
         <div className="body">
           <div
-            className="contents"
+            className="contents ck-content"
             dangerouslySetInnerHTML={{
               __html: info.ar_content.replace('\n', '<br />'),
             }}></div>
@@ -96,13 +96,17 @@ const ReferenceViewStyle = styled.div`
         padding: 8px;
         background: #f9f9f9;
         border-radius: 5px;
-        font-size: 12px;
-        line-height: 15px;
+        /* font-size: 12px; */
+        line-height: 1.5;
 
         a {
-          font-size: 12px;
+          /* font-size: 12px; */
           color: #1574bd;
           text-decoration: underline;
+        }
+
+        img{
+          max-width:100%;
         }
       }
 

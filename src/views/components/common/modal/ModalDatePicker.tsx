@@ -33,9 +33,6 @@ const ModalDatePicker = ({
       <div className="calender-cont">
         <Calendar
           calendarType="US"
-          defaultView="month"
-          maxDetail="month"
-          view="month"
           locale="ko-KR"
           formatDay={formatDate}
           value={initialFocusedDate ? new Date(initialFocusedDate) : new Date()}

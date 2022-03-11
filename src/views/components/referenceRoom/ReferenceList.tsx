@@ -4,12 +4,14 @@ import { dateFormat } from '@/utils/dateUtils';
 import BasicButton from '@/views/components/common/Button';
 import { Link } from 'react-router-dom';
 import { RefrenceDataType } from '@/services/types/Reference';
+import useService from '@/hooks/useService';
 
 interface PropsType {
   info : RefrenceDataType
 }
 
 const ReferenceList = ({ info }: PropsType) => {
+  const services = useService();
   const unreadRefList = useTypedSelector(
     (state) => state.noticeSlice.unreadRefList
   );
@@ -17,17 +19,20 @@ const ReferenceList = ({ info }: PropsType) => {
   const date = dateFormat(new Date(info.created_at), 'yyyy - MM - dd');
 
   const fileDownload = () => {
-    const file = JSON.parse(info.ar_file || '[]');
-    if(file[0]){
-      const fileArr = file[0].split('/');
-      const filename = fileArr[fileArr.length - 1];
+    services.reference.download(info?.ar_file ?? '');
+  //   const file = JSON.parse(info.ar_file || '[]');
+  //   if(file[0]){
+  //     const fileArr = file[0].split('/');
+  //     const filename = fileArr[fileArr.length - 1];
 
-      const a = document.createElement("a");
-      a.href = `${import.meta.env.VITE_STORAGE_URL}${file[0]}`;
-      a.download = filename;
-      a.click();
-      a.remove();
-    }
+  //     const a = document.createElement("a");
+  //     console.log(`${import.meta.env.VITE_STORAGE_URL}${file[0]}`);
+  //     a.href = `${import.meta.env.VITE_STORAGE_URL}${file[0]}`;
+  //     a.download = filename;
+  //     a.click();
+  //     a.remove();
+  //   }
+  // }
   }
 
   return (

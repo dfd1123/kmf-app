@@ -1,5 +1,5 @@
 import { Route } from '@/types/Route';
-import ProfilePage from '@/views/pages/profilePage/ProfilePage';
+import ProfilePage from '@/views/pages/myPage/profilePage/ProfilePage';
 
 const notice: Route[] = [
   {

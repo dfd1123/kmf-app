@@ -71,13 +71,16 @@ export default class ApiConnection {
     });
   }
 
-  #responseHandler = (promise: Promise<ApiResponse>, silent?: boolean) =>{
+  #responseHandler = (promise: Promise<ApiResponse>, {silent = false, image = false} : {silent?: boolean, image?:boolean}) =>{
     this.#setLoadStatus(true);
+    silent = Boolean(silent);
+    image = Boolean(image);
 
     return new Promise((resolve, reject) => {
       promise
         .then((response) => {
-          resolve(response.data.query || response.data);
+          if(image) resolve(response);
+          else resolve(response.data.query || response.data);
         })
         .catch((e: Error | AxiosError) => {
           const data = _get(e, 'response.data');
@@ -93,35 +96,39 @@ export default class ApiConnection {
     });
   }
 
+  getFile(url: string,config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }) : Promise<any> {
+    return this.#responseHandler(this.#axios({method: 'get', url, responseType: 'blob'}), {silent: config?.silent, image: true});
+  }
+
   get(
     path: string,
     params?: object,
-    config?: AxiosRequestConfig & { silent?: boolean }
+    config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }
   ): Promise<any> {
-    return this.#responseHandler(this.#axios.get(path, { ...config, params }));
+    return this.#responseHandler(this.#axios.get(path, { ...config, params }), {silent: config?.silent, image: config?.image});
   }
 
   post(
     path: string,
     data?: object,
-    config?: AxiosRequestConfig & { silent?: boolean }
+    config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }
   ): Promise<any> {
-    return this.#responseHandler(this.#axios.post(path, data, config));
+    return this.#responseHandler(this.#axios.post(path, data, config), {silent: config?.silent, image: config?.image});
   }
 
   put(
     path: string,
     data?: object,
-    config?: AxiosRequestConfig & { silent?: boolean }
+    config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }
   ): Promise<any> {
-    return this.#responseHandler(this.#axios.put(path, data, config));
+    return this.#responseHandler(this.#axios.put(path, data, config), {silent: config?.silent, image: config?.image});
   }
 
   delete(
     path: string,
     data?: object,
-    config?: AxiosRequestConfig & { silent?: boolean }
+    config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }
   ): Promise<any> {
-    return this.#responseHandler(this.#axios.delete(path, { ...config, data }));
+    return this.#responseHandler(this.#axios.delete(path, { ...config, data }), {silent: config?.silent, image: config?.image});
   }
 }

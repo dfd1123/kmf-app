@@ -61,7 +61,7 @@ const ReferenceRoom = () => {
 
   return (
     <ReferenceRoomStyle>
-      <KmfHeader headerText="자료실" prev />
+      <KmfHeader headerText="자료실" />
       <SearchBox search={searchReference} />
       <span className="item-cnt">총 {list.length} 건</span>
       <div className="list-holder">

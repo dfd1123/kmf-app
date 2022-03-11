@@ -34,7 +34,7 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <ContainerStyle>
+    <ContainerStyle className={`type-${userInfo?.status || 0}`}>
       <KmfHeader headerText={'회원상세'} prev />
       <ContentWrapperStyle>
         <KmfImageViewer
@@ -59,11 +59,11 @@ const ProfilePage = () => {
           />
           <ProfileContent
             title="연락처"
-            content={userInfo?.phone ? userInfo.phone : ''}
+            content={userInfo?.phone ? userInfo.phone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) : ''}
           />
           <ProfileContent
             title="주소"
-            content={userInfo?.address1 ? userInfo.address1 : ''}
+            content={userInfo?.address1 ? `${userInfo.address1}, ${userInfo.address2}`: ''}
           />
           <ProfileContent
             title="현재소속사"
@@ -76,7 +76,7 @@ const ProfilePage = () => {
         </div>
         <div className="kmf-fighting">KMF 화이팅!</div>
       </ContentWrapperStyle>
-      <FooterButton>
+      <FooterButton className="ft-btn">
         <a className="phone-call" href={`tel:${userInfo?.phone}`}>
           <img className="call-icon" src={call} />
           통화하기
@@ -89,6 +89,24 @@ const ProfilePage = () => {
 const ContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
+
+  &.type-{
+    &1{
+      header, .ft-btn button{
+        background-color: #A7CD10;
+      }
+    }
+    &2{
+      header, .ft-btn button{
+        background-color: #28A8E1;
+      }
+    }
+    &3{
+      header, .ft-btn button{
+        background-color: #828282;
+      }
+    }
+  }
 
   .call-icon {
     width: 20px;

@@ -130,9 +130,7 @@ function BusinessInfo() {
       <CalendarWrapperStyle
         locale={locale}
         calendarType="US"
-        defaultView="month"
-        maxDetail="month"
-        view="month"
+        // view="month"
         defaultActiveStartDate={stringToDate(
           dateFormat(new Date(), 'yyyy-MM-dd')
         )}
@@ -160,6 +158,9 @@ const CalendarWrapperStyle = styled(Calendar)`
 
   .react-calendar__navigation {
     background-color: #1574bd;
+    >button{
+      background-color: #1574bd !important;
+    }
 
     & > * {
       color: white;
@@ -172,6 +173,7 @@ const CalendarWrapperStyle = styled(Calendar)`
 
     .react-calendar__navigation__prev-button {
       order: 1;
+      font-size: 23px;
 
       &:enabled {
         background-color: #1574bd;
@@ -183,6 +185,7 @@ const CalendarWrapperStyle = styled(Calendar)`
     }
 
     .react-calendar__navigation__next-button {
+      font-size: 23px;
       &:enabled {
         background-color: #1574bd;
       }
@@ -216,12 +219,18 @@ const CalendarWrapperStyle = styled(Calendar)`
     align-items: center;
 
     .tileWrapper {
-      display: flex;
+      display: none;
       flex-direction: row-reverse;
       justify-content: flex-start;
       width: 30px;
       flex-wrap: wrap-reverse;
       padding-top: 4px;
+    }
+
+    &.react-calendar__month-view__days__day{
+      .tileWrapper{
+        display: flex;
+      }
     }
   }
 `;

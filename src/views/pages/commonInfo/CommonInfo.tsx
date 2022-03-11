@@ -49,7 +49,7 @@ const CommonInfo = () => {
   return (
     <ContainerStyle>
       <KmfHeader headerText={header} prev />
-      <ContentWrapperStyle
+      <ContentWrapperStyle className="ck-content"
         dangerouslySetInnerHTML={{ __html: bodyText }}></ContentWrapperStyle>
     </ContainerStyle>
   );
@@ -65,8 +65,7 @@ const ContentWrapperStyle = styled.section`
   padding: 16px;
   height: calc(100vh - 46px);
   overflow: scroll;
-  font-size: 14px;
-  line-height: 20px;
+  line-height: 1.5;
 `;
 
 export default CommonInfo;
