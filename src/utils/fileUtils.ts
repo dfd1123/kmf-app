@@ -68,7 +68,7 @@ export const fileUpload = async (e : React.ChangeEvent<HTMLInputElement>) => {
 };
 
 export const downloadFile = (responseData : any, fileName : string = '') => {
-  const url = window.URL.createObjectURL(new Blob([responseData.data || responseData]));
+  const url = window.URL.createObjectURL(new Blob([responseData.data]));
   const link = document.createElement('a');
   if (!fileName) {
     fileName = 'unknown';

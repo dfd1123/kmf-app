@@ -48,6 +48,12 @@ class UserService {
     return result;
   }
 
+  async socialRegister(body: RegisterInput){
+    const result = await this.#api.post('/register_social', body);
+
+    return {user: result.data, access_token: this.#cookie.getAccessToken() };
+  }
+
   async logout() {
     await this.#api.post('/logout');
     this.#dispatch(setAuth({}));

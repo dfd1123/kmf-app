@@ -6,19 +6,32 @@ import NoticeHead from '@/views/components/notice/NoticeHead';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
+import icoDownload from '@/assets/img/kmf/ico/ico-download.svg';
 
 const ReferenceView = () => {
   const navigate = useNavigate();
   const services = useService();
   let { ar_id } = useParams();
   const [info, setInfo] = useState<RefrenceDataType | null>(null);
+  const [files, setFiles] = useState([]);
+  const [fileList, setFileList] = useState([]);
 
   const getReference = async () => {
     if (!ar_id || info) return;
     const result = await services.reference.getReferenceDetail({ ar_id });
+    setFiles(JSON.parse(result.archive.ar_file ?? '[]'));
+    const fileList = JSON.parse(result.archive.ar_file ?? '[]').map((filePath: string) => {
+      const fileArr = filePath.split('/');
+      return fileArr[fileArr.length - 1];
+    });
 
     setInfo(result.archive);
+    setFileList(fileList);
   };
+
+  const fileDownload = (index: number) => {
+    services.reference.download(files, index);
+  }
 
   useEffect(() => {
     getReference();
@@ -33,6 +46,15 @@ const ReferenceView = () => {
           title={info.ar_title}
         />
         <div className="body">
+        {fileList.length ? (
+          <ul className="files-cont">
+          {fileList.map((file, index) => (
+            <li key={file} onClick={() => fileDownload(index)}>
+              {file}
+            </li>
+          ))}
+        </ul>
+        ) : ('')}
           <div
             className="contents ck-content"
             dangerouslySetInnerHTML={{
@@ -91,6 +113,28 @@ const ReferenceViewStyle = styled.div`
     .body {
       padding-top: 16px;
       border-top: 1px solid #f1f1f1;
+      
+      .files-cont{
+        background: #f9f9f9;
+        padding: 15px 15px;
+        margin-bottom: 20px;
+
+        >li{
+          padding-right: 20px;
+          font-size: 13px;
+          color: #555;
+          margin-bottom: 10px;
+          background-image: url(${icoDownload});
+          background-repeat: no-repeat;
+          background-position: right center;
+          background-size: 12px;
+
+          &:last-child{
+            margin-bottom:0;
+          }
+        }
+      }
+
       .contents {
         min-height: 100px;
         padding: 8px;

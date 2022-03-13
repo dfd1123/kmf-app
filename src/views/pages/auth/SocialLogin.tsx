@@ -19,7 +19,7 @@ const SocialLogin = () => {
       services.user.getMyInfo();
   
       if(flag === 'register'){
-        navigate('/register');
+        navigate(`/register?social=1&email=${email}`);
       }else {
         navigate('/notice');
       }

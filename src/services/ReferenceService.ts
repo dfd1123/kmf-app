@@ -45,16 +45,15 @@ class ReferenceService {
     this.#dispatch(serUnreadRefList(result));
   }
 
-  async download(fileName: string){
-    const file = JSON.parse(fileName || '[]');
-    if(file[0]){
-      const fileArr = file[0].split('/');
+  async download(filePathList: string[], index: number = 0){
+    if(filePathList[index]){
+      const fileArr = filePathList[index].split('/');
       const name = fileArr[fileArr.length - 1];
-      const data = await this.#api.getFile(`${import.meta.env.VITE_STORAGE_URL}${file[0]}`, {image: true});
 
-      downloadFile(data, name);
+      const result = await this.#api.get('/archive/download', {filepath : filePathList[index]}, {image: true});
+
+      downloadFile(result, name);
     }
-
   }
 }
 

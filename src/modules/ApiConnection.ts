@@ -96,16 +96,12 @@ export default class ApiConnection {
     });
   }
 
-  getFile(url: string,config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }) : Promise<any> {
-    return this.#responseHandler(this.#axios({method: 'get', url, responseType: 'blob'}), {silent: config?.silent, image: true});
-  }
-
   get(
     path: string,
     params?: object,
     config?: AxiosRequestConfig & { silent?: boolean, image?: boolean }
   ): Promise<any> {
-    return this.#responseHandler(this.#axios.get(path, { ...config, params }), {silent: config?.silent, image: config?.image});
+    return this.#responseHandler(this.#axios({method: 'get', url: path, params, ...config}), {silent: config?.silent, image: config?.image});
   }
 
   post(

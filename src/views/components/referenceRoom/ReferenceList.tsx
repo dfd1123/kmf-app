@@ -17,22 +17,10 @@ const ReferenceList = ({ info }: PropsType) => {
   );
   const unread = unreadRefList.includes(info.ar_id ?? -1);
   const date = dateFormat(new Date(info.created_at), 'yyyy - MM - dd');
+  const existFile = JSON.parse(info?.ar_file ?? '[]').length > 0;
 
   const fileDownload = () => {
-    services.reference.download(info?.ar_file ?? '');
-  //   const file = JSON.parse(info.ar_file || '[]');
-  //   if(file[0]){
-  //     const fileArr = file[0].split('/');
-  //     const filename = fileArr[fileArr.length - 1];
-
-  //     const a = document.createElement("a");
-  //     console.log(`${import.meta.env.VITE_STORAGE_URL}${file[0]}`);
-  //     a.href = `${import.meta.env.VITE_STORAGE_URL}${file[0]}`;
-  //     a.download = filename;
-  //     a.click();
-  //     a.remove();
-  //   }
-  // }
+    services.reference.download(JSON.parse(info?.ar_file ?? '[]'));
   }
 
   return (
@@ -42,7 +30,8 @@ const ReferenceList = ({ info }: PropsType) => {
         <span className="date">{date || '-'}</span>
         {unread ? <span className="new">new</span> : ''}
       </Link>
-      <BasicButton
+      {existFile && (
+        <BasicButton
         className="button"
         ripple={false}
         onClick={fileDownload}>
@@ -72,6 +61,7 @@ const ReferenceList = ({ info }: PropsType) => {
           />
         </svg>
       </BasicButton>
+      )}
     </Container>
   );
 };
