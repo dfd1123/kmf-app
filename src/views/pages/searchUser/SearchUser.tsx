@@ -16,6 +16,7 @@ const SearchUser = () => {
   const navigate = useNavigate();
   const [list, setList] = useState<UserListInfo[]>([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [orderBy, setOrderBy] = useState('name');
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'search-user',
@@ -23,7 +24,7 @@ const SearchUser = () => {
   });
 
   const getUserList = (refresh: boolean = false) => {
-    searchUser('', refresh ? 0 : list.length);
+    searchUser(searchKeyword, refresh ? 0 : list.length);
   };
 
   const searchUser = async (searchKeyword: string = '', offset: number = 0) => {
@@ -46,6 +47,7 @@ const SearchUser = () => {
 
   // 일단 SearchBox에서 onChange 이벤트가 발생할때마다 검색되도록 했습니다.
   const onChange = async (keyword: string) => {
+    setSearchKeyword(keyword);
     const { users, users_count } = await services.user.getUserList({
       searchKeyword: keyword,
       orderBy,
