@@ -45,7 +45,7 @@ function BusinessInfo() {
   const getBusinessData = async () => {
     const { notices, notices_count } =
       await service.business.getBusinessInfoList({
-        limit: 30,
+        limit: 100,
         offset: 0,
         no_type: '2',
       });
