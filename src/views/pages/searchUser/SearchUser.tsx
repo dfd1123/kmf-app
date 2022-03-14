@@ -56,6 +56,7 @@ const SearchUser = () => {
     });
 
     if (totalCount !== users_count) setTotalCount(users_count);
+
     setList(users);
   };
 
@@ -64,7 +65,7 @@ const SearchUser = () => {
   }, []);
 
   useEffect(() => {
-    getUserList(true);
+    // getUserList(true);
   }, [orderBy]);
 
   useEffect(() => {
