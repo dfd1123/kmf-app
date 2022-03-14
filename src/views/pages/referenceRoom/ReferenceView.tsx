@@ -143,6 +143,11 @@ const ReferenceViewStyle = styled.div`
         /* font-size: 12px; */
         line-height: 1.5;
 
+        p {
+          word-break: break-all;
+        }
+
+
         a {
           /* font-size: 12px; */
           color: #1574bd;
