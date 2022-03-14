@@ -70,6 +70,7 @@ const NoticeView = () => {
 
 const NoticeViewStyle = styled.div`
   .notice-cont {
+    overflow:hidden;
     padding: 16px;
 
     .label {
