@@ -4,7 +4,8 @@ export const dateFormat = (
   date: Date,
   formating: string | undefined = 'Y-MM-dd'
 ) => {
-  return format(date, formating);
+  if(date.toString() === 'Invalid Date') date = new Date();
+  return format(date.getTime(), formating);
 };
 
 export const stringToDate = (date: string) => {
