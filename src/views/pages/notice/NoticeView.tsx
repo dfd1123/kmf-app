@@ -127,6 +127,7 @@ const NoticeViewStyle = styled.div`
     }
 
     .body {
+      margin-bottom: 100px;
       padding-top: 16px;
       .contents {
         min-height: 100px;

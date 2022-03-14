@@ -112,6 +112,7 @@ const ReferenceViewStyle = styled.div`
     }
 
     .body {
+      margin-bottom: 100px;
       padding-top: 16px;
       border-top: 1px solid #f1f1f1;
       
