@@ -10,7 +10,7 @@ import KmfListWrapper from '@/views/components/common/listView/KmfListWrapper';
 import KmfLinkedList from '@/views/components/common/listView/KmfLinkedList';
 import TileContent from '@/views/components/businessInfo/TileContet';
 import useService from '@/hooks/useService';
-import { add, isWithinInterval, sub } from 'date-fns';
+import { isWithinInterval, sub, eachDayOfInterval } from 'date-fns';
 
 const color = ['#1574BD', '#A7CD10', '#828282', '#1574BD', '#A7CD10'];
 
@@ -49,6 +49,18 @@ function BusinessInfo() {
         offset: 0,
         no_type: '2',
       });
+
+    const businessInfoDates: string[] = [];
+    notices.forEach((item: any) => {
+      eachDayOfInterval({
+        start: stringToDate(item.no_date_start),
+        end: stringToDate(item.no_date_end),
+      }).forEach((item) =>
+        businessInfoDates.push(dateFormat(item, 'yyyy-MM-dd'))
+      );
+    });
+    setDates(businessInfoDates);
+
     setBusinesses(
       notices
         .filter(
@@ -65,8 +77,8 @@ function BusinessInfo() {
         })
     );
 
-    const dateArr = notices.map((item: any) => item.no_date_start);
-    setDates(dateArr);
+    // const dateArr = notices.map((item: any) => item.no_date_start);
+    // setDates(dateArr);
   };
 
   const setTileContent = (date: Date, view: string) => {
@@ -130,7 +142,8 @@ function BusinessInfo() {
       <CalendarWrapperStyle
         locale={locale}
         calendarType="US"
-        // view="month"
+        defaultView="month"
+        // maxDetail="year"
         defaultActiveStartDate={stringToDate(
           dateFormat(new Date(), 'yyyy-MM-dd')
         )}
@@ -158,13 +171,18 @@ const CalendarWrapperStyle = styled(Calendar)`
 
   .react-calendar__navigation {
     background-color: #1574bd;
-    >button{
+
+    > button {
       background-color: #1574bd !important;
     }
 
     & > * {
       color: white;
     }
+
+    //.react-calendar__navigation__arrow {
+    //  font-size: 20px;
+    //}
 
     .react-calendar__navigation__prev2-button,
     .react-calendar__navigation__next2-button {
@@ -173,7 +191,7 @@ const CalendarWrapperStyle = styled(Calendar)`
 
     .react-calendar__navigation__prev-button {
       order: 1;
-      font-size: 23px;
+      font-size: 30px;
 
       &:enabled {
         background-color: #1574bd;
@@ -185,7 +203,8 @@ const CalendarWrapperStyle = styled(Calendar)`
     }
 
     .react-calendar__navigation__next-button {
-      font-size: 23px;
+      font-size: 30px;
+
       &:enabled {
         background-color: #1574bd;
       }
@@ -227,8 +246,8 @@ const CalendarWrapperStyle = styled(Calendar)`
       padding-top: 4px;
     }
 
-    &.react-calendar__month-view__days__day{
-      .tileWrapper{
+    &.react-calendar__month-view__days__day {
+      .tileWrapper {
         display: flex;
       }
     }
