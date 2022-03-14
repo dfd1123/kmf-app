@@ -111,12 +111,12 @@ const SearchUser = () => {
         <div className="list-holder">
           <InfiniteScroll loadMore={getUserList}>
             {list.length > 0 ? (
-              list.map((user) => (
+              list.map((user, index) => (
                 <UserList
                   onClick={() => {
                     navigate(`/user/${user.id}`);
                   }}
-                  key={user.id}
+                  key={`${user.id}-${index}`}
                   user={user}
                 />
               ))

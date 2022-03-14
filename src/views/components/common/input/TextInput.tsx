@@ -49,6 +49,8 @@ const TextInput = ({
   };
 
   const toggleFocus = (status: boolean) => {
+    const footerEl = document.querySelector('footer');
+    if(footerEl) footerEl.style.display = status ? 'none' : 'flex';
     setFocus(status);
   };
 

@@ -10,6 +10,11 @@ interface PropsType {
 const UserSearchBox = ({ search }: PropsType) => {
   const [searchValue, setSearchValue] = useState('');
 
+  const handleSearch = (str: string) => {
+    setSearchValue(str);
+    search(str);
+  }
+
   return (
     <UserSearchBoxStyle>
       <BasicInput
@@ -19,7 +24,8 @@ const UserSearchBox = ({ search }: PropsType) => {
         reset={true}
         className="search-inp"
         placeholder="휘원명, 소속사명, 가수로 검색"
-        onChange={search}
+        onChange={handleSearch}
+        onEnter={handleSearch}
         // onEnter={search}
       />
     </UserSearchBoxStyle>
