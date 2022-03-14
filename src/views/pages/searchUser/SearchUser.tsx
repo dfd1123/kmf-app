@@ -47,7 +47,6 @@ const SearchUser = () => {
 
   // 일단 SearchBox에서 onChange 이벤트가 발생할때마다 검색되도록 했습니다.
   const onChange = async (keyword: string) => {
-    if(searchKeyword === keyword) return;
     setSearchKeyword(keyword);
     const { users, users_count } = await services.user.getUserList({
       searchKeyword: keyword,
