@@ -29,6 +29,7 @@ const TextInput = ({
   autoComplete = 'off',
   onEnter,
   onChange,
+  onInput,
   onClick
 }: PropsType) => {
   const isSearch = type === "search";
@@ -62,12 +63,14 @@ const TextInput = ({
   };
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
     let {value, name} = e.target;
     if(number) {
       value = value.replace(/[^0-9]/g,'');
     }
     setText(value);
     if (onChange) onChange(value, name);
+    if (onInput) onInput(value, name);
   };
 
   const handleReset = () => {
@@ -93,6 +96,7 @@ const TextInput = ({
           tabIndex={tabIndex}
           autoComplete={autoComplete}
           onKeyPress={handleKeyPress}
+          onInput={handleValueChange}
           onChange={handleValueChange}
           onFocus={() => toggleFocus(true)}
           onBlur={() => toggleFocus(false)}
