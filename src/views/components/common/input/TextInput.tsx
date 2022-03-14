@@ -11,6 +11,7 @@ interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   autocomplete?:'on'|'off';
   onEnter?: (value : any , name?: any) => void;
   onChange?: (value : any , name?: any) => void;
+  onInput?: (value : any , name?: any) => void;
 }
 
 const TextInput = ({
