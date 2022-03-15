@@ -88,7 +88,7 @@ const MyPage = () => {
         </ModalButton>
         {/* link */}
         <ModalButton onClick={() => navigate('/term')}>
-          개인정보 수집 및 활용지칩
+          개인정보 수집 및 활용지침
         </ModalButton>
         <ModalButton onClick={logout}>로그아웃</ModalButton>
         <ModalButton onClick={secession}>회원탈퇴</ModalButton>
