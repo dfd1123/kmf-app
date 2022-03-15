@@ -8,8 +8,9 @@ interface PropsType {
 }
 
 const UserList = ({ user, onClick }: PropsType) => {
-  const image = user.profile_img
-    ? import.meta.env.VITE_STORAGE_URL + JSON.parse(user.profile_img)[0]
+  let image = JSON.parse(user.profile_img || '[]');
+  image = image.length
+    ? (image[0].includes('http') ? image[0] : import.meta.env.VITE_STORAGE_URL + image[0])
     : defaultProfileImg;
   return (
     <UserListStyle className={`type-${user.status}`} onClick={onClick}>
