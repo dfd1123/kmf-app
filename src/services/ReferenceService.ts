@@ -47,12 +47,7 @@ class ReferenceService {
 
   async download(filePathList: string[], index: number = 0){
     if(filePathList[index]){
-      const fileArr = filePathList[index].split('/');
-      const name = fileArr[fileArr.length - 1];
-
-      const result = await this.#api.get('/archive/download', {filepath : filePathList[index]}, {image: true});
-
-      downloadFile(result, name);
+      window.open(`${import.meta.env.VITE_API_URL}/download?download_url=${filePathList[index]}`);
     }
   }
 }
