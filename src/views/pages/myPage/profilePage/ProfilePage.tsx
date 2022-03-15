@@ -18,14 +18,13 @@ const ProfilePage = () => {
 
   const getUser = async () => {
     const result = await services.user.getUser({ id: no_id ? no_id : '' });
-    setImgUrl(
-      result.user.profile_img
-        ? `${import.meta.env.VITE_STORAGE_URL}${result.user.profile_img.slice(
-            2,
-            result.user.profile_img.length - 2
-          )}`
-        : basicProfile
-    );
+    let image = JSON.parse(result.profile_img || '[]');
+    image = image.length
+      ? image[0].includes('http')
+        ? image[0]
+        : import.meta.env.VITE_STORAGE_URL + image[0]
+      : basicProfile;
+    setImgUrl(image);
     setUserInfo(result.user);
   };
 
@@ -59,11 +58,22 @@ const ProfilePage = () => {
           />
           <ProfileContent
             title="연락처"
-            content={userInfo?.phone ? userInfo.phone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`) : ''}
+            content={
+              userInfo?.phone
+                ? userInfo.phone.replace(
+                    /^(\d{2,3})(\d{3,4})(\d{4})$/,
+                    `$1-$2-$3`
+                  )
+                : ''
+            }
           />
           <ProfileContent
             title="주소"
-            content={userInfo?.address1 ? `${userInfo.address1}, ${userInfo.address2}`: ''}
+            content={
+              userInfo?.address1
+                ? `${userInfo.address1}, ${userInfo.address2}`
+                : ''
+            }
           />
           <ProfileContent
             title="현재소속사"
@@ -90,19 +100,22 @@ const ContainerStyle = styled.div`
   display: flex;
   flex-direction: column;
 
-  &.type-{
-    &1{
-      header, .ft-btn button{
-        background-color: #A7CD10;
+  &.type- {
+    &1 {
+      header,
+      .ft-btn button {
+        background-color: #a7cd10;
       }
     }
-    &2{
-      header, .ft-btn button{
-        background-color: #28A8E1;
+    &2 {
+      header,
+      .ft-btn button {
+        background-color: #28a8e1;
       }
     }
-    &3{
-      header, .ft-btn button{
+    &3 {
+      header,
+      .ft-btn button {
         background-color: #828282;
       }
     }
