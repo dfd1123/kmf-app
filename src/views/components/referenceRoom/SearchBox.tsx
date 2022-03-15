@@ -9,6 +9,11 @@ interface PropsType {
 const SearchBox = ({ search }: PropsType) => {
   const [searchValue, setSearchValue] = useState('');
 
+  const handleChange = (str: string) => {
+    setSearchValue(str);
+    search(str);
+  }
+
   return (
     <SearchBoxStyle>
       <BasicInput
@@ -18,8 +23,8 @@ const SearchBox = ({ search }: PropsType) => {
         reset={true}
         className="search-inp"
         placeholder="키워드로 검색"
-        onChange={setSearchValue}
-        onEnter={search}
+        onInput={handleChange}
+        onEnter={handleChange}
       />
     </SearchBoxStyle>
   );
