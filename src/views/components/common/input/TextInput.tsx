@@ -63,7 +63,6 @@ const TextInput = ({
   };
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     let {value, name} = e.target;
     if(number) {
       value = value.replace(/[^0-9]/g,'');

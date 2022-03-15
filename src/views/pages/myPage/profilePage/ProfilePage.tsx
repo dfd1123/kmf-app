@@ -18,7 +18,7 @@ const ProfilePage = () => {
 
   const getUser = async () => {
     const result = await services.user.getUser({ id: no_id ? no_id : '' });
-    let image = JSON.parse(result.profile_img || '[]');
+    let image = JSON.parse(result.user.profile_img || '[]');
     image = image.length
       ? image[0].includes('http')
         ? image[0]
