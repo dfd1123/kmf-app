@@ -91,6 +91,7 @@ const ReferenceRoomStyle = styled.div`
   }
 
   .list-holder {
+    margin-bottom:100px;
     > div {
       width: calc(100% - 32px);
       margin: 0 auto;

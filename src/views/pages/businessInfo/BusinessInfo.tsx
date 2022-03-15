@@ -263,6 +263,7 @@ const ContainerStyle = styled.div`
     top: 30px;
     left: 0;
     z-index: 2;
+    margin-bottom:70px;
     background: #fff;
   }
 `;
