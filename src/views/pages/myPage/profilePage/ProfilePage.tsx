@@ -97,8 +97,7 @@ const ProfilePage = () => {
 };
 
 const ContainerStyle = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding-bottom: 70px;
 
   &.type- {
     &1 {
