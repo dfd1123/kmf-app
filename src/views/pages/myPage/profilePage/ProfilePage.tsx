@@ -126,10 +126,23 @@ const ContainerStyle = styled.div`
     height: 20px;
     margin-right: 10px;
   }
+
+  .ft-btn{
+    a{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      position:absolute;
+      top:0;
+      left:0;
+      z-index: 1;
+      width:100%;
+      height: 100%;
+    }
+  }
 `;
 
 const ContentWrapperStyle = styled.section`
-  height: calc(100vh - 46px - 78px);
   overflow: scroll;
   font-size: 14px;
   line-height: 20px;
