@@ -135,7 +135,6 @@ function BusinessInfo() {
         if (a.no_date_start > b.no_date_start) return 1;
       });
     setBusinesses(businessDataResult);
-    console.log(businessAllDateResult);
     // console.log(businessData);
     // const dateArr = notices.map((item: any) => item.no_date_start);
     // setDates(dateArr);
@@ -151,7 +150,7 @@ function BusinessInfo() {
     const dataResult = businessData
       ? businessData
           .filter((item: businessInfoType) => {
-            return item.dates.includes(dateFormat(date, 'yyyy-MM-dd'));
+            return item && item.dates?.includes(dateFormat(date, 'yyyy-MM-dd'));
           })
           .map((item: businessInfoType) => {
             const current = dateFormat(date, 'yyyy-MM-dd');
@@ -166,7 +165,6 @@ function BusinessInfo() {
             // return [dateFormat(date, 'yyyy-MM-dd'), item.no_type];
           })
       : null;
-    console.log('date result', dataResult);
     // setTileContentData(data);
 
     // return data[current]
@@ -175,11 +173,11 @@ function BusinessInfo() {
       dataResult.length > 0 ? (
         <div className="tileWrapper">
           {dataResult.map((item, index) => {
-            console.log(
-              item[dateFormat(date, 'yyyy-MM-dd')][0] === 3
-                ? '경조사'
-                : '사업안내'
-            );
+            // console.log(
+            //   item[dateFormat(date, 'yyyy-MM-dd')][0] === 3
+            //     ? '경조사'
+            //     : '사업안내'
+            // );
             return index > 5 ? null : (
               <TileContent
                 dotColor={color[item[dateFormat(date, 'yyyy-MM-dd')][0]]}
