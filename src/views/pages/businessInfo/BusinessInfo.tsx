@@ -204,7 +204,7 @@ function BusinessInfo() {
       const end = endOfMonth(current);
       const isInInterval = (date: string) =>
         isWithinInterval(stringToDate(date), { start: start, end: end });
-      const isIn = item.dates.some(isInInterval);
+      const isIn = item.dates ? item.dates.some(isInInterval) : false;
       if (!isIn) return null;
       const onGoing = isWithinInterval(current, {
         start: stringToDate(item.no_date_start),
