@@ -79,7 +79,6 @@ const TextInput = ({
   };
 
   const handleReset = () => {
-    console.log('awdawaw')
     if (input.current) {
       input.current.value = "";
       const {value, name} = input.current;

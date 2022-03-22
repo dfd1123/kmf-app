@@ -229,13 +229,16 @@ const NoticeViewStyle = styled.div`
           line-height: 17px;
         }
         > li {
-          cursor:pointer;
+           cursor:pointer;
           background: rgba(21, 116, 189, 0.05);
           padding: 16px 15px;
           margin-bottom: 20px;
-          padding-right: 20px;
+          padding-right: 35px;
           font-size: 14px;
           color: #353535;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           margin-bottom: 10px;
           background-image: url(${icoDownload});
           background-repeat: no-repeat;

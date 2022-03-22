@@ -31,6 +31,14 @@ export default function RouterView() {
   const services = useService();
   const {pathname} = useLocation();
 
+  window.onpopstate = () => {
+    window.isBack = true;
+
+    setTimeout(() => {
+      // window.isBack = false;
+    }, 1000);
+  }
+
   /**
    * @description route middleware 함수이며 각 route module에서
    * import 해온 배열 정보 중 meta 필드를 확인하는 방식으로 작동
@@ -42,7 +50,7 @@ export default function RouterView() {
         const { authSlice } = JSON.parse(
           localStorage.getItem('persist:root') || '{}'
         );
-        
+
         const { accessToken, user } = JSON.parse(authSlice || '{}');
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
@@ -95,6 +103,7 @@ export default function RouterView() {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (services.cookie.getAccessToken()) {
       services.notice.getUnreadList();
       services.reference.getUnreadList();

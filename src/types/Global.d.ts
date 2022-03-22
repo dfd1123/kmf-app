@@ -4,6 +4,7 @@ declare global {
   interface Window {
     myJs?: any;
     webkit?: any;
+    isBack?: boolean;
   }
   namespace NodeJS {
     interface ProcessEnv {

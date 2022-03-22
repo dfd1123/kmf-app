@@ -106,7 +106,7 @@ const RegisterForm = () => {
           onChange={handleInputChange}
         />
         <TextInput
-          type="text"
+          type="tel"
           name="phone"
           label="연락처"
           placeholder="숫자만 입력해주세요."
