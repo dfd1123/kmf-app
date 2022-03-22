@@ -10,9 +10,10 @@ import { setRouteInfo } from '@/store/info/infoReducer';
 import { Route, RouteMeta } from '@/types/Route';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate, useRoutes } from 'react-router-dom';
+import { Navigate, useLocation, useRoutes } from 'react-router-dom';
 import NotFound from '@/views/pages/NotFound';
 import useService from '@/hooks/useService';
+import useDialog from '@/hooks/useDialog';
 
 const routeList: Route[] = [
   ...auth,
@@ -28,11 +29,7 @@ const routeList: Route[] = [
 export default function RouterView() {
   const dispatch = useDispatch();
   const services = useService();
-
-  if (services.cookie.getAccessToken()) {
-    services.notice.getUnreadList();
-    services.reference.getUnreadList();
-  }
+  const {pathname} = useLocation();
 
   /**
    * @description route middleware 함수이며 각 route module에서
@@ -50,8 +47,8 @@ export default function RouterView() {
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
           if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
-          else if (user?.status === 0 && route.path !== '/mypage' && route.path !== '/manageProfile'){
-            newElement = <Navigate to="/mypage" />;
+          else if (user?.status === 0  && route.path !== '/login'){
+            newElement = <Navigate to="/login" replace />;
           }
         }
       }
@@ -96,6 +93,13 @@ export default function RouterView() {
   useEffect(() => {
     dispatch(setRouteInfo({ routeInfo }));
   }, []);
+
+  useEffect(() => {
+    if (services.cookie.getAccessToken()) {
+      services.notice.getUnreadList();
+      services.reference.getUnreadList();
+    }
+  }, [pathname])
 
   const headerHide = meta.headerHide ? 'hide-header' : '';
   const footerHide = meta.headerHide ? 'hide-footer' : '';

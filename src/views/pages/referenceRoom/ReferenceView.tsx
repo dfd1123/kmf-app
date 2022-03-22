@@ -20,10 +20,12 @@ const ReferenceView = () => {
     if (!ar_id || info) return;
     const result = await services.reference.getReferenceDetail({ ar_id });
     setFiles(JSON.parse(result.archive.ar_file ?? '[]'));
-    const fileList = JSON.parse(result.archive.ar_file ?? '[]').map((filePath: string) => {
-      const fileArr = filePath.split('/');
-      return fileArr[fileArr.length - 1];
-    });
+    const fileList = JSON.parse(result.archive.ar_file ?? '[]').map(
+      (filePath: string) => {
+        const fileArr = filePath.split('/');
+        return fileArr[fileArr.length - 1];
+      }
+    );
 
     setInfo(result.archive);
     setFileList(fileList);
@@ -31,7 +33,7 @@ const ReferenceView = () => {
 
   const fileDownload = (index: number) => {
     services.reference.download(files, index);
-  }
+  };
 
   useEffect(() => {
     getReference();
@@ -41,25 +43,25 @@ const ReferenceView = () => {
     <ReferenceViewStyle>
       <KmfHeader headerText="자료실" prev />
       <div className="notice-cont">
-        <NoticeHead
-          date={info.created_at}
-          title={info.ar_title}
-        />
+        <NoticeHead date={info.created_at} title={info.ar_title} />
         <div className="body">
-        {fileList.length ? (
-          <ul className="files-cont">
-          {fileList.map((file, index) => (
-            <li key={file} onClick={() => fileDownload(index)}>
-              {file}
-            </li>
-          ))}
-        </ul>
-        ) : ('')}
           <div
             className="contents ck-content"
             dangerouslySetInnerHTML={{
               __html: info.ar_content.replace('\n', '<br />'),
             }}></div>
+          {fileList.length ? (
+            <ul className="files-cont">
+              <span>첨부파일</span>
+              {fileList.map((file, index) => (
+                <li key={file} onClick={() => fileDownload(index)}>
+                  {file}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            ''
+          )}
           <span>KMF 화이팅!</span>
         </div>
       </div>
@@ -74,7 +76,7 @@ const ReferenceView = () => {
 
 const ReferenceViewStyle = styled.div`
   .notice-cont {
-    overflow:hidden;
+    overflow: hidden;
     padding: 16px;
 
     .hd {
@@ -115,27 +117,6 @@ const ReferenceViewStyle = styled.div`
       margin-bottom: 100px;
       padding-top: 16px;
       border-top: 1px solid #f1f1f1;
-      
-      .files-cont{
-        background: #f9f9f9;
-        padding: 15px 15px;
-        margin-bottom: 20px;
-
-        >li{
-          padding-right: 20px;
-          font-size: 13px;
-          color: #555;
-          margin-bottom: 10px;
-          background-image: url(${icoDownload});
-          background-repeat: no-repeat;
-          background-position: right center;
-          background-size: 12px;
-
-          &:last-child{
-            margin-bottom:0;
-          }
-        }
-      }
 
       .contents {
         min-height: 100px;
@@ -149,15 +130,45 @@ const ReferenceViewStyle = styled.div`
           word-break: break-all;
         }
 
-
         a {
           /* font-size: 12px; */
           color: #1574bd;
           text-decoration: underline;
         }
 
-        img{
-          max-width:100%;
+        img {
+          max-width: 100%;
+        }
+      }
+
+      .files-cont {
+        margin-top:16px;
+        span {
+          display:block;
+          margin-bottom:8px;
+          font-weight: 400;
+          font-size: 12px;
+          color:#828282;
+          line-height: 17px;
+        }
+        > li {
+          cursor:pointer;
+          background: rgba(21, 116, 189, 0.05);
+          padding: 16px 15px;
+          margin-bottom: 20px;
+          padding-right: 20px;
+          font-size: 14px;
+          color: #353535;
+          margin-bottom: 10px;
+          background-image: url(${icoDownload});
+          background-repeat: no-repeat;
+          background-position: calc(100% - 10px) center;
+          background-size: 20px;
+          border-radius: 5px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
       }
 

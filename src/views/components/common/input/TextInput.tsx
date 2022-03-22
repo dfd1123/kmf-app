@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import basicResetClose from "@/assets/img/icon/ico-circle-close.svg";
 import searchIcon from "@/assets/img/kmf/ico/ico-search2.svg";
+import {phoneNumberConvert} from '@/utils/numberUtils';
 
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   className?: string;
   reset?: boolean;
   number?:boolean;
+  phoneNumber?: boolean;
   autocomplete?:'on'|'off';
   onEnter?: (value : any , name?: any) => void;
   onChange?: (value : any , name?: any) => void;
@@ -26,6 +28,7 @@ const TextInput = ({
   tabIndex = 0,
   reset = false,
   number = false,
+  phoneNumber = false,
   autoComplete = 'off',
   onEnter,
   onChange,
@@ -66,6 +69,9 @@ const TextInput = ({
     let {value, name} = e.target;
     if(number) {
       value = value.replace(/[^0-9]/g,'');
+    }else if(phoneNumber) {
+      value = phoneNumberConvert(value);
+      console.log(value);
     }
     setText(value);
     if (onChange) onChange(value, name);
@@ -73,11 +79,13 @@ const TextInput = ({
   };
 
   const handleReset = () => {
+    console.log('awdawaw')
     if (input.current) {
       input.current.value = "";
       const {value, name} = input.current;
       setText('');
       if (onChange) onChange("", name);
+      if (onInput) onInput(value, name);
     }
   };
 

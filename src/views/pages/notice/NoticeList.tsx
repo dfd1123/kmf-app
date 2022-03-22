@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import noticeBg from '@/assets/img/kmf/bg/notice-bg-img.jpg';
 import kmfLogo from '@/assets/img/kmf/kmf-logo.svg';
 import useService from '@/hooks/useService';
@@ -11,29 +11,47 @@ import KmfListWrapper from '@/views/components/common/listView/KmfListWrapper';
 import NoticeHead from '@/views/components/notice/NoticeHead';
 import useScrollMove from '@/hooks/useScrollMove';
 import KmfFooter from '@/views/components/layouts/KmfFooter';
+import SearchBox from '@/views/components/referenceRoom/SearchBox';
+import BasicInput from '@/views/components/common/input/TextInput';
 
 const NoticeList = () => {
   const services = useService();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [list, setList] = useState<NoticeInfo[]>([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState(
+    searchParams.get('searchKeyword') || ''
+  );
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'notice-list',
     path: '/notice',
   });
 
-  const getNotice = async () => {
-    if (list.length && list.length === totalCount) return;
+  const getNotice = async (offset: number = 0) => {
+    if (offset && list.length === totalCount) return;
 
-    const result: NoticeListResponse = await services.notice.getNoticeList({
-      offset: list.length,
-      limit: 30,
-    });
-    setTotalCount(result.notices_count);
-    setList([...list, ...result.notices]);
+    const { notices, notices_count }: NoticeListResponse =
+      await services.notice.getNoticeList({
+        searchKeyword,
+        offset,
+        limit: 30,
+      });
+
+    if (totalCount !== notices_count) setTotalCount(notices_count);
+    if (!offset) {
+      window.scrollY = 0;
+      setList(notices);
+    } else setList([...list, ...notices]);
   };
 
   useEffect(() => {
-    if (list.length === 0) getNotice();
+    navigate(`/notice?searchKeyword=${searchKeyword}`, { replace: true });
+    getNotice(0);
+  }, [searchKeyword]);
+
+  useEffect(() => {
+    getNotice(list.length);
   }, []);
 
   useEffect(() => {
@@ -69,17 +87,29 @@ const NoticeList = () => {
         )}
       </div>
       <div className="list-holder">
+        <div className="search-box">
+          <BasicInput
+            name="search"
+            type="search"
+            value={searchKeyword}
+            reset={true}
+            className="search-inp"
+            placeholder="키워드로 검색"
+            onInput={setSearchKeyword}
+            onEnter={() => getNotice(0)}
+          />
+        </div>
         <InfiniteScroll loadMore={getNotice}>
           {list.map((notice) => (
             <KmfListWrapper key={notice.no_id} className="no-list">
-                <Link to={`/notice/${notice.no_id}`}>
-                  <NoticeHead
-                    id={notice.no_id}
-                    type={notice.no_type}
-                    title={notice.no_title}
-                    date={notice.created_at}
-                  />
-                </Link>
+              <Link to={`/notice/${notice.no_id}`}>
+                <NoticeHead
+                  id={notice.no_id}
+                  type={notice.no_type}
+                  title={notice.no_title}
+                  date={notice.created_at}
+                />
+              </Link>
             </KmfListWrapper>
           ))}
         </InfiniteScroll>
@@ -90,7 +120,7 @@ const NoticeList = () => {
 };
 
 const NoticeListStyle = styled.div`
-  padding-bottom:70px;
+  padding-bottom: 70px;
   .noti-hd {
     position: relative;
     height: 250px;
@@ -146,6 +176,13 @@ const NoticeListStyle = styled.div`
   .list-holder {
     padding: 0 16px;
     margin-bottom: 20px;
+
+    .search-box {
+      > div {
+        width: 100%;
+        margin: 16px 0;
+      }
+    }
 
     .no-list {
       padding-top: 16px;

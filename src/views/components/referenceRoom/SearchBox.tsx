@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { BasicInput } from '@/views/components/common/input/TextInput';
 
 interface PropsType {
+  value?: string;
   search: (text: string) => void;
 }
 
-const SearchBox = ({ search }: PropsType) => {
-  const [searchValue, setSearchValue] = useState('');
+const SearchBox = ({ value = '', search }: PropsType) => {
+  const [searchValue, setSearchValue] = useState(value);
 
   const handleChange = (str: string) => {
     setSearchValue(str);

@@ -6,6 +6,7 @@ import KmfHeader from '@/views/components/layouts/KmfHeader';
 import useService from '@/hooks/useService';
 import NoticeHead from '@/views/components/notice/NoticeHead';
 import { NoticeInfo } from '@/services/types/Notice';
+import icoDownload from '@/assets/img/kmf/ico/ico-download.svg';
 
 const NoticeView = () => {
   const navigate = useNavigate();
@@ -13,12 +14,23 @@ const NoticeView = () => {
   let { no_id } = useParams();
   const [info, setInfo] = useState<NoticeInfo | null>(null);
   const [noticeType, setNoticeType] = useState('');
+  const [files, setFiles] = useState([]);
+  const [fileList, setFileList] = useState([]);
 
   const getNotice = async () => {
     if (!no_id || info) return;
     const result = await services.notice.getNoticeInfo({ no_id });
+    setFiles(JSON.parse(result.notice.no_file ?? '[]'));
+
+    const fileList = JSON.parse(result.notice.no_file ?? '[]').map(
+      (filePath: string) => {
+        const fileArr = filePath.split('/');
+        return fileArr[fileArr.length - 1];
+      }
+    );
 
     setInfo(result.notice);
+    setFileList(fileList);
 
     switch (result.notice.no_type) {
       case 1:
@@ -31,6 +43,10 @@ const NoticeView = () => {
         setNoticeType('경조사');
         break;
     }
+  };
+
+  const fileDownload = (index: number) => {
+    services.reference.download(files, index);
   };
 
   useEffect(() => {
@@ -46,16 +62,32 @@ const NoticeView = () => {
           date={info.created_at}
           title={info.no_title}
         />
-        {info.no_type === 2 && (<div className="date-range">
-          <span>진행기간</span>
-          <p>{info.no_date_start} ~ {info.no_date_end}</p>
-        </div>)}
+        {info.no_type === 2 && (
+          <div className="date-range">
+            <span>진행기간</span>
+            <p>
+              {info.no_date_start} ~ {info.no_date_end}
+            </p>
+          </div>
+        )}
         <div className="body">
           <div
             className="contents ck-content"
             dangerouslySetInnerHTML={{
               __html: info.no_content.replace('\n', '<br />'),
             }}></div>
+            {fileList.length ? (
+            <ul className="files-cont">
+              <span>첨부파일</span>
+              {fileList.map((file, index) => (
+                <li key={file} onClick={() => fileDownload(index)}>
+                  {file}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            ''
+          )}
           <span>KMF 화이팅!</span>
         </div>
       </div>
@@ -70,7 +102,7 @@ const NoticeView = () => {
 
 const NoticeViewStyle = styled.div`
   .notice-cont {
-    overflow:hidden;
+    overflow: hidden;
     padding: 16px;
 
     .label {
@@ -137,6 +169,40 @@ const NoticeViewStyle = styled.div`
         /* font-size: 12px; */
         line-height: 1.5;
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6 {
+          font-family: inherit;
+          font-weight: 600;
+          line-height: 1.5;
+          margin-bottom: 0.5rem;
+          color: #32325d;
+        }
+
+        h2,
+        .h2 {
+          font-size: 1.25rem;
+        }
+
+        h3,
+        .h3 {
+          font-size: 1.0625rem;
+        }
+
+        h4,
+        .h4 {
+          font-size: 0.9375rem;
+        }
+
         p {
           word-break: break-all;
         }
@@ -149,6 +215,37 @@ const NoticeViewStyle = styled.div`
 
         img {
           max-width: 100%;
+        }
+      }
+
+      .files-cont {
+        margin-top:16px;
+        span {
+          display:block;
+          margin-bottom:8px;
+          font-weight: 400;
+          font-size: 12px;
+          color:#828282;
+          line-height: 17px;
+        }
+        > li {
+          cursor:pointer;
+          background: rgba(21, 116, 189, 0.05);
+          padding: 16px 15px;
+          margin-bottom: 20px;
+          padding-right: 20px;
+          font-size: 14px;
+          color: #353535;
+          margin-bottom: 10px;
+          background-image: url(${icoDownload});
+          background-repeat: no-repeat;
+          background-position: calc(100% - 10px) center;
+          background-size: 20px;
+          border-radius: 5px;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
         }
       }
 

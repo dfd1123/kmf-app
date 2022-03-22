@@ -9,22 +9,25 @@ import KmfFooter from '@/views/components/layouts/KmfFooter';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import SearchBox from '@/views/components/referenceRoom/SearchBox';
 import ReferenceList from '@/views/components/referenceRoom/ReferenceList';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import InfiniteScroll from '@/views/components/common/InfiniteScroll';
 
 const ReferenceRoom = () => {
   const services = useService();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [list, setList] = useState<RefrenceDataType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchKeyword, setSearchKeyword] = useState(
+    searchParams.get('searchKeyword') || ''
+  );
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'ref-list',
     path: '/ref',
   });
 
-  const getRefList = (refresh: boolean = false) => {
-    searchReference('', refresh ? 0 : list.length);
-  };
-
-  const searchReference = async (searchKeyword = '', offset: number = 0) => {
-    if (list.length && list.length === totalCount && offset) return;
+  const getRefList = async (offset: number = 0) => {
+    if (offset && list.length === totalCount && offset) return;
 
     const { archives, archives_count } =
       await services.reference.getReferenceList({
@@ -41,7 +44,12 @@ const ReferenceRoom = () => {
   };
 
   useEffect(() => {
-    if (list.length === 0) getRefList(true);
+    navigate(`/ref?searchKeyword=${searchKeyword}`, { replace: true });
+    getRefList(0);
+  }, [searchKeyword]);
+
+  useEffect(() => {
+    getRefList(list.length);
   }, []);
 
   useEffect(() => {
@@ -62,16 +70,14 @@ const ReferenceRoom = () => {
   return (
     <ReferenceRoomStyle>
       <KmfHeader headerText="자료실" />
-      <SearchBox search={searchReference} />
+      <SearchBox value={searchKeyword} search={setSearchKeyword} />
       <span className="item-cnt">총 {list.length} 건</span>
       <div className="list-holder">
-        {list.map((item) => (
-          <KmfListWrapper key={`ref-${item.ar_id}`}>
-            <ReferenceList
-              info={item}
-            />
-          </KmfListWrapper>
-        ))}
+        <InfiniteScroll loadMore={() => getRefList(list.length)}>
+          {list.map((item) => (
+              <ReferenceList key={`ref-${item.ar_id}`} info={item} />
+          ))}
+        </InfiniteScroll>
       </div>
       <KmfFooter />
     </ReferenceRoomStyle>
@@ -91,7 +97,7 @@ const ReferenceRoomStyle = styled.div`
   }
 
   .list-holder {
-    margin-bottom:100px;
+    margin-bottom: 100px;
     > div {
       width: calc(100% - 32px);
       margin: 0 auto;

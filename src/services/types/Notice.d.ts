@@ -1,4 +1,5 @@
 export interface GetNoticeListInput {
+    searchKeyword?: string;
     offset: number;
     limit: number;
     no_type?: number;

@@ -4,11 +4,12 @@ import { BasicInput } from '@/views/components/common/input/TextInput';
 import { useNavigate } from 'react-router';
 
 interface PropsType {
+  value?: string;
   search: (text: string) => void;
 }
 
-const UserSearchBox = ({ search }: PropsType) => {
-  const [searchValue, setSearchValue] = useState('');
+const UserSearchBox = ({ value = '', search }: PropsType) => {
+  const [searchValue, setSearchValue] = useState(value);
 
   const handleSearch = (str: string) => {
     setSearchValue(str);

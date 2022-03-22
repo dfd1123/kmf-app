@@ -86,8 +86,14 @@ export default class ApiConnection {
           const data = _get(e, 'response.data');
           const code: string = _get(e, 'response.data.errorCode');
           const msg: string = _get(e, 'response.data.msg', '');
+          const status = _get(e, 'response.status');
 
-          this.#toast(errorCode[code] || msg || errorCode['DEFAULT']);
+          if(status === 401){
+            new Error('');
+          }else{
+            this.#toast(errorCode[code] || msg || errorCode['DEFAULT']);
+          }
+
 
           reject({ error: data, code });
         }).finally(() => {

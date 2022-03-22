@@ -10,25 +10,23 @@ import useScrollMove from '@/hooks/useScrollMove';
 import { GetUserListResponse, UserListInfo } from '@/services/types/User';
 import InfiniteScroll from '@/views/components/common/InfiniteScroll';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 const SearchUser = () => {
   const services = useService();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [list, setList] = useState<UserListInfo[]>([]);
   const [totalCount, setTotalCount] = useState(0);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [orderBy, setOrderBy] = useState('name');
+  const [searchKeyword, setSearchKeyword] = useState(searchParams.get('searchKeyword') || '');
+  const [orderBy, setOrderBy] = useState(searchParams.get('orderBy') || 'name');
   const { scrollInfos, scrollRemove } = useScrollMove({
     page: 'search-user',
     path: '/search/user',
   });
 
-  const getUserList = (refresh: boolean = false) => {
-    searchUser(searchKeyword, refresh ? 0 : list.length);
-  };
-
-  const searchUser = async (searchKeyword: string = '', offset: number = 0) => {
-    if (list.length && list.length === totalCount && offset) return;
+  const getUserList = async (offset: number = 0) => {
+    if (offset && list.length === totalCount && offset) return;
 
     const { users, users_count }: GetUserListResponse =
       await services.user.getUserList({
@@ -48,25 +46,16 @@ const SearchUser = () => {
   // 일단 SearchBox에서 onChange 이벤트가 발생할때마다 검색되도록 했습니다.
   const onChange = async (keyword: string) => {
     setSearchKeyword(keyword);
-    const { users, users_count } = await services.user.getUserList({
-      searchKeyword: keyword,
-      orderBy,
-      limit: 30,
-      offset: 0,
-    });
-
-    if (totalCount !== users_count) setTotalCount(users_count);
-    
-    setList(users);
   };
 
   useEffect(() => {
-    if (list.length === 0) getUserList(true);
+    getUserList(list.length);
   }, []);
 
   useEffect(() => {
-    getUserList(true);
-  }, [orderBy]);
+    navigate(`/search/user?searchKeyword=${searchKeyword}&orderBy=${orderBy}`, {replace: true});
+    getUserList(0);
+  }, [searchKeyword, orderBy]);
 
   useEffect(() => {
     if (scrollInfos) {
@@ -86,7 +75,7 @@ const SearchUser = () => {
   return (
     <SearchUserStyle>
       <KmfHeader headerText="회원검색" />
-      <UserSearchBox search={onChange} />
+      <UserSearchBox value={searchKeyword} search={onChange} />
       <div className="cont">
         <div className="control-box">
           <span className="total-cnt">
@@ -112,7 +101,7 @@ const SearchUser = () => {
           </div>
         </div>
         <div className="list-holder">
-          <InfiniteScroll loadMore={getUserList}>
+          <InfiniteScroll loadMore={() => getUserList(list.length)}>
             {list.length > 0 ? (
               list.map((user, index) => (
                 <UserList

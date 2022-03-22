@@ -9,8 +9,10 @@ interface PropsType {
   title: string;
 }
 
-const NoticeHead = ({id,  type, date, title }: PropsType) => {
-  const unreadNoticeList = useTypedSelector(state => state.noticeSlice.unreadNoticeList);
+const NoticeHead = ({ id, type, date, title }: PropsType) => {
+  const unreadNoticeList = useTypedSelector(
+    (state) => state.noticeSlice.unreadNoticeList
+  );
   const unread = unreadNoticeList.includes(id ?? -1);
 
   let noticeType = '';
@@ -30,65 +32,68 @@ const NoticeHead = ({id,  type, date, title }: PropsType) => {
 
   return (
     <NoticeHeadStyle>
-      {noticeType ? (<span className={`label type-${type}`}>{noticeType}</span>) : ('')}
+      {noticeType ? (
+        <span className={`label type-${type}`}>{noticeType}</span>
+      ) : (
+        ''
+      )}
       <span className="date">{date}</span>
-      {unread ? (<span className="new">new</span>) : ('')}
-      <div className="title">
-        {title}
-      </div>
+      {unread ? <span className="new">new</span> : ''}
+      <div className="title">{title}</div>
     </NoticeHeadStyle>
   );
 };
 
 const NoticeHeadStyle = styled.div`
-.label {
-        min-width: 70px;
-        margin-right: 8px;
-        padding: 4px 13px;
-        font-size: 12px;
-        line-height: 17px;
-        color: #fff;
-        text-align: center;
-        border-radius: 3px;
+  .label {
+    min-width: 70px;
+    margin-right: 8px;
+    padding: 4px 13px;
+    font-size: 12px;
+    line-height: 17px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
 
-        &.type-{
-            &1{
-                background-color: #28a8e1;
-            }
-            &2{
-                background-color: #A7CD10;
-            }
-            &3{
-                background-color: #000000;
-            }
-        }
+    &.type- {
+      &1 {
+        background-color: #28a8e1;
       }
+      &2 {
+        background-color: #a7cd10;
+      }
+      &3 {
+        background-color: #000000;
+      }
+    }
+  }
 
-      .date {
-        font-size: 12px;
-        color: #828282;
-        line-height: 17px;
-      }
+  .date {
+    font-size: 12px;
+    color: #828282;
+    line-height: 17px;
+  }
 
-      .new{
-        margin-left: 8px;
-        font-size: 12px;
-        color:red;
-      }
+  .new {
+    margin-left: 8px;
+    font-size: 12px;
+    color: red;
+  }
 
-      .title {
-        padding-top: 8px;
-        padding-bottom: 16px;
-        font-size: 14px;
-        line-height: 20px;
-        color: #353535;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        word-wrap: break-word;
-      }
+  .title {
+    padding-top: 8px;
+    margin-bottom: 16px;
+    padding-right: 21px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #353535;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+  }
 `;
 
 export default NoticeHead;

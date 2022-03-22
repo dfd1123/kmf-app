@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import arrowImg from '@/assets/img/kmf/arrow.png';
+import icoArrowImg from '@/assets/img/kmf/arrow.png';
 
 interface PropsType {
   imgUrl?: string;
@@ -30,8 +31,7 @@ const ContainerStyle = styled.div<{ imgUrl?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-image: url(${(props) =>
-    props.imgUrl ? props.imgUrl : 'img/kmf/arrow.png'});
+  background-image: url(${icoArrowImg});
   background-position: 95% center;
   background-size: 16px;
   background-repeat: no-repeat;

@@ -95,6 +95,7 @@ const ManageProfile = () => {
             name="phone"
             placeholder="숫자만 입력해주세요."
             label="연락처"
+            phoneNumber
             value={userInfo.phone}
             onChange={(e: React.ChangeEvent) => onChangeHandler('phone', e)}
             number
