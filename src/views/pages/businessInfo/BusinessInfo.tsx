@@ -69,10 +69,7 @@ const closestNumber = 3;
 function BusinessInfo() {
   const locale = 'ko-KR';
   const service = useService();
-  // const [businesses, setBusinesses] = useState<businessInfoType[]>();
   const [businessData, setBusinessData] = useState<businessInfoType[]>();
-  // const [tileContentData, setTileContentData] = useState<any>();
-  // const [dates, setDates] = useState<string[]>([]);
   const [currentDate, setCurrentDate] = useState(
     dateFormat(new Date(), 'yyyy-MM-dd')
   );
@@ -111,26 +108,6 @@ function BusinessInfo() {
         return result;
       });
     setBusinessData(businessAllDateResult);
-
-    setDates(businessInfoDates);
-    const businessDataResult = notices
-      .filter((item: businessInfoType) => String(item.no_type) !== String(1))
-      .filter(
-        (item: businessInfoType) =>
-          item.no_date_start.slice(0, 7) === currentDate.slice(0, 7)
-      )
-      .sort((a: businessInfoType, b: businessInfoType) => {
-        if (
-          a.no_date_start <= b.no_date_start &&
-          a.no_date_end <= b.no_date_end
-        )
-          return -1;
-        if (a.no_date_start > b.no_date_start) return 1;
-      });
-    setBusinesses(businessDataResult);
-    // console.log(businessData);
-    // const dateArr = notices.map((item: any) => item.no_date_start);
-    // setDates(dateArr);
   };
 
   const setTileContent = (date: Date, view: string) => {
@@ -151,7 +128,6 @@ function BusinessInfo() {
             return currentData;
           })
       : null;
-    // setTileContentData(data);
 
     return dataResult ? (
       dataResult.length > 0 ? (
@@ -179,7 +155,7 @@ function BusinessInfo() {
       subMonths(stringToDate(currentDate), 1),
       'yyyy-MM-dd'
     );
-    location.search = `/info?date=${currentDate}`;
+    // location.search = `/info?date=${currentDate}`;
     setCurrentDate(prevMonth);
     getBusinessData();
   };
@@ -189,7 +165,7 @@ function BusinessInfo() {
       addMonths(stringToDate(currentDate), 1),
       'yyyy-MM-dd'
     );
-    location.search = `/info?date=${currentDate}`;
+    // location.search = `/info?date=${currentDate}`;
     setCurrentDate(nextMonth);
     getBusinessData();
   };
@@ -203,7 +179,6 @@ function BusinessInfo() {
   useEffect(() => {
     if (!location.search) {
       const date = dateFormat(new Date());
-      // navigate(`/info?date=${date}`);
       location.search = `/info?date=${date}`;
     } else {
       const date = location.search.split('=')[1];
