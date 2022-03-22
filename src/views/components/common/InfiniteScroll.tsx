@@ -1,5 +1,5 @@
 import { useTypedSelector } from "@/store";
-import { useEffect, useRef, useState } from "react";
+import {useEffect, useMemo, useRef, useState} from 'react';
 import styled from 'styled-components';
 interface PropTypes {
     children: React.ReactNode;
@@ -10,7 +10,7 @@ interface PropTypes {
 const InfiniteScroll = ({children, loading = false, loadMore} : PropTypes) => {
     const pageEnd = useRef(null);
     const [observer, setObserver] = useState<IntersectionObserver | null>(null);
-    // const loading = useTypedSelector((state) => state.infoReducer.loading, (a,b) => a === b);
+    const loadMoreMemo = useMemo(() => loadMore, [loadMore])
 
     useEffect(() : any => {
         if(pageEnd.current){
@@ -31,7 +31,7 @@ const InfiniteScroll = ({children, loading = false, loadMore} : PropTypes) => {
         }
 
         return () => observer && observer.disconnect();
-    }, [pageEnd.current, loadMore])
+    }, [pageEnd.current, loadMoreMemo])
     return (
         <InfiniteScrollStyle>
             {children}

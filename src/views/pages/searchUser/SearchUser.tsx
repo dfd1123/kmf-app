@@ -59,7 +59,11 @@ const SearchUser = () => {
 
   useEffect(() => {
     if (scrollInfos) {
-      window.scrollTo(0, scrollInfos);
+      if(window.isBack){
+        window.scrollTo(0, scrollInfos);
+      }else{
+        scrollRemove();
+      }
       const scrollTop = Math.max(
         document.documentElement.scrollTop,
         document.body.scrollTop
@@ -67,6 +71,7 @@ const SearchUser = () => {
       //현재위치와 복구위치가 같다면
       if (scrollTop == scrollInfos) {
         scrollRemove();
+        window.isBack = false;
       }
     }
     //의존성 배열에 fetching 해오는 데이터를 넣어준다.

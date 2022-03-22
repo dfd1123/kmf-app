@@ -92,8 +92,9 @@ const ManageProfile = () => {
           />
           <BasicInput
             className="text-input"
+            type="tel"
             name="phone"
-            placeholder="숫자만 입력해주세요."
+            placeholder="- 없이 숫자만 입력해주세요."
             label="연락처"
             phoneNumber
             value={userInfo.phone}

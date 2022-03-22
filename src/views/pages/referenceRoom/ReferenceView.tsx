@@ -1,24 +1,24 @@
 import useService from '@/hooks/useService';
-import { RefrenceDataType } from '@/services/types/Reference';
+import {RefrenceDataType} from '@/services/types/Reference';
 import FooterButton from '@/views/components/common/FooterButton';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import NoticeHead from '@/views/components/notice/NoticeHead';
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import {useState, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router';
 import styled from 'styled-components';
 import icoDownload from '@/assets/img/kmf/ico/ico-download.svg';
 
 const ReferenceView = () => {
   const navigate = useNavigate();
   const services = useService();
-  let { ar_id } = useParams();
+  let {ar_id} = useParams();
   const [info, setInfo] = useState<RefrenceDataType | null>(null);
   const [files, setFiles] = useState([]);
   const [fileList, setFileList] = useState([]);
 
   const getReference = async () => {
     if (!ar_id || info) return;
-    const result = await services.reference.getReferenceDetail({ ar_id });
+    const result = await services.reference.getReferenceDetail({ar_id});
     setFiles(JSON.parse(result.archive.ar_file ?? '[]'));
     const fileList = JSON.parse(result.archive.ar_file ?? '[]').map(
       (filePath: string) => {
@@ -48,7 +48,7 @@ const ReferenceView = () => {
           <div
             className="contents ck-content"
             dangerouslySetInnerHTML={{
-              __html: info.ar_content.replace('\n', '<br />'),
+              __html: info.ar_content.replace('\n', '<br />')
             }}></div>
           {fileList.length ? (
             <ul className="files-cont">
@@ -156,9 +156,12 @@ const ReferenceViewStyle = styled.div`
           background: rgba(21, 116, 189, 0.05);
           padding: 16px 15px;
           margin-bottom: 20px;
-          padding-right: 20px;
+          padding-right: 35px;
           font-size: 14px;
           color: #353535;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           margin-bottom: 10px;
           background-image: url(${icoDownload});
           background-repeat: no-repeat;

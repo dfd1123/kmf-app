@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import useService from '@/hooks/useService';
 import KmfHeader from '@/views/components/layouts/KmfHeader';
 import KmfImageViewer from '@/views/components/common/kmf/KmfImageViewer';
 import FooterButton from '@/views/components/common/FooterButton';
-import { useNavigate, useParams } from 'react-router';
-import { ProfileInput } from '@/services/types/User';
+import {useParams} from 'react-router';
+import {ProfileInput} from '@/services/types/User';
 import ProfileContent from '@/views/components/searchUser/ProfileContent';
 import call from '@/assets/img/kmf/call.svg';
 import basicProfile from '@/assets/img/kmf/default_profile.png';
 
 const ProfilePage = () => {
   const services = useService();
-  let { no_id } = useParams();
+  let {no_id} = useParams();
   const [userInfo, setUserInfo] = useState<ProfileInput | null>();
   const [imgUrl, setImgUrl] = useState(basicProfile);
 
   const getUser = async () => {
-    const result = await services.user.getUser({ id: no_id ? no_id : '' });
+    const result = await services.user.getUser({id: no_id ? no_id : ''});
     let image = JSON.parse(result.user.profile_img || '[]');
     image = image.length
       ? image[0].includes('http')
@@ -39,7 +39,7 @@ const ProfilePage = () => {
         <KmfImageViewer
           imgUrl={imgUrl}
           width="100%"
-          height="262px"></KmfImageViewer>
+          height="262px" />
         <div className="content-wrapper">
           {userInfo?.association && (
             <div className="association">
@@ -61,9 +61,9 @@ const ProfilePage = () => {
             content={
               userInfo?.phone
                 ? userInfo.phone.replace(
-                    /^(\d{2,3})(\d{3,4})(\d{4})$/,
-                    `$1-$2-$3`
-                  )
+                /^(\d{2,3})(\d{3,4})(\d{4})$/,
+                `$1-$2-$3`
+                )
                 : ''
             }
           />

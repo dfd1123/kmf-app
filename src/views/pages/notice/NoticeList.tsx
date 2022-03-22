@@ -56,7 +56,11 @@ const NoticeList = () => {
 
   useEffect(() => {
     if (scrollInfos) {
-      window.scrollTo(0, scrollInfos);
+      if(window.isBack){
+        window.scrollTo(0, scrollInfos);
+      }else{
+        scrollRemove();
+      }
       const scrollTop = Math.max(
         document.documentElement.scrollTop,
         document.body.scrollTop
@@ -64,8 +68,10 @@ const NoticeList = () => {
       //현재위치와 복구위치가 같다면
       if (scrollTop == scrollInfos) {
         scrollRemove();
+        window.isBack = false;
       }
     }
+
     //의존성 배열에 fetching 해오는 데이터를 넣어준다.
   }, [scrollInfos, scrollRemove, list]);
 
@@ -99,7 +105,7 @@ const NoticeList = () => {
             onEnter={() => getNotice(0)}
           />
         </div>
-        <InfiniteScroll loadMore={getNotice}>
+        <InfiniteScroll loadMore={() => getNotice(list.length)}>
           {list.map((notice) => (
             <KmfListWrapper key={notice.no_id} className="no-list">
               <Link to={`/notice/${notice.no_id}`}>
