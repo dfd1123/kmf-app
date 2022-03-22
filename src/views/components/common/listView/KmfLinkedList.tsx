@@ -11,6 +11,7 @@ interface KmfLinkedListProps {
   fontSize?: string;
   progress?: string;
   progressColor?: string;
+  paddingRight?: string;
 }
 
 const KmfLinkedList = ({
@@ -22,6 +23,7 @@ const KmfLinkedList = ({
   fontSize = '14px',
   progress,
   progressColor,
+  paddingRight,
 }: KmfLinkedListProps) => {
   to = to ?? window.location.href;
   return (
@@ -29,7 +31,10 @@ const KmfLinkedList = ({
       {to ? (
         <Link className={'link'} to={to}>
           {date && <DateViewer>{date}</DateViewer>}
-          <Title fontColor={fontColor} fontSize={fontSize}>
+          <Title
+            fontColor={fontColor}
+            fontSize={fontSize}
+            paddingRight={paddingRight ? paddingRight : ''}>
             {title}
           </Title>
           <div className="progress">{progress}</div>
@@ -37,7 +42,10 @@ const KmfLinkedList = ({
       ) : (
         <div className={'link'}>
           {date && <DateViewer>{date}</DateViewer>}
-          <Title fontColor={fontColor} fontSize={fontSize}>
+          <Title
+            fontColor={fontColor}
+            fontSize={fontSize}
+            paddingRight={paddingRight ? paddingRight : ''}>
             {title}
           </Title>
         </div>
@@ -68,10 +76,15 @@ const Container = styled.div<{ progressColor?: string }>`
   }
 `;
 
-const Title = styled.p<{ fontColor: string; fontSize: string }>`
+const Title = styled.p<{
+  fontColor: string;
+  fontSize: string;
+  paddingRight: string;
+}>`
   font-size: 14px;
   font-weight: 400;
-  width: 60%;
+  //width: 80%;
+  padding-right: ${(props) => props.paddingRight};
   line-height: 1.4rem;
   display: -webkit-box !important;
   overflow: hidden !important;
