@@ -24,7 +24,7 @@ import {
 } from 'date-fns';
 import { useParams, useLocation, useNavigate } from 'react-router';
 import businessInfo from '@/router/businessInfo';
-import arrowImg from '@/assets/img/kmf/arrow.png';
+import arrowImg from '@/assets/img/kmf/kmfArrow.png';
 
 const ddd = styled.div`
   color: #a7cd10;
@@ -261,12 +261,12 @@ function BusinessInfo() {
           <div className="month-change">
             <ArrowBtn
               className="month-change_prev"
-              revert
+              revert={false}
               onClick={setPrevMonth}
             />
             <ArrowBtn
               className="month-change_next"
-              revert={false}
+              revert
               onClick={setNextMonth}
             />
           </div>
@@ -411,23 +411,28 @@ const CurrentMonthStyle = styled.div`
   background-color: #fff;
   display: flex;
   justify-content: space-between;
+  color: #1574bd;
 
   .month-change {
     display: flex;
     width: 48px;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 8px;
   }
 `;
 
 const ArrowBtn = styled.button<{ revert: boolean }>`
   background-image: url(${arrowImg});
-  width: 16px;
-  height: 16px;
-  background-size: 14px;
+  width: 7px;
+  height: 10px;
+  background-size: 7px;
+  //background-size: 14px;
   background-repeat: no-repeat;
   background-position: center;
   transform: ${(props) => (props.revert ? 'scaleX(-1)' : '')};
   border: none;
+  object-fit: contain;
 
   &:hover {
     // background-color: #000;
