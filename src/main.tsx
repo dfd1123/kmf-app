@@ -1,5 +1,5 @@
-// @ts-ignore
-import * as smoothscroll from 'smoothscroll-polyfill';
+import { polyfill } from 'seamless-scroll-polyfill';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { persistStore } from 'redux-persist';
 import store from '@/store';
 import App from '@/App';
 
-smoothscroll.polyfill();
+polyfill();
 
 let persistor = persistStore(store);
 
