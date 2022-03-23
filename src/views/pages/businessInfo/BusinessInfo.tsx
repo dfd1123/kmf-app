@@ -159,6 +159,10 @@ function BusinessInfo() {
     // location.search = `/info?date=${currentDate}`;
     setCurrentDate(prevMonth);
     getBusinessData();
+    const el = document.querySelector(
+      '.react-calendar__navigation__prev-button'
+    );
+    el?.dispatchEvent(new Event('click', { bubbles: true }));
   };
 
   const setNextMonth = () => {
@@ -169,6 +173,10 @@ function BusinessInfo() {
     // location.search = `/info?date=${currentDate}`;
     setCurrentDate(nextMonth);
     getBusinessData();
+    const el = document.querySelector(
+      '.react-calendar__navigation__next-button'
+    );
+    el?.dispatchEvent(new Event('click', { bubbles: true }));
   };
 
   const onDateChange = (value: Date, event: React.ChangeEvent) => {
@@ -385,7 +393,7 @@ const ContainerStyle = styled.div`
 
 const CurrentMonthStyle = styled.div`
   width: 100%;
-  padding: 12px 15px 12px 20px;
+  padding: 24px 15px 24px 20px;
   border-top: 2px solid #eeeeee;
   border-bottom: 1px solid #eee;
   position: sticky;
