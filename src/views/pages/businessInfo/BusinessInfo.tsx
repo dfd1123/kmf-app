@@ -134,11 +134,6 @@ function BusinessInfo() {
       dataResult.length > 0 ? (
         <div className="tileWrapper">
           {dataResult.map((item, index) => {
-            // console.log(
-            //   item[dateFormat(date, 'yyyy-MM-dd')][0] === 3
-            //     ? '경조사'
-            //     : '사업안내'
-            // );
             return index > 5 ? null : (
               <TileContent
                 dotColor={color[item[dateFormat(date, 'yyyy-MM-dd')][0]]}
@@ -197,14 +192,12 @@ function BusinessInfo() {
   }, []);
 
   const onMonthChange = (active: any) => {
-    console.log('month change');
     setCurrentDate(dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
     getBusinessData();
     navigate(`/info?date=${dateFormat(active.activeStartDate)}`);
   };
 
   useEffect(() => {
-    console.log('current date change');
     getBusinessData();
   }, [currentDate]);
 
@@ -221,7 +214,7 @@ function BusinessInfo() {
       const isInInterval = (date: string) =>
         isWithinInterval(stringToDate(date), { start: start, end: end });
       const isIn = item.dates ? item.dates.some(isInInterval) : false;
-      if (!isIn) return null;
+      if (!isIn) return;
       const onGoing = isWithinInterval(current, {
         start: stringToDate(item.no_date_start),
         end: stringToDate(item.no_date_end),
@@ -246,7 +239,7 @@ function BusinessInfo() {
         </KmfListWrapper>
       );
     });
-
+  console.log(businessScheduleLists);
   return (
     <ContainerStyle>
       <div ref={scrollRef} />
@@ -279,13 +272,27 @@ function BusinessInfo() {
           </div>
         </CurrentMonthStyle>
         <SupportListWrapperStyle>
-          {businessScheduleLists}
+          {businessScheduleLists?.every((item) => item) ? (
+            businessScheduleLists
+          ) : (
+            <NoList>일정이 없습니다.</NoList>
+          )}
         </SupportListWrapperStyle>
       </div>
       <KmfFooter />
     </ContainerStyle>
   );
 }
+
+const NoList = styled.div`
+  display: flex;
+  position: absolute;
+  top: calc(100vh / 4);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-top: 48px;
+`;
 
 const CalendarWrapperStyle = styled(Calendar)`
   width: 100%;
