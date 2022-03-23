@@ -181,6 +181,7 @@ function BusinessInfo() {
     if (!location.search) {
       const date = dateFormat(new Date());
       location.search = `/info?date=${date}`;
+      setCurrentDate(date);
     } else {
       const date = location.search.split('=')[1];
       setCurrentDate(date);
@@ -188,12 +189,14 @@ function BusinessInfo() {
   }, []);
 
   const onMonthChange = (active: any) => {
+    console.log('month change');
     setCurrentDate(dateFormat(active.activeStartDate, 'yyyy-MM-dd'));
     getBusinessData();
     navigate(`/info?date=${dateFormat(active.activeStartDate)}`);
   };
 
   useEffect(() => {
+    console.log('current date change');
     getBusinessData();
   }, [currentDate]);
 
@@ -230,7 +233,7 @@ function BusinessInfo() {
             to={`/notice/${item.no_id}`}
             progress={onGoing ? '진행중' : isCloseTo ? '임박' : ''}
             progressColor={onGoing ? 'green' : isCloseTo ? 'red' : ''}
-            paddingRight={onGoing ? '108px' : isCloseTo ? '108px' : '56px'}
+            paddingRight={onGoing ? '75px' : isCloseTo ? '75px' : '24px'}
           />
         </KmfListWrapper>
       );

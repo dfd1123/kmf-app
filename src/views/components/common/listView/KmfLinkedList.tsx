@@ -70,7 +70,7 @@ const Container = styled.div<{ progressColor?: string }>`
 
   .progress {
     position: absolute;
-    right: 12%;
+    right: 21px;
     align-self: center;
     color: ${(props) => props.progressColor};
   }
