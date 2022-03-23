@@ -73,7 +73,7 @@ const SearchUser = () => {
         scrollRemove();
         window.isBack = false;
       }
-    }
+    } else window.isBack = false;
     //의존성 배열에 fetching 해오는 데이터를 넣어준다.
   }, [scrollInfos, scrollRemove, list]);
 
