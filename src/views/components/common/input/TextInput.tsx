@@ -1,28 +1,28 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import basicResetClose from "@/assets/img/icon/ico-circle-close.svg";
-import searchIcon from "@/assets/img/kmf/ico/ico-search2.svg";
-import {phoneNumberConvert} from '@/utils/numberUtils';
+import React, { useState, useRef } from 'react';
+import styled from 'styled-components';
+import basicResetClose from '@/assets/img/icon/ico-circle-close.svg';
+import searchIcon from '@/assets/img/kmf/ico/ico-search2.svg';
+import { phoneNumberConvert } from '@/utils/numberUtils';
 
 interface PropsType extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   className?: string;
   reset?: boolean;
-  number?:boolean;
+  number?: boolean;
   phoneNumber?: boolean;
-  autocomplete?:'on'|'off';
-  onEnter?: (value : any , name?: any) => void;
-  onChange?: (value : any , name?: any) => void;
-  onInput?: (value : any , name?: any) => void;
+  autocomplete?: 'on' | 'off';
+  onEnter?: (value: any, name?: any) => void;
+  onChange?: (value: any, name?: any) => void;
+  onInput?: (value: any, name?: any) => void;
 }
 
 const TextInput = ({
   label,
   className,
-  type = "text",
+  type = 'text',
   name,
   value = '',
-  placeholder = "",
+  placeholder = '',
   readOnly = false,
   disabled = false,
   tabIndex = 0,
@@ -33,9 +33,9 @@ const TextInput = ({
   onEnter,
   onChange,
   onInput,
-  onClick
+  onClick,
 }: PropsType) => {
-  const isSearch = type === "search";
+  const isSearch = type === 'search';
   const input = useRef<HTMLInputElement>(null);
   const [text, setText] = useState(value || '');
   const [focus, setFocus] = useState(false);
@@ -44,7 +44,7 @@ const TextInput = ({
     if (!onEnter) return;
 
     if (input.current) {
-      const {value, name} = input.current;
+      const { value, name } = input.current;
       if (onEnter) {
         onEnter(value, name);
         return;
@@ -55,23 +55,22 @@ const TextInput = ({
 
   const toggleFocus = (status: boolean) => {
     const footerEl = document.querySelector('footer');
-    if(footerEl) footerEl.style.display = status ? 'none' : 'flex';
+    if (footerEl) footerEl.style.display = status ? 'none' : 'flex';
     setFocus(status);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleEnter();
     }
   };
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let {value, name} = e.target;
-    if(number) {
-      value = value.replace(/[^0-9]/g,'');
-    }else if(phoneNumber) {
+    let { value, name } = e.target;
+    if (number) {
+      value = value.replace(/[^0-9]/g, '');
+    } else if (phoneNumber) {
       value = phoneNumberConvert(value);
-      console.log(value);
     }
     setText(value);
     if (onChange) onChange(value, name);
@@ -80,16 +79,19 @@ const TextInput = ({
 
   const handleReset = () => {
     if (input.current) {
-      input.current.value = "";
-      const {value, name} = input.current;
+      input.current.value = '';
+      const { value, name } = input.current;
       setText('');
-      if (onChange) onChange("", name);
+      if (onChange) onChange('', name);
       if (onInput) onInput(value, name);
     }
   };
 
   return (
-    <div className={`${className} ${isSearch ? "search" : ""} ${focus ? "focus" : ""} ${focus || String(text) ? "focus-value" : ""} ${reset ? "reset" : ""}`}>
+    <div
+      className={`${className} ${isSearch ? 'search' : ''} ${
+        focus ? 'focus' : ''
+      } ${focus || String(text) ? 'focus-value' : ''} ${reset ? 'reset' : ''}`}>
       <div className="inp-cont">
         <input
           ref={input}
@@ -112,12 +114,12 @@ const TextInput = ({
           {text && reset ? (
             <button className="reset" onMouseDown={handleReset} />
           ) : (
-            ""
+            ''
           )}
-          {isSearch ? <button className="search" onClick={handleEnter} /> : ""}
+          {isSearch ? <button className="search" onClick={handleEnter} /> : ''}
         </div>
       </div>
-      {label ? <label htmlFor={name}>{label}</label> : ""}
+      {label ? <label htmlFor={name}>{label}</label> : ''}
     </div>
   );
 };
@@ -134,22 +136,23 @@ export const BasicInput = styled(TextInput)`
   label {
     display: block;
     margin-bottom: 8px;
-    padding-left:3px;
-    font-size:14px;
+    padding-left: 3px;
+    font-size: 14px;
     line-height: 20px;
-    color:#828282;
+    color: #828282;
   }
+
   input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #F4F4F4;
+    border: 1px solid #f4f4f4;
     border-radius: 5px;
-    background-color: #F4F4F4;
+    background-color: #f4f4f4;
     outline: #1574bd;
     -webkit-tap-highlight-color: #1574bd !important;
 
-    &::placeholder{
-      color:#BFBFBF;
+    &::placeholder {
+      color: #bfbfbf;
     }
   }
 
@@ -161,13 +164,16 @@ export const BasicInput = styled(TextInput)`
     display: flex;
     align-items: center;
     height: 100%;
+
     > button {
       padding: 0 3px;
+
       &:last-child {
         margin-right: 7px;
       }
+
       &::after {
-        content: "";
+        content: '';
         display: block;
         width: 15px;
         height: 15px;
@@ -176,9 +182,11 @@ export const BasicInput = styled(TextInput)`
         background-repeat: no-repeat;
       }
     }
+
     .reset {
       display: none;
       opacity: 0.4;
+
       &::after {
         width: 15px;
         height: 15px;
@@ -188,6 +196,7 @@ export const BasicInput = styled(TextInput)`
 
     .search {
       /* opacity: 0.4; */
+
       &::after {
         width: 28px;
         height: 28px;
@@ -209,6 +218,7 @@ export const BasicInput = styled(TextInput)`
       input {
         padding-right: 30px;
       }
+
       &.search {
         input {
           padding-right: 60px;
@@ -249,12 +259,14 @@ export const MerterialInput = styled(BasicInput)`
     &:-ms-input-placeholder {
       color: transparent;
     }
+
     &::-ms-clear,
     &::-ms-reveal {
       display: none;
       width: 0;
       height: 0;
     }
+
     &::-webkit-search-decoration,
     &::-webkit-search-cancel-button,
     &::-webkit-search-results-button,

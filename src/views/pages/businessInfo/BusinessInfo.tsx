@@ -272,7 +272,7 @@ function BusinessInfo() {
           </div>
         </CurrentMonthStyle>
         <SupportListWrapperStyle>
-          {businessScheduleLists?.every((item) => item) ? (
+          {businessScheduleLists?.some((item) => item) ? (
             businessScheduleLists
           ) : (
             <NoList>일정이 없습니다.</NoList>
@@ -286,11 +286,12 @@ function BusinessInfo() {
 
 const NoList = styled.div`
   display: flex;
-  position: absolute;
-  top: calc(100vh / 4);
+  //position: absolute;
+  //top: calc(100vh / 4);
   align-items: center;
   justify-content: center;
   width: 100%;
+  height: 100%;
   padding-top: 48px;
 `;
 
@@ -388,13 +389,13 @@ const ContainerStyle = styled.div`
   flex-direction: column;
 
   .list-holder {
-    position: sticky;
     top: 30px;
     left: 0;
     z-index: 2;
     margin-bottom: 70px;
     background: #fff;
     scroll-behavior: smooth;
+    height: 100%;
   }
 `;
 

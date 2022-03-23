@@ -23,7 +23,5 @@ export const setPushAlarm = (params: PropsType) => {
         }
       }
     }
-  } catch (e) {
-    // console.log('push notification error on mypage', e);
-  }
+  } catch (e) {}
 };
