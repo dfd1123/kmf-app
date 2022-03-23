@@ -1,12 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import "./index.css";
-import { Provider } from "react-redux";
-import { PersistGate } from 'redux-persist/integration/react'; 
+// @ts-ignore
+import * as smoothscroll from 'smoothscroll-polyfill';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
-import store from "@/store";
-import App from "@/App";
+import store from '@/store';
+import App from '@/App';
+
+smoothscroll.polyfill();
 
 let persistor = persistStore(store);
 
@@ -15,8 +19,8 @@ ReactDOM.render(
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <App />
-        </PersistGate>
+      </PersistGate>
     </Provider>
   </BrowserRouter>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
