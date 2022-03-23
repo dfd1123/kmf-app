@@ -230,7 +230,7 @@ function BusinessInfo() {
             to={`/notice/${item.no_id}`}
             progress={onGoing ? '진행중' : isCloseTo ? '임박' : ''}
             progressColor={onGoing ? 'green' : isCloseTo ? 'red' : ''}
-            paddingRight={'96px'}
+            paddingRight={onGoing ? '108px' : isCloseTo ? '108px' : '56px'}
           />
         </KmfListWrapper>
       );
