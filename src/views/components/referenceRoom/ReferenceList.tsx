@@ -6,10 +6,6 @@ import { Link } from 'react-router-dom';
 import { RefrenceDataType } from '@/services/types/Reference';
 import useService from '@/hooks/useService';
 import icoArrowImg from '@/assets/img/kmf/arrow.png';
-// @ts-ignore
-import smoothscroll from 'smoothscroll-polyfill';
-
-smoothscroll.polyfill();
 
 interface PropsType {
   info: RefrenceDataType;

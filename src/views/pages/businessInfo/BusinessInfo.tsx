@@ -25,6 +25,9 @@ import {
 import { useParams, useLocation, useNavigate } from 'react-router';
 import businessInfo from '@/router/businessInfo';
 import arrowImg from '@/assets/img/kmf/arrow.png';
+// @ts-ignore
+import smoothscroll from 'smoothscroll-polyfill';
+
 
 const ddd = styled.div`
   color: #a7cd10;
@@ -77,6 +80,8 @@ function BusinessInfo() {
   const location = useLocation();
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  smoothscroll.polyfill();
+
   const formatDate = (calendarLocale: string, date: Date) => {
     return dateFormat(date, 'd');
   };
@@ -114,20 +119,20 @@ function BusinessInfo() {
   const setTileContent = (date: Date, view: string) => {
     const dataResult = businessData
       ? businessData
-          .filter((item: businessInfoType) => {
-            return item && item.dates?.includes(dateFormat(date, 'yyyy-MM-dd'));
-          })
-          .map((item: businessInfoType) => {
-            const current = dateFormat(date, 'yyyy-MM-dd');
-            const currentData: any = {};
-            if (!currentData.hasOwnProperty(current)) {
-              currentData[current] = [];
-              currentData[current].push(item.no_type);
-            } else {
-              currentData[current].push(item.no_type);
-            }
-            return currentData;
-          })
+        .filter((item: businessInfoType) => {
+          return item && item.dates?.includes(dateFormat(date, 'yyyy-MM-dd'));
+        })
+        .map((item: businessInfoType) => {
+          const current = dateFormat(date, 'yyyy-MM-dd');
+          const currentData: any = {};
+          if (!currentData.hasOwnProperty(current)) {
+            currentData[current] = [];
+            currentData[current].push(item.no_type);
+          } else {
+            currentData[current].push(item.no_type);
+          }
+          return currentData;
+        })
       : null;
 
     return dataResult ? (
@@ -406,7 +411,7 @@ const ArrowBtn = styled.button<{ revert: boolean }>`
   height: 16px;
   background-size: 14px;
   background-repeat: no-repeat;
-  background-position:center;
+  background-position: center;
   transform: ${(props) => (props.revert ? 'scaleX(-1)' : '')};
   border: none;
 
