@@ -375,7 +375,7 @@ const ContainerStyle = styled.div`
 
 const CurrentMonthStyle = styled.div`
   width: 100%;
-  padding: 12px 30px 12px 20px;
+  padding: 12px 15px 12px 20px;
   border-top: 2px solid #eeeeee;
   border-bottom: 1px solid #eee;
   position: sticky;
@@ -397,12 +397,14 @@ const ArrowBtn = styled.button<{ revert: boolean }>`
   background-image: url(${arrowImg});
   width: 16px;
   height: 16px;
-  background-size: 16px;
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position:center;
   transform: ${(props) => (props.revert ? 'scaleX(-1)' : '')};
   border: none;
 
   &:hover {
-    background-color: #000;
+    // background-color: #000;
   }
 `;
 

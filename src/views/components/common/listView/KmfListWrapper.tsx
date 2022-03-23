@@ -32,7 +32,7 @@ const ContainerStyle = styled.div<{ imgUrl?: string }>`
   flex-direction: column;
   justify-content: center;
   background-image: url(${icoArrowImg});
-  background-position: 95% center;
+  background-position: right center;
   background-size: 16px;
   background-repeat: no-repeat;
 `;
