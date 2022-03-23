@@ -41,7 +41,7 @@ const Container = styled.div`
     display: block;
     width: 100%;
     padding: 10px 16px;
-    padding-left:0;
+    padding-left: 0;
     height: 100%;
     background-image: url(${icoArrowImg});
     background-position: 100% center;

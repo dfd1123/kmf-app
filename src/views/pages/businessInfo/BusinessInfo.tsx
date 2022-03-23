@@ -24,7 +24,7 @@ import {
 } from 'date-fns';
 import { useParams, useLocation, useNavigate } from 'react-router';
 import businessInfo from '@/router/businessInfo';
-import arrowImg from '@/assets/img/kmf/arrow.png';
+import arrowImg from '@/assets/img/kmf/kmfArrow.png';
 
 const ddd = styled.div`
   color: #a7cd10;
@@ -134,11 +134,6 @@ function BusinessInfo() {
       dataResult.length > 0 ? (
         <div className="tileWrapper">
           {dataResult.map((item, index) => {
-            // console.log(
-            //   item[dateFormat(date, 'yyyy-MM-dd')][0] === 3
-            //     ? '경조사'
-            //     : '사업안내'
-            // );
             return index > 5 ? null : (
               <TileContent
                 dotColor={color[item[dateFormat(date, 'yyyy-MM-dd')][0]]}
@@ -159,6 +154,10 @@ function BusinessInfo() {
     // location.search = `/info?date=${currentDate}`;
     setCurrentDate(prevMonth);
     getBusinessData();
+    const el = document.querySelector(
+      '.react-calendar__navigation__prev-button'
+    );
+    el?.dispatchEvent(new Event('click', { bubbles: true }));
   };
 
   const setNextMonth = () => {
@@ -169,6 +168,10 @@ function BusinessInfo() {
     // location.search = `/info?date=${currentDate}`;
     setCurrentDate(nextMonth);
     getBusinessData();
+    const el = document.querySelector(
+      '.react-calendar__navigation__next-button'
+    );
+    el?.dispatchEvent(new Event('click', { bubbles: true }));
   };
 
   const onDateChange = (value: Date, event: React.ChangeEvent) => {
@@ -181,6 +184,7 @@ function BusinessInfo() {
     if (!location.search) {
       const date = dateFormat(new Date());
       location.search = `/info?date=${date}`;
+      setCurrentDate(date);
     } else {
       const date = location.search.split('=')[1];
       setCurrentDate(date);
@@ -210,7 +214,7 @@ function BusinessInfo() {
       const isInInterval = (date: string) =>
         isWithinInterval(stringToDate(date), { start: start, end: end });
       const isIn = item.dates ? item.dates.some(isInInterval) : false;
-      if (!isIn) return null;
+      if (!isIn) return;
       const onGoing = isWithinInterval(current, {
         start: stringToDate(item.no_date_start),
         end: stringToDate(item.no_date_end),
@@ -230,12 +234,12 @@ function BusinessInfo() {
             to={`/notice/${item.no_id}`}
             progress={onGoing ? '진행중' : isCloseTo ? '임박' : ''}
             progressColor={onGoing ? 'green' : isCloseTo ? 'red' : ''}
-            paddingRight={'96px'}
+            paddingRight={onGoing ? '75px' : isCloseTo ? '75px' : '24px'}
           />
         </KmfListWrapper>
       );
     });
-
+  console.log(businessScheduleLists);
   return (
     <ContainerStyle>
       <div ref={scrollRef} />
@@ -257,24 +261,39 @@ function BusinessInfo() {
           <div className="month-change">
             <ArrowBtn
               className="month-change_prev"
-              revert
+              revert={false}
               onClick={setPrevMonth}
             />
             <ArrowBtn
               className="month-change_next"
-              revert={false}
+              revert
               onClick={setNextMonth}
             />
           </div>
         </CurrentMonthStyle>
         <SupportListWrapperStyle>
-          {businessScheduleLists}
+          {businessScheduleLists?.some((item) => item) ? (
+            businessScheduleLists
+          ) : (
+            <NoList>일정이 없습니다.</NoList>
+          )}
         </SupportListWrapperStyle>
       </div>
       <KmfFooter />
     </ContainerStyle>
   );
 }
+
+const NoList = styled.div`
+  display: flex;
+  //position: absolute;
+  //top: calc(100vh / 4);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding-top: 48px;
+`;
 
 const CalendarWrapperStyle = styled(Calendar)`
   width: 100%;
@@ -370,19 +389,19 @@ const ContainerStyle = styled.div`
   flex-direction: column;
 
   .list-holder {
-    position: sticky;
     top: 30px;
     left: 0;
     z-index: 2;
     margin-bottom: 70px;
     background: #fff;
     scroll-behavior: smooth;
+    height: 100%;
   }
 `;
 
 const CurrentMonthStyle = styled.div`
   width: 100%;
-  padding: 12px 15px 12px 20px;
+  padding: 24px 15px 24px 20px;
   border-top: 2px solid #eeeeee;
   border-bottom: 1px solid #eee;
   position: sticky;
@@ -392,23 +411,28 @@ const CurrentMonthStyle = styled.div`
   background-color: #fff;
   display: flex;
   justify-content: space-between;
+  color: #1574bd;
 
   .month-change {
     display: flex;
     width: 48px;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 8px;
   }
 `;
 
 const ArrowBtn = styled.button<{ revert: boolean }>`
   background-image: url(${arrowImg});
-  width: 16px;
-  height: 16px;
-  background-size: 14px;
+  width: 7px;
+  height: 10px;
+  background-size: 7px;
+  //background-size: 14px;
   background-repeat: no-repeat;
-  background-position:center;
+  background-position: center;
   transform: ${(props) => (props.revert ? 'scaleX(-1)' : '')};
   border: none;
+  object-fit: contain;
 
   &:hover {
     // background-color: #000;

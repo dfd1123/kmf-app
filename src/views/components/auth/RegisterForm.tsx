@@ -12,7 +12,7 @@ import DateSelectInput from '@/views/components/common/input/DateSelectInput';
 import { useSearchParams } from 'react-router-dom';
 import { RegisterInput } from '@/services/types/User';
 
-const intialInput : RegisterInput = {
+const intialInput: RegisterInput = {
   name: '',
   email: '',
   birth: '',
@@ -36,24 +36,30 @@ const RegisterForm = () => {
 
   const social = Boolean(searchParams.get('social'));
 
-  if(social) inputs.email = searchParams.get('email') || '';
+  if (social) inputs.email = searchParams.get('email') || '';
 
   const checkValidate = () => {
-    const keyArr = Object.keys(inputs).filter((key, index ) => {
-      if(social){
-        if(key !== 'email' && key !== 'password' && key !== 'password_confirmation'){
+    const keyArr = Object.keys(inputs).filter((key, index) => {
+      if (social) {
+        if (
+          key !== 'email' &&
+          key !== 'password' &&
+          key !== 'password_confirmation'
+        ) {
           return key;
         }
-      }else {
+      } else {
         return key;
       }
     });
 
-    let check = keyArr.filter((key) => {
-      console.log('rere', inputs[key as keyof RegisterInput], Boolean(inputs[key as keyof RegisterInput]));
-      return !Boolean(inputs[key as keyof RegisterInput])
-    }).length === 0;
-    check = !social ? check && inputs.password.length >= 8 && inputs.password.length <= 20 : check;
+    let check =
+      keyArr.filter((key) => {
+        return !Boolean(inputs[key as keyof RegisterInput]);
+      }).length === 0;
+    check = !social
+      ? check && inputs.password.length >= 8 && inputs.password.length <= 20
+      : check;
     setValidate(check);
   };
 
@@ -80,9 +86,11 @@ const RegisterForm = () => {
 
   useEffect(() => {
     checkValidate();
-    setCorrect(!social ?
-      (inputs.password === inputs.password_confirmation &&
-        Boolean(inputs.password && inputs.password_confirmation)) : true
+    setCorrect(
+      !social
+        ? inputs.password === inputs.password_confirmation &&
+            Boolean(inputs.password && inputs.password_confirmation)
+        : true
     );
   }, [inputs]);
 
@@ -193,8 +201,10 @@ const RegisterForm = () => {
 
 const PasswordResetFormStyle = styled.div`
   padding-bottom: 80px;
+
   .article {
     margin-bottom: 56px;
+
     h6 {
       margin-bottom: 16px;
       font-size: 13px;
@@ -213,6 +223,7 @@ const PasswordResetFormStyle = styled.div`
       margin-top: -5px;
       padding: 0 3px;
       font-size: 12px;
+
       &.correct {
         color: blue;
       }
