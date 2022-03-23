@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 // https://github.com/wojtekmaj/react-calendar
 import Calendar from 'react-calendar';
@@ -75,6 +75,7 @@ function BusinessInfo() {
   );
   const navigate = useNavigate();
   const location = useLocation();
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const formatDate = (calendarLocale: string, date: Date) => {
     return dateFormat(date, 'd');
@@ -196,6 +197,10 @@ function BusinessInfo() {
     getBusinessData();
   }, [currentDate]);
 
+  const onScrollClick = () => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const businessScheduleLists =
     businessData &&
     businessData.map((item: businessInfoType) => {
@@ -233,6 +238,7 @@ function BusinessInfo() {
 
   return (
     <ContainerStyle>
+      <div ref={scrollRef} />
       <KmfHeader headerText={'사업안내'} />
       <CalendarWrapperStyle
         locale={locale}
@@ -246,7 +252,7 @@ function BusinessInfo() {
         onActiveStartDateChange={onMonthChange}
       />
       <div className="list-holder">
-        <CurrentMonthStyle>
+        <CurrentMonthStyle onClick={onScrollClick}>
           {currentDate.slice(0, 7).replaceAll('-', '.')}
           <div className="month-change">
             <ArrowBtn
@@ -370,6 +376,7 @@ const ContainerStyle = styled.div`
     z-index: 2;
     margin-bottom: 70px;
     background: #fff;
+    scroll-behavior: smooth;
   }
 `;
 
