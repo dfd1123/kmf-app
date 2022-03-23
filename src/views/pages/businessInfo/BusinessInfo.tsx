@@ -239,7 +239,7 @@ function BusinessInfo() {
         </KmfListWrapper>
       );
     });
-  console.log(businessScheduleLists);
+
   return (
     <ContainerStyle>
       <div ref={scrollRef} />
@@ -286,13 +286,12 @@ function BusinessInfo() {
 
 const NoList = styled.div`
   display: flex;
-  //position: absolute;
-  //top: calc(100vh / 4);
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  //height: 100%;
   padding-top: 48px;
+  padding-bottom: 48px;
 `;
 
 const CalendarWrapperStyle = styled(Calendar)`
