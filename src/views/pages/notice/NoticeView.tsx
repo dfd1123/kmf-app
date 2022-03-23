@@ -114,7 +114,6 @@ const NoticeViewStyle = styled.div`
       color: #fff;
       text-align: center;
       border-radius: 3px;
-      background-color: #28a8e1;
     }
 
     .date {
