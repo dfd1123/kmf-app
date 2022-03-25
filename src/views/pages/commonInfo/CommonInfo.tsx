@@ -38,9 +38,28 @@ const CommonInfo = () => {
       ? setHeader('개인정보 수집 및 활용지침')
       : setHeader('서비스 이용약관');
     location.pathname.includes('term')
-      ? setBodyText(result.setting.use_terms)
-      : setBodyText(result.setting.service_policy);
+      ? setBodyText(transformContent(result.setting.use_terms))
+      : setBodyText(transformContent(result.setting.service_policy));
   };
+
+  const transformContent = (htmlContent: string) :string => {
+    const oembed = htmlContent.split('</oembed>');
+    let body = '';
+    oembed.forEach((item, index) => {
+      body += oembed[index] + '</oembed>';
+      const oembed1 = item.split('url="')[1];
+      if (oembed1) {
+        const oembed2 = oembed1.split('">')[0];
+        if (oembed2) {
+          const youtube = oembed2.split('https://www.youtube.com/watch?v=')[1] || oembed2.split('https://youtu.be/')[1];
+          if (youtube) {
+            body += '<div class="iframe-container"><iframe src="https://youtube.com/embed/' + youtube + '" frameborder="0"; scrolling="no"; allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+          }
+        }
+      }
+    });
+    return body.replace('\n', '<br />');
+  }
 
   useEffect(() => {
     const result = getSetting();
@@ -170,6 +189,10 @@ const ContainerStyle = styled.div`
 
         .ck-editor__editable .ck-horizontal-line {
             display: flow-root;
+        }
+
+        iframe{
+          width:100%;
         }
       }
 `;
