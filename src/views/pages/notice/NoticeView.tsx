@@ -76,7 +76,7 @@ const NoticeView = () => {
             dangerouslySetInnerHTML={{
               __html: info.no_content.replace('\n', '<br />'),
             }}></div>
-            {fileList.length ? (
+          {fileList.length ? (
             <ul className="files-cont">
               <span>첨부파일</span>
               {fileList.map((file, index) => (
@@ -203,7 +203,11 @@ const NoticeViewStyle = styled.div`
         }
 
         p {
-          word-break: break-all;
+          margin-top: 0;
+          margin-bottom: 1rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.7;
         }
 
         a {
@@ -212,23 +216,80 @@ const NoticeViewStyle = styled.div`
           text-decoration: underline;
         }
 
+        .text-huge {
+          font-size: 1.8em;
+        }
+
+        .text-big {
+          font-size: 1.4em;
+        }
+
+        .text-small {
+          font-size: 0.85em;
+        }
+
+        .text-tiny {
+          font-size: 0.7em;
+        }
+
         img {
           max-width: 100%;
+        }
+
+        ol,
+        ul,
+        dl {
+          margin-top: 0;
+          margin-bottom: 1rem;
+        }
+
+        ol {
+          display: block;
+          list-style-type: decimal;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 40px;
+        }
+
+        ul {
+          display: block;
+          list-style-type: disc;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 40px;
+        }
+
+        .ck-content blockquote {
+          overflow: hidden;
+          padding-right: 1.5em;
+          padding-left: 1.5em;
+          margin-left: 0;
+          margin-right: 0;
+          font-style: italic;
+          border-left: 5px solid #ccc;
+        }
+
+        .ck-editor__editable .ck-horizontal-line {
+            display: flow-root;
         }
       }
 
       .files-cont {
-        margin-top:16px;
+        margin-top: 16px;
         span {
-          display:block;
-          margin-bottom:8px;
+          display: block;
+          margin-bottom: 8px;
           font-weight: 400;
           font-size: 12px;
-          color:#828282;
+          color: #828282;
           line-height: 17px;
         }
         > li {
-           cursor:pointer;
+          cursor: pointer;
           background: rgba(21, 116, 189, 0.05);
           padding: 16px 15px;
           margin-bottom: 20px;
