@@ -19,7 +19,7 @@ const ProfilePage = () => {
   const getUser = async () => {
     const result = await services.user.getUser({id: no_id ? no_id : ''});
     let image = JSON.parse(result.user.profile_img || '[]');
-    image = image.length
+    image = image.length > 0 && image[0]
       ? image[0].includes('http')
         ? image[0]
         : import.meta.env.VITE_STORAGE_URL + image[0]

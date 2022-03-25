@@ -89,7 +89,8 @@ export default class ApiConnection {
           const status = _get(e, 'response.status');
 
           if(status === 401){
-            new Error('');
+            // this.#cookie.removeAccessToken();
+            // location.href = '/';
           }else{
             this.#toast(errorCode[code] || msg || errorCode['DEFAULT']);
           }

@@ -9,10 +9,12 @@ import useService from '@/hooks/useService';
 import { useTypedSelector } from './store';
 import { useEffect } from 'react';
 import useDialog from './hooks/useDialog';
+import { useNavigate } from 'react-router';
 
 function App() {
   const theme = useRouteMeta('theme');
   const services = useService();
+  const navigate = useNavigate();
   const userData = useTypedSelector((state) => state.authSlice.user, (a,b) => a?.id === b?.id);
 
   const {alert} = useDialog();
@@ -20,10 +22,7 @@ function App() {
 
   useEffect(() => {
     if(userData && userData.status === 0){
-      services.user.logout();
-      alert('KMF멤버스 가입신청이 완료되었습니다. 가입승인이 완료되면 SMS로 알려드립니다.');
-    }else{
-      services.user.getMyInfo();
+      navigate('/mypage');
     }
   }, [userData]);
 

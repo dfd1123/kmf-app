@@ -55,8 +55,8 @@ export default function RouterView() {
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
           if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
-          else if (user?.status === 0  && route.path !== '/login'){
-            newElement = <Navigate to="/login" replace />;
+          else if (user?.status === 0  && route.path !== '/mypage' && route.path !== '/manageProfile'){
+            newElement = <Navigate to="/mypage" replace />;
           }
         }
       }
@@ -107,6 +107,7 @@ export default function RouterView() {
     if (services.cookie.getAccessToken()) {
       services.notice.getUnreadList();
       services.reference.getUnreadList();
+      services.user.getMyInfo();
     }
   }, [pathname])
 

@@ -126,8 +126,46 @@ const ReferenceViewStyle = styled.div`
         /* font-size: 12px; */
         line-height: 1.5;
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6 {
+          font-family: inherit;
+          font-weight: 600;
+          line-height: 1.5;
+          margin-bottom: 0.5rem;
+          color: #32325d;
+        }
+
+        h2,
+        .h2 {
+          font-size: 1.25rem;
+        }
+
+        h3,
+        .h3 {
+          font-size: 1.0625rem;
+        }
+
+        h4,
+        .h4 {
+          font-size: 0.9375rem;
+        }
+
         p {
-          word-break: break-all;
+          margin-top: 0;
+          margin-bottom: 1rem;
+          font-size: 1rem;
+          font-weight: 400;
+          line-height: 1.7;
         }
 
         a {
@@ -136,8 +174,75 @@ const ReferenceViewStyle = styled.div`
           text-decoration: underline;
         }
 
+        .text-huge {
+          font-size: 1.8em;
+        }
+
+        .text-big {
+          font-size: 1.4em;
+        }
+
+        .text-small {
+          font-size: 0.85em;
+        }
+
+        .text-tiny {
+          font-size: 0.7em;
+        }
+
         img {
           max-width: 100%;
+        }
+
+        ol,
+        ul,
+        dl {
+          margin-top: 0;
+          margin-bottom: 1rem;
+        }
+
+        ol {
+          display: block;
+          list-style-type: decimal;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 40px;
+        }
+
+        ul {
+          display: block;
+          list-style-type: disc;
+          margin-block-start: 1em;
+          margin-block-end: 1em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          padding-inline-start: 40px;
+        }
+
+        .ck-content blockquote {
+          overflow: hidden;
+          padding-right: 1.5em;
+          padding-left: 1.5em;
+          margin-left: 0;
+          margin-right: 0;
+          font-style: italic;
+          border-left: 5px solid #ccc;
+        }
+
+        .ck-content blockquote {
+          overflow: hidden;
+          padding-right: 1.5em;
+          padding-left: 1.5em;
+          margin-left: 0;
+          margin-right: 0;
+          font-style: italic;
+          border-left: 5px solid #ccc;
+        }
+
+        .ck-editor__editable .ck-horizontal-line {
+            display: flow-root;
         }
       }
 

@@ -22,13 +22,15 @@ const ManageProfile = () => {
     (state) => state.authSlice.user as UserInfo
   );
   const [userInfo, setUserInfo] = useState<ProfileInput>({ ...userData });
+
   let image = userInfo.profile_img ;
-    image = image.length
+    image = image.length > 0 && image[0]
       ? image[0].includes('http')
         ? image[0]
         : import.meta.env.VITE_STORAGE_URL + image[0]
       : basicProfile;
-  const [imgUrl, setImgUrl] = useState(image);
+
+  const [imgUrl, setImgUrl] = useState(image || basicProfile);
   const service = useService();
   const { toast } = useToast();
 

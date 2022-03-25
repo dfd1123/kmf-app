@@ -84,10 +84,14 @@ class UserService {
     const access_token = this.#cookie.getAccessToken();
     if (access_token) {
       const user = await this.#api.get('/profile');
-      setPushAlarm({
-        isOn: user.flag_alarm !== 0,
-      });
-      this.#dispatch(setAuth({ user: user, access_token: access_token }));
+      if(user){
+        setPushAlarm({
+          isOn: user.flag_alarm !== 0,
+        });
+        this.#dispatch(setAuth({ user: user, access_token: access_token }));
+      }else{
+        // this.logout();
+      }
     }
   }
 
