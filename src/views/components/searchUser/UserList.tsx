@@ -9,7 +9,7 @@ interface PropsType {
 
 const UserList = ({ user, onClick }: PropsType) => {
   let image = JSON.parse(user.profile_img || '[]');
-  image = image.length
+  image = image.length > 0 && image[0]
     ? (image[0].includes('http') ? image[0] : import.meta.env.VITE_STORAGE_URL + image[0])
     : defaultProfileImg;
   return (
