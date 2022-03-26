@@ -8,13 +8,16 @@ interface PropsType {
   children?: React.ReactNode;
   width?: string;
   height?: string;
+  edit?: boolean
 }
 
-const KmfImageViewer = ({imgUrl, children, width, height}: PropsType) => {
+const KmfImageViewer = ({imgUrl, children, width, height, edit = false}: PropsType) => {
   const {openModal} = useModal();
 
   const imageViewModal = () => {
-    openModal(ModalViewImage, {props:{image: imgUrl}});
+    if(!edit){
+      openModal(ModalViewImage, {props:{image: imgUrl}});
+    }
   }
   return (
     <ImageContainer width={width} height={height} onClick={imageViewModal}>

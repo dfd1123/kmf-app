@@ -56,7 +56,7 @@ const ManageProfile = () => {
     <ContainerStyle>
       <KmfHeader headerText={'프로필관리'} prev prevLink="/mypage" />
       <ContentWrapperStyle>
-        <KmfImageViewer imgUrl={imgUrl} width="100%" height="262px">
+        <KmfImageViewer imgUrl={imgUrl} width="100%" height="262px" edit>
           <input
             type="file"
             accept="image/*"
