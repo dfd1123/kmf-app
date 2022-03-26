@@ -19,6 +19,7 @@ export interface NoticeInfo {
     no_date_end: string | null;
     no_date_start: string | null;
     no_file: string | null;
+    no_filename: string | null;
     no_hit: number;
     no_id: number;
     no_title: string;

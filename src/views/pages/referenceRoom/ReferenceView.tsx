@@ -53,7 +53,7 @@ const ReferenceView = () => {
   }
 
   const fileDownload = (index: number) => {
-    services.reference.download(files, index);
+    services.reference.download(files, JSON.parse(info?.ar_filename ?? '[]'), index);
   };
 
   useEffect(() => {

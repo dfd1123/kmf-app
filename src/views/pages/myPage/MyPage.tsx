@@ -36,23 +36,21 @@ const MyPage = () => {
     });
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      setAllowPush(true);
-    } else {
-      setAllowPush(false);
-    }
+  const onChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAllowPush(Boolean(e.target.checked));
 
     const id = userData?.id ? userData.id : 0;
-    const flagAlarm = userData?.flag_alarm ? userData.flag_alarm : 0;
 
     setPushAlarm({
-      isOn: allowPush,
+      isOn: Boolean(e.target.checked),
     });
-    services.user.flagAlarm({
+
+    await services.user.flagAlarm({
       id: id,
-      flag_alarm: allowPush ? 1 : 0,
+      flag_alarm: e.target.checked ? 1 : 0,
     });
+
+    services.user.getMyInfo();
   };
 
   useEffect(() => {

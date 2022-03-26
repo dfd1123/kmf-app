@@ -22,8 +22,7 @@ const ManageProfile = () => {
     (state) => state.authSlice.user as UserInfo
   );
   const [userInfo, setUserInfo] = useState<ProfileInput>({ ...userData });
-
-  let image = userInfo.profile_img ;
+  let image = JSON.parse(userInfo.profile_img ?? '[]');
     image = image.length > 0 && image[0]
       ? image[0].includes('http')
         ? image[0]

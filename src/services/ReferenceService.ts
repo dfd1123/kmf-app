@@ -45,9 +45,9 @@ class ReferenceService {
     this.#dispatch(serUnreadRefList(result));
   }
 
-  async download(filePathList: string[], index: number = 0){
+  async download(filePathList: string[], fileNameList: string[], index: number = 0){
     if(filePathList[index]){
-      window.open(`${import.meta.env.VITE_API_URL}/download?download_url=${filePathList[index]}`);
+      window.open(`${import.meta.env.VITE_API_URL}/download?download_url=${filePathList[index]}&download_filename=${fileNameList[index]}`);
     }
   }
 }
