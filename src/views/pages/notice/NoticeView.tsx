@@ -67,7 +67,7 @@ const NoticeView = () => {
   }
 
   const fileDownload = (index: number) => {
-    services.reference.download(files, index);
+    services.reference.download(files, JSON.parse(info?.no_filename ?? '[]'), index);
   };
 
   useEffect(() => {
