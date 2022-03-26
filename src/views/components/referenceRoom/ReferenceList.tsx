@@ -18,11 +18,6 @@ const ReferenceList = ({ info }: PropsType) => {
   );
   const unread = unreadRefList.includes(info.ar_id ?? -1);
   const date = dateFormat(new Date(info.created_at), 'yyyy - MM - dd');
-  const existFile = JSON.parse(info?.ar_file ?? '[]').length > 0;
-
-  const fileDownload = () => {
-    services.reference.download(JSON.parse(info?.ar_file ?? '[]'));
-  };
 
   return (
     <Container>
