@@ -208,7 +208,7 @@ function BusinessInfo() {
   const businessScheduleLists =
     businessData &&
     businessData.map((item: businessInfoType) => {
-      const current = stringToDate(currentDate);
+      const current = new Date();
       const start = startOfMonth(current);
       const end = endOfMonth(current);
       const isInInterval = (date: string) =>
@@ -251,7 +251,7 @@ function BusinessInfo() {
                 : ''
             }
             progressColor={
-              isClosestTo
+              isClosestTo && onGoing
                 ? 'red'
                 : onGoing
                 ? 'green'
