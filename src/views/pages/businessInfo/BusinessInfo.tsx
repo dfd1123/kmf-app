@@ -219,22 +219,49 @@ function BusinessInfo() {
         start: stringToDate(item.no_date_start),
         end: stringToDate(item.no_date_end),
       });
-      const closest = sub(stringToDate(item.no_date_start), { days: 7 });
-      const isCloseTo =
-        isBefore(closest, stringToDate(item.no_date_start)) &&
+      const planned = sub(stringToDate(item.no_date_start), { days: 7 });
+      const isPlannedTo =
+        isBefore(planned, stringToDate(item.no_date_start)) &&
         isWithinInterval(current, {
-          start: closest,
+          start: planned,
           end: stringToDate(item.no_date_start),
         });
+
+      const endPlusOne = add(stringToDate(item.no_date_end), {
+        days: 1,
+      });
+      const closest = sub(endPlusOne, { days: 3 });
+      const isClosestTo = isWithinInterval(current, {
+        start: closest,
+        end: endPlusOne,
+      });
 
       return (
         <KmfListWrapper key={item.no_id} className="business-list">
           <KmfLinkedList
             title={item.no_title}
             to={`/notice/${item.no_id}`}
-            progress={onGoing ? '진행중' : isCloseTo ? '임박' : ''}
-            progressColor={onGoing ? 'green' : isCloseTo ? 'red' : ''}
-            paddingRight={onGoing ? '75px' : isCloseTo ? '75px' : '24px'}
+            progress={
+              isClosestTo && onGoing
+                ? '임박'
+                : onGoing
+                ? '진행중'
+                : isPlannedTo
+                ? '예정'
+                : ''
+            }
+            progressColor={
+              isClosestTo
+                ? 'red'
+                : onGoing
+                ? 'green'
+                : isPlannedTo
+                ? '#1b83bd'
+                : ''
+            }
+            paddingRight={
+              onGoing || isPlannedTo || isClosestTo ? '75px' : '24px'
+            }
           />
         </KmfListWrapper>
       );
