@@ -208,30 +208,35 @@ function BusinessInfo() {
   const businessScheduleLists =
     businessData &&
     businessData.map((item: businessInfoType) => {
-      const current = new Date();
+      const current = stringToDate(currentDate);
+      const nowDate = new Date();
       const start = startOfMonth(current);
       const end = endOfMonth(current);
-      const isInInterval = (date: string) =>
-        isWithinInterval(stringToDate(date), { start: start, end: end });
+      const isInInterval = (date: string) => {
+        return isWithinInterval(stringToDate(date), { start: start, end: end });
+      };
       const isIn = item.dates ? item.dates.some(isInInterval) : false;
       if (!isIn) return;
-      const onGoing = isWithinInterval(current, {
+      const onGoing = isWithinInterval(nowDate, {
         start: stringToDate(item.no_date_start),
         end: stringToDate(item.no_date_end),
       });
       const planned = sub(stringToDate(item.no_date_start), { days: 7 });
       const isPlannedTo =
         isBefore(planned, stringToDate(item.no_date_start)) &&
-        isWithinInterval(current, {
+        isWithinInterval(nowDate, {
           start: planned,
           end: stringToDate(item.no_date_start),
         });
+      // console.log(
+      //   // currentDate, dateFormat(nowDate),
+      // );
 
       const endPlusOne = add(stringToDate(item.no_date_end), {
         days: 1,
       });
       const closest = sub(endPlusOne, { days: 3 });
-      const isClosestTo = isWithinInterval(current, {
+      const isClosestTo = isWithinInterval(nowDate, {
         start: closest,
         end: endPlusOne,
       });
