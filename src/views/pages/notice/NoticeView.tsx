@@ -83,7 +83,7 @@ const NoticeView = () => {
           date={info.created_at}
           title={info.no_title}
         />
-        {info.no_type === 2 && (
+        {info.no_type !== 1 && (
           <div className="date-range">
             <span>진행기간</span>
             <p>
