@@ -54,7 +54,7 @@ export default function RouterView() {
         const { accessToken, user } = JSON.parse(authSlice || '{}');
         const cookieAccessToken = services.cookie.getAccessToken();
         if (route.meta.isAuth) {
-          if (!accessToken && !cookieAccessToken) newElement = <Navigate to="/login" />;
+          if (!cookieAccessToken) newElement = <Navigate to="/login" />;
           else if (user?.status === 0  && route.path !== '/mypage' && route.path !== '/manageProfile'){
             newElement = <Navigate to="/mypage" replace />;
           }

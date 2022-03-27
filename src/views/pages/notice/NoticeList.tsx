@@ -28,6 +28,8 @@ const NoticeList = () => {
     path: '/notice',
   });
 
+  const moveUrl = searchParams.get('to');
+
   const getNotice = async (offset: number = 0) => {
     if (offset && list.length === totalCount) return;
 
@@ -46,19 +48,26 @@ const NoticeList = () => {
   };
 
   useEffect(() => {
-    navigate(`/notice?searchKeyword=${searchKeyword}`, { replace: true });
-    getNotice(0);
+    if (!moveUrl) {
+      navigate(`/notice?searchKeyword=${searchKeyword}`, { replace: true });
+      getNotice(0);
+    }
   }, [searchKeyword]);
 
   useEffect(() => {
-    getNotice(list.length);
+    if (moveUrl) {
+      navigate(location.pathname, { replace: true });
+      navigate(moveUrl);
+    } else {
+      getNotice(list.length);
+    }
   }, []);
 
   useEffect(() => {
     if (scrollInfos) {
-      if(window.isBack){
+      if (window.isBack) {
         window.scrollTo(0, scrollInfos);
-      }else{
+      } else {
         scrollRemove();
       }
       const scrollTop = Math.max(
