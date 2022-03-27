@@ -5,19 +5,25 @@ import ModalContainer from '@/views/components/common/modal/ModalContainer';
 import DialogContainer from '@/views/components/common/dialog/DialogContainer';
 import ToastContainer from '@/views/components/common/toast/ToastContainer';
 import useRouteMeta from '@/hooks/useRouteMeta';
-import useService from '@/hooks/useService';
 import { useTypedSelector } from './store';
 import { useEffect } from 'react';
-import useDialog from './hooks/useDialog';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
 
 function App() {
   const theme = useRouteMeta('theme');
-  const services = useService();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const userData = useTypedSelector((state) => state.authSlice.user, (a,b) => a?.id === b?.id);
 
-  const {alert} = useDialog();
+  const moveUrl = searchParams.get('to');
+
+  useEffect(() => {
+    if (moveUrl) {
+      navigate(location.pathname, { replace: true });
+      navigate(moveUrl);
+    }
+  }, []);
 
 
   useEffect(() => {

@@ -11,7 +11,6 @@ import KmfListWrapper from '@/views/components/common/listView/KmfListWrapper';
 import NoticeHead from '@/views/components/notice/NoticeHead';
 import useScrollMove from '@/hooks/useScrollMove';
 import KmfFooter from '@/views/components/layouts/KmfFooter';
-import SearchBox from '@/views/components/referenceRoom/SearchBox';
 import BasicInput from '@/views/components/common/input/TextInput';
 
 const NoticeList = () => {
@@ -27,8 +26,6 @@ const NoticeList = () => {
     page: 'notice-list',
     path: '/notice',
   });
-
-  const moveUrl = searchParams.get('to');
 
   const getNotice = async (offset: number = 0) => {
     if (offset && list.length === totalCount) return;
@@ -48,19 +45,11 @@ const NoticeList = () => {
   };
 
   useEffect(() => {
-    if (!moveUrl) {
-      navigate(`/notice?searchKeyword=${searchKeyword}`, { replace: true });
-      getNotice(0);
-    }
+    getNotice(0);
   }, [searchKeyword]);
 
   useEffect(() => {
-    if (moveUrl) {
-      navigate(location.pathname, { replace: true });
-      navigate(moveUrl);
-    } else {
-      getNotice(list.length);
-    }
+    getNotice(list.length);
   }, []);
 
   useEffect(() => {
