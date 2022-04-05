@@ -275,7 +275,7 @@ function BusinessInfo() {
   return (
     <ContainerStyle>
       <div ref={scrollRef} />
-      <KmfHeader headerText={'사업안내'} />
+      <KmfHeader headerText={'캘린더'} />
       <CalendarWrapperStyle
         locale={locale}
         calendarType="US"

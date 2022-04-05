@@ -35,7 +35,7 @@ const KmfFooter = () => {
             <path fillRule="evenodd" clipRule="evenodd" d="M8 1C8.55228 1 9 1.44772 9 2V6C9 6.55228 8.55228 7 8 7C7.44772 7 7 6.55228 7 6V2C7 1.44772 7.44772 1 8 1Z"/>
             <path fillRule="evenodd" clipRule="evenodd" d="M2 10C2 9.44771 2.44772 9 3 9H21C21.5523 9 22 9.44771 22 10C22 10.5523 21.5523 11 21 11H3C2.44772 11 2 10.5523 2 10Z"/>
           </svg>
-          <span>사업안내</span>
+          <span>캘린더</span>
         </div>
       </BasicButton>
       <BasicButton onClick={() => navigate('/search/user')}>
