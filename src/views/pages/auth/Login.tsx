@@ -22,7 +22,7 @@ const Login = () => {
       </div>
       <div className="login-btn-holder">
         <div>
-          <span className="label">SNS로 시작</span>
+          {/* <span className="label">SNS로 시작</span> */}
           {/* <BasicButton className="btn-kakao" during={1000} onClick={() => socialLogin('kakao')}>
             카카오로 시작하기
           </BasicButton>
