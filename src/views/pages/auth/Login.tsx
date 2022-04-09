@@ -22,8 +22,8 @@ const Login = () => {
       </div>
       <div className="login-btn-holder">
         <div>
-          {/* <span className="label">SNS로 시작</span> */}
-          {/* <BasicButton className="btn-kakao" during={1000} onClick={() => socialLogin('kakao')}>
+          <span className="label">SNS로 시작</span>
+          <BasicButton className="btn-kakao" during={1000} onClick={() => socialLogin('kakao')}>
             카카오로 시작하기
           </BasicButton>
           <BasicButton className="btn-google" during={1000} onClick={() => socialLogin('google')}>
@@ -31,7 +31,7 @@ const Login = () => {
           </BasicButton>
           <BasicButton className="btn-apple" during={1000} onClick={() => socialLogin('apple')}>
             애플로 시작하기
-          </BasicButton> */}
+          </BasicButton>
           <BasicButton className="btn-email" during={1000} onClick={() => navigate('/emailLogin')}>
             아이디로 시작하기
           </BasicButton>

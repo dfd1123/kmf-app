@@ -48,9 +48,9 @@ const RegisterForm = () => {
         ) {
           return key;
         }
-      } else {
-        if(key !== 'birth' && key !== 'phone') return key;
       }
+
+      return key;
     });
 
     let check =
@@ -106,7 +106,7 @@ const RegisterForm = () => {
           reset
           onChange={handleInputChange}
         />
-        {/* <DateSelectInput
+        <DateSelectInput
           name="birth"
           label="생년월일"
           placeholder="날짜를 선택해주세요."
@@ -121,7 +121,7 @@ const RegisterForm = () => {
           number
           reset
           onChange={handleInputChange}
-        /> */}
+        />
       </div>
       <div className="article">
         <h6>소속사정보</h6>
