@@ -25,14 +25,14 @@ const SearchUser = () => {
     path: '/search/user',
   });
 
-  const getUserList = async (offset: number = 0) => {
+  const getUserList = async (offset: number = 0, orderBy: string) => {
     if (offset && list.length === totalCount && offset) return;
 
     const { users, users_count }: GetUserListResponse =
       await services.user.getUserList({
         searchKeyword,
         orderBy,
-        limit: 30,
+        limit: 100,
         offset,
       });
 
@@ -49,12 +49,12 @@ const SearchUser = () => {
   };
 
   useEffect(() => {
-    getUserList(list.length);
+    getUserList(list.length, orderBy);
   }, []);
 
   useEffect(() => {
     navigate(`/search/user?searchKeyword=${searchKeyword}&orderBy=${orderBy}`, {replace: true});
-    getUserList(0);
+    getUserList(0, orderBy);
   }, [searchKeyword, orderBy]);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const SearchUser = () => {
           </div>
         </div>
         <div className="list-holder">
-          <InfiniteScroll loadMore={() => getUserList(list.length)}>
+          <InfiniteScroll loadMore={() => getUserList(list.length, orderBy)}>
             {list.length > 0 ? (
               list.map((user, index) => (
                 <UserList

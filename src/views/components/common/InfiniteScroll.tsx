@@ -31,7 +31,7 @@ const InfiniteScroll = ({children, loading = false, loadMore} : PropTypes) => {
         }
 
         return () => observer && observer.disconnect();
-    }, [pageEnd.current, loadMoreMemo])
+    }, [pageEnd.current, loadMore])
     return (
         <InfiniteScrollStyle>
             {children}
